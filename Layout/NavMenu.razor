@@ -1,7 +1,9 @@
-﻿@implements IDisposable
+﻿@using System.Security.Claims
+@implements IDisposable
 
 @inject NavigationManager NavigationManager
 @inject AuthService AuthService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MudPaper Elevation="0" Class="py-3">
     <MudNavMenu Color="Color.Primary">
@@ -35,11 +37,13 @@
         </AuthorizeView>
         <AuthorizeView>
             <Authorized>
-                <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Person">@context.User.Identity?.Name</MudNavLink>
-                @if (context.User?.Identity?.Name is "murillo.henrique@proautokimium.com.br")
+                <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Person">@userName</MudNavLink>
+        
+                @if (userName == "murillo.henrique@proautokimium.com.br")
                 {
                     <MudNavLink Href="Account/Register" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PersonAdd">Register</MudNavLink>
                 }
+
                 <MudNavLink Href="account/logout" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Logout">Logout</MudNavLink>
             </Authorized>
             <NotAuthorized>
@@ -51,12 +55,25 @@
 
 @code {
     private string? currentUrl;
-
-    protected override void OnInitialized()
+    private string userName;
+    
+    protected override async Task OnInitializedAsync()
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            userName = user.FindFirst(ClaimTypes.Name)?.Value
+                       ?? user.FindFirst("unique_name")?.Value
+                       ?? "Sem nome";
+
+        }
     }
+
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
