@@ -1,0 +1,20 @@
+@page "/Relatorios/Abastecimento/Geral/{Data}"
+
+@inject NavigationManager Navigation
+@inject HttpClient Http
+
+<MudText Typo="Typo.h3" Align="Align.Center">Métricas do relatório</MudText>
+
+<MudTextField T="string" Label="Dados para o relatório" Variant="Variant.Outlined" Text="@resultado" Lines="15"/>
+
+@code {
+    private string? resultado { get; set; }
+    
+    [Parameter] public string Data { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var request = await Http.GetStringAsync($"api/abastecimento/calcular/geral/{Data}");
+        resultado = request;
+    }
+}
