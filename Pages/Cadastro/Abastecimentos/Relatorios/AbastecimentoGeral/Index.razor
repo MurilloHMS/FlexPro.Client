@@ -2,6 +2,8 @@
 
 @inject NavigationManager Navigation
 @inject HttpClient Http
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
 
 <MudText Typo="Typo.h3" Align="Align.Center">Métricas do relatório</MudText>
 
@@ -14,7 +16,24 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        var request = await Http.GetStringAsync($"api/abastecimento/calcular/geral/{Data}");
-        resultado = request;
+        var response = await Http.GetAsync($"api/abastecimento/report?date={Data}");
+        if (response.IsSuccessStatusCode)
+        {
+            var fileBytes = await response.Content.ReadAsByteArrayAsync();
+            DateTime dataDeEmissao = DateTime.Parse(Data);
+            var fileName = $"Relatório Abastecimento - {dataDeEmissao.ToString("MM-yyyy")}.pdf";
+            await DownloadFile(fileBytes, fileName);
+            Snackbar.Add("Relatório gerado com sucesso!", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add($"Erro ao gerar relatório: {response.RequestMessage}");
+        }
+    }
+    
+    private async Task DownloadFile(byte[] fileBytes, string fileName)
+    {
+        var base64File = Convert.ToBase64String(fileBytes);
+        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
 }
