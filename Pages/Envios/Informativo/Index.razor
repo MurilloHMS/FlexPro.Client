@@ -199,7 +199,7 @@
         }
         else
         {
-            Snackbar.Add($"Error: {response.Content.ReadAsStringAsync()}", Severity.Error);
+            Snackbar.Add($"Error: { await response.Content.ReadAsStringAsync()}", Severity.Error);
         }
     }
 
