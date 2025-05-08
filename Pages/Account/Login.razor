@@ -1,4 +1,5 @@
 ﻿@page "/Account/login"
+@using System.Net
 
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
@@ -27,6 +28,12 @@
                                         UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } })"/>
                 </MudItem>
                 <MudItem md="12">
+                    @if (!string.IsNullOrEmpty(message))
+                    {
+                        <MudAlert Severity="@severity">@message</MudAlert>
+                    }
+                </MudItem>
+                <MudItem md="12">
                     <MudStaticButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="false" FormAction="FormAction.Submit">Login</MudStaticButton>
                 </MudItem>
             </MudGrid>
@@ -35,17 +42,35 @@
 </MudGrid>
 
 @code {
-    private LoginModel loginModel = new LoginModel();
+    private string? message;
+    private Severity severity;
+    private LoginModel loginModel = new ();
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        if (query["sessionExpired"] == "true")
+        {
+            message = "Sua sessão expirou. Faça login novamente";
+            severity = Severity.Warning;
+        }
+    }
 
     private async Task HandleLogin()
     {
-        var token = await AuthService.Login(loginModel);
+        var (statusCode,response) = await AuthService.Login(loginModel);
 
-        if (!string.IsNullOrEmpty(token))
+        if (statusCode == HttpStatusCode.OK)
         {
-            (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsAuthenticated(token);
+            (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsAuthenticated(response);
 
-            NavigationManager.NavigateTo("/FlexPro.Client/");
+            NavigationManager.NavigateTo("");
+        }
+        else if (statusCode == HttpStatusCode.NotFound)
+        {
+            message = response;
+            severity = Severity.Error;
         }
         else
         {

@@ -199,7 +199,7 @@
         }
         else
         {
-            Snackbar.Add($"Ocorreu um erro ao montar os dados dos informativos: {response.RequestMessage}", Severity.Error);
+            Snackbar.Add($"Error: {response.Content.ReadAsStringAsync()}", Severity.Error);
         }
     }
 

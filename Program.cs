@@ -14,9 +14,11 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+var environment = builder.HostEnvironment;
+string databaseUrl = environment.IsDevelopment() ? "http://localhost:5233/" : "https://flexpro-api.onrender.com/";
 builder.Services.AddHttpClient("FlexProAPI", client =>
     {
-        client.BaseAddress = new Uri("https://flexpro-api.onrender.com/");
+        client.BaseAddress = new Uri(databaseUrl);
     }).AddHttpMessageHandler<AuthDelegatingHandler>();
 
 // Registros de Services
@@ -28,7 +30,7 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 //mudblazor
 builder.Services.AddMudServices();
 
-// autentica��o
+// autenticacao
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthorizationService, DefaultAuthorizationService>();

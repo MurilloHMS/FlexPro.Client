@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Components;
 
 namespace FlexPro.Client.Services
 {
@@ -6,10 +8,12 @@ namespace FlexPro.Client.Services
     {
 
         private readonly LocalStorageService _storageService;
+        private readonly NavigationManager _navigationManager;
 
-        public AuthDelegatingHandler(LocalStorageService storageService)
+        public AuthDelegatingHandler(LocalStorageService storageService, NavigationManager navigationManager)
         {
             _storageService = storageService;
+            _navigationManager = navigationManager;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -19,8 +23,16 @@ namespace FlexPro.Client.Services
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
+            
+            var response = await base.SendAsync(request, cancellationToken);
 
-            return await base.SendAsync(request, cancellationToken);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await _storageService.RemoveItemAsync("authToken");
+                _navigationManager.NavigateTo("Account/login?sessionExpired=true", forceLoad: true);
+            }
+
+            return response;
         }
     }
 }
