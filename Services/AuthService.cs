@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FlexPro.Client.Models;
@@ -22,21 +23,26 @@ namespace FlexPro.Client.Services
             _localStorageService = localStorageService;
         }
 
-        public async Task<string> Login(LoginModel loginModel)
+        public async Task<(HttpStatusCode, string)> Login(LoginModel loginModel)
         {
             var response = await _httpClient.PostAsJsonAsync("api/auth/login", loginModel);
-
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            
             if(response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
                 if(result?.Token != null)
                 {
                     await _localStorageService.SetItemAsync("authToken", result.Token);
-                    return result.Token;
+                    return (HttpStatusCode.OK, result.Token);
                 }
             }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return (HttpStatusCode.NotFound, responseMessage);
+            }
 
-            return null;
+            return (HttpStatusCode.BadRequest, responseMessage);
         }
 
         public async Task<bool> Register(RegisterModel registerModel)

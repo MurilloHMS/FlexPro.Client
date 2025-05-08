@@ -1,4 +1,5 @@
 ﻿@page "/Account/login"
+@using System.Net
 
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
@@ -29,7 +30,7 @@
                 <MudItem md="12">
                     @if (!string.IsNullOrEmpty(message))
                     {
-                        <MudAlert Severity="Severity.Warning">@message</MudAlert>
+                        <MudAlert Severity="@severity">@message</MudAlert>
                     }
                 </MudItem>
                 <MudItem md="12">
@@ -42,6 +43,7 @@
 
 @code {
     private string? message;
+    private Severity severity;
     private LoginModel loginModel = new ();
 
     protected override void OnInitialized()
@@ -51,18 +53,24 @@
         if (query["sessionExpired"] == "true")
         {
             message = "Sua sessão expirou. Faça login novamente";
+            severity = Severity.Warning;
         }
     }
 
     private async Task HandleLogin()
     {
-        var token = await AuthService.Login(loginModel);
+        var (statusCode,response) = await AuthService.Login(loginModel);
 
-        if (!string.IsNullOrEmpty(token))
+        if (statusCode == HttpStatusCode.OK)
         {
-            (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsAuthenticated(token);
+            (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsAuthenticated(response);
 
             NavigationManager.NavigateTo("");
+        }
+        else if (statusCode == HttpStatusCode.NotFound)
+        {
+            message = response;
+            severity = Severity.Error;
         }
         else
         {
