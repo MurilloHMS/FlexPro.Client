@@ -1,4 +1,6 @@
 @page "/clientes"
+@using FlexPro.Client.Models.Request
+@using FlexPro.Client.Models.Response
 
 @inject IDialogService DialogService;
 @inject HttpClient Http;
@@ -10,7 +12,7 @@
 
 <MudText Typo="Typo.h2">Clientes</MudText>
 <br><br><br>
-<MudDataGrid Items="@clientesFiltrados" T="Cliente" Hover="true" Bordered="true" Striped="true" Dense="true" SortMode="SortMode.Multiple">
+<MudDataGrid Items="@clientesFiltrados" T="ClienteResponse" Hover="true" Bordered="true" Striped="true" Dense="true" SortMode="SortMode.Multiple">
     <ToolBarContent>
         <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Novo</MudButton>
         <MudSpacer/>
@@ -30,16 +32,16 @@
         </TemplateColumn>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="Cliente"/>
+        <MudDataGridPager T="ClienteResponse"/>
     </PagerContent>
 </MudDataGrid>
 
 
 @code {
-    private IEnumerable<Cliente> _clientes = new List<Cliente>();
+    private List<ClienteResponse> _clientes = new ();
     private string _searchString = "";
 
-    private IEnumerable<Cliente> clientesFiltrados => string.IsNullOrWhiteSpace(_searchString)
+    private IEnumerable<ClienteResponse> clientesFiltrados => string.IsNullOrWhiteSpace(_searchString)
         ? _clientes
         : _clientes.Where(x => x.Nome.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
 
@@ -52,7 +54,7 @@
     {
         try
         {
-            _clientes = await Http.GetFromJsonAsync<IList<Cliente>>("api/clientes");
+            _clientes = await Http.GetFromJsonAsync<List<ClienteResponse>>("api/cliente");
         }
         catch (HttpRequestException ex)
         {
@@ -73,7 +75,7 @@
         }
     }
 
-    private async Task OpendDeleteDialogAsync(Cliente cliente)
+    private async Task OpendDeleteDialogAsync(ClienteResponse cliente)
     {
         var parametros = new DialogParameters<DialogCliente>
         {
@@ -94,7 +96,7 @@
         }
     }
 
-    private async Task OpenEditDialogAsync(Cliente cliente)
+    private async Task OpenEditDialogAsync(ClienteResponse cliente)
     {
         var parametros = new DialogParameters<CadastrarCliente>
         {

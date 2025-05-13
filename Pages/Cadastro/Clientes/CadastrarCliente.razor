@@ -1,3 +1,5 @@
+@using FlexPro.Client.Models.Request
+@using FlexPro.Client.Models.Response
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
@@ -22,7 +24,7 @@
     </DialogActions>
 </MudDialog>
 @code {
-    private Cliente _cliente = new Cliente();
+    private ClienteResponse _cliente = new ();
     private MudForm form;
     private bool isFormValid;
 
@@ -30,7 +32,7 @@
     private IMudDialogInstance MudDialog { get; set; }
 
     [Parameter]
-    public Cliente cliente { get; set; }
+    public ClienteResponse cliente { get; set; }
 
     [Parameter]
     public string Tipo { get; set; }
@@ -54,18 +56,19 @@
         {
             if (cliente is not null)
             {
-                var response = await Http.PutAsJsonAsync($"api/clientes/{_cliente.Id}", _cliente);
+                var clienteTemp = new ClienteRequest() { CodigoSistema = _cliente.CodigoSistema, Email = _cliente.Email, Nome = _cliente.Nome, Status = _cliente.Status};
+                var response = await Http.PutAsJsonAsync($"api/cliente/{_cliente.Id}", clienteTemp);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Cliente Atualizado com Sucesso!", Severity.Success);
                 }else 
                 { 
-                    Snackbar.Add($"Ocorreu um erro ao atualizar o produto! {response.StatusCode} : {response.RequestMessage}", Severity.Error); 
+                    Snackbar.Add($"Ocorreu um erro ao atualizar o produto! {response.StatusCode} : {await response.Content.ReadAsStringAsync()}", Severity.Error); 
                 }
             }
             else
             {
-                var response = await Http.PostAsJsonAsync("api/clientes", _cliente);
+                var response = await Http.PostAsJsonAsync("api/cliente", _cliente);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Cliente Cadastrado com Sucesso!", Severity.Success);

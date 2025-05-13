@@ -9,6 +9,7 @@
         public int QuantidadeDeProdutos { get; set; }
         public double QuantidadeDeLitros { get; set; }
         public int QuantidadeNotasEmitidas { get; set; }
+        public int QuantidadeDeVisitas { get; set; }
         public int MediaDiasAtendimento { get; set; }
         public string ProdutoEmDestaque { get; set; }
         public decimal FaturamentoTotal { get; set; }

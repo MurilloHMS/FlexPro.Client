@@ -1,3 +1,4 @@
+@using FlexPro.Client.Models.Response
 @inject HttpClient Http
 @inject ISnackbar SnackBar
 
@@ -24,13 +25,13 @@
     public Color Color { get; set; }
 
     [Parameter]
-    public Cliente Cliente { get; set; }
+    public ClienteResponse Cliente { get; set; }
 
     public async Task Submit()
     {
         try
         {
-            await Http.DeleteFromJsonAsync<Cliente>($"api/clientes/{Cliente.Id}");
+            await Http.DeleteFromJsonAsync<Cliente>($"api/cliente/{Cliente.Id}");
             SnackBar.Add("Cliente Deletado com Sucesso", Severity.Success);
         }
         catch (Exception e)
