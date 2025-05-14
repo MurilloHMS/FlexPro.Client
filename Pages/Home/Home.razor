@@ -1,11 +1,14 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
-
-<AuthorizeView>
+<div class="container">
+    <AuthorizeView>
     <NotAuthorized>
-        <MudText Typo="Typo.h2" Align="Align.Center">Bem vindo ao FlexPro</MudText>
-        <MudText Typo="Typo.h6" Align="Align.Center">WebApp Desenvolvido para agrupar ferramentas que auxiliam o trabalho na Proauto Kimium</MudText>
+        <Hero/>
+        <Consultoria/>
+        <ProcessoConsultoria/>
+        <MotivosContratar/>
+        <Servicos_e_Produtos/>
     </NotAuthorized>
     <Authorized>
         <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
@@ -72,6 +75,7 @@
         </MudTabs>
     </Authorized>
 </AuthorizeView>
+</div>
 
 @code {
     [Inject]
