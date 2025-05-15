@@ -31,8 +31,9 @@
 			</li>
 			<li class="carrinho-container">
 				<a href="carrinho">
-					<img src="assets/images/carrinho-compras.png" alt="Carrinho de compras">
-					<span class="badge"></span>
+					<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error">
+						<img src="assets/images/carrinho-compras.png" alt="Carrinho de compras">
+					</MudBadge>
 				</a>
 			</li>
 		</ul>
@@ -40,5 +41,12 @@
 </header>
 
 @code {
-	
+	private int ItensCarrinho;
+
+	protected override Task OnInitializedAsync()
+	{
+		ItensCarrinho = 2;
+		return base.OnInitializedAsync();
+	}
+
 }

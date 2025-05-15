@@ -30,12 +30,13 @@
     </Authorized>
 
     <NotAuthorized>
-        <!-- Layout para usuário deslogado -->
-        <Header />
-        <MudMainContent Class="mt-16 pa-4">
-            @Body
-        </MudMainContent>
-        <Footer />
+        <div class="full-height-layout">
+            <Header />
+            <MudMainContent Class="flex-grow-1 mt-16 pa-4">
+                @Body
+            </MudMainContent>
+            <Footer />
+        </div>
     </NotAuthorized>
 </AuthorizeView>
 
