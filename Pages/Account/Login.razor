@@ -27,10 +27,15 @@
                                         Label="Senha" InputType="InputType.Password" Placeholder="Senha"
                                         UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } })"/>
                 </MudItem>
-                <MudItem md="12">
+                <MudItem md="12" >
                     @if (!string.IsNullOrEmpty(message))
                     {
                         <MudAlert Severity="@severity">@message</MudAlert>
+                    }
+                    
+                    @if (isLoading)
+                    {
+                        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
                     }
                 </MudItem>
                 <MudItem md="12">
@@ -45,6 +50,7 @@
     private string? message;
     private Severity severity;
     private LoginModel loginModel = new ();
+    private bool isLoading = false;
 
     protected override void OnInitialized()
     {
@@ -59,22 +65,38 @@
 
     private async Task HandleLogin()
     {
-        var (statusCode,response) = await AuthService.Login(loginModel);
-
-        if (statusCode == HttpStatusCode.OK)
+        try
         {
-            (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsAuthenticated(response);
+            isLoading = true;
+            Task.Delay(5000);
+            var (statusCode, response) = await AuthService.Login(loginModel);
 
-            NavigationManager.NavigateTo("");
+            if (statusCode == HttpStatusCode.OK)
+            {
+                (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsAuthenticated(response);
+                isLoading = false;
+                NavigationManager.NavigateTo("");
+            }
+            else if (statusCode == HttpStatusCode.NotFound)
+            {
+                message = response;
+                severity = Severity.Error;
+                isLoading = false;
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Login falhou! Verifique suas credenciais.");
+            }
         }
-        else if (statusCode == HttpStatusCode.NotFound)
+        catch (Exception ex)
         {
-            message = response;
+            message = ex.Message;
             severity = Severity.Error;
+            isLoading = false;
         }
-        else
+        finally
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Login falhou! Verifique suas credenciais.");
+            isLoading = false;
         }
     }
 }
