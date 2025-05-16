@@ -1,0 +1,36 @@
+
+.processo-container {
+    background-color: var(--primary-color);
+    color: var(--secondary-text-color);
+    text-align: center;
+    padding: 50px;
+
+
+    .process-box {
+        border: 1px solid var(--tertiary-color-dark2);
+        border-radius: 36px;
+        padding: 30px;
+        margin-top: 20px;
+
+
+    }
+
+    .steps {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .step {
+        padding: 20px;
+        width: 200px;
+        text-align: center;
+
+    }
+
+    .icon {
+        padding: 20px;
+    }
+}

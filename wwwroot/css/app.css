@@ -1,3 +1,41 @@
+:root{
+    /* Principal colors */
+    --primary-color: #232e61;
+    --primary-color-light1: #3e4b85;
+    --primary-color-light2: #5c6694;
+    --primary-color-dark1: #1b224d;
+
+    --secondary-color: #57c1ab;
+    --secondary-color-light1: #85bfb5;
+    --secondary-color-light2: #a4ddd2;
+    --secondary-color-dark1: #3e9e8e;
+    
+    /* Supply colors */
+    --tertiary-color: #f4f5f7;
+    --tertiary-color-dark: #e1e2e6;
+    --tertiary-color-dark2: #e8e8ea;
+
+    --neutral-dark: #1a202c;
+    --neutral-light: #edf2f7;
+
+    --success-color: #38a169; 
+    --warning-color: #f6ad55;
+    --error-color: #e53e3e; 
+    --info-color: #3182ce; 
+    
+    /* typography */
+    --primary-text-color: #4a5568;
+    --secondary-text-color: #fcf7ff;
+    
+    /* Fonts */
+    --text-font: "Inter", sans-serif;
+    --form-font: "Inter", sans-serif;
+    --message-font: "Inter", sans-serif;
+    
+    --title-font: "Montserrat", sans-serif;
+    --menu-font: "Montserrat", sans-serif;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
