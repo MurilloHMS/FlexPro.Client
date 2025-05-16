@@ -32,14 +32,16 @@
                     {
                         <MudAlert Severity="@severity">@message</MudAlert>
                     }
-                    
+                </MudItem>
+                <MudItem md="12">
                     @if (isLoading)
                     {
                         <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
                     }
-                </MudItem>
-                <MudItem md="12">
-                    <MudStaticButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="false" FormAction="FormAction.Submit">Login</MudStaticButton>
+                    else
+                    {
+                        <MudStaticButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="false" FormAction="FormAction.Submit">Login</MudStaticButton>
+                    }
                 </MudItem>
             </MudGrid>
         </EditForm>
