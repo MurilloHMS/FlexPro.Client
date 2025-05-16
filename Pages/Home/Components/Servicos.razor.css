@@ -33,7 +33,7 @@
         transition: opacity .2s ease-out;
     }
 
-    h2 {
+    h3 {
         position: absolute;
         inset: auto auto 30px 30px;
         margin:0;
@@ -60,7 +60,7 @@
         text-decoration: none;
     }
 
-    &:hover h2 {
+    &:hover h3 {
         inset: auto auto 220px 30px;
         transition: inset .3s ease-out;
     }
@@ -89,7 +89,7 @@
         margin: 10px 0;
     }
 
-    .servico h2 {
+    .servico h3 {
         inset: auto auto 20px 20px;
     }
 
@@ -108,7 +108,7 @@
         height: 20rem;
     }
 
-    .servico h2 {
+    .servico h3 {
         font-size: 1rem;
     }
 
