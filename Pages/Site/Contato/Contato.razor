@@ -1,0 +1,140 @@
+@using FlexPro.Client.Domain.Enums
+@using FlexPro.Client.Models.Request
+@inject HttpClient Http
+
+<MudDialog>
+    <TitleContent>
+        Entre em contato
+    </TitleContent>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudPaper Class="pa-4">
+                    <MudForm @ref="form" @bind-IsValid="@isFormValid">
+                        <MudTextField @bind-Value="_contato.Nome"
+                                      For="@(() => _contato.Nome)"
+                                      Label="Nome"
+                                      HelperText="Digite seu nome"
+                                      Required />
+
+                        <MudTextField @bind-Value="_contato.Email"
+                                      For="@(() => _contato.Email)"
+                                      Label="Email"
+                                      HelperText="Digite seu email para entrarmos em contato"
+                                      Required />
+
+                        <MudTextField @bind-Value="_contato.NomeEmpresa"
+                                      For="@(() => _contato.NomeEmpresa)"
+                                      Label="Nome Empresa"
+                                      HelperText="Digite o nome da empresa em que trabalha"
+                                      Required />
+
+                        <MudSelect T="TipoContato_e"
+                                   Label="Selecione o motivo"
+                                   @bind-Value="_contato.TipoContato"
+                                   For="@(() => _contato.TipoContato)"
+                                   Variant="Variant.Text"
+                                   Clearable
+                                   Required>
+                            @foreach (var tipo in Enum.GetValues<TipoContato_e>())
+                            {
+                                <MudSelectItem T="TipoContato_e" Value="tipo">@GetDisplayName(tipo)</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        @if (_contato.TipoContato == TipoContato_e.Outros)
+                        {
+                            <MudTextField @bind-Value="_contato.outro"
+                                          For="@(() => _contato.outro)"
+                                          Label="Digite o motivo" />
+                        }
+
+                        <MudTextField @bind-Value="_contato.Mensagem"
+                                      For="@(() => _contato.Mensagem)"
+                                      Label="Digite sua mensagem"
+                                      Lines="5"
+                                      Required />
+                    </MudForm>
+
+                    @if (!string.IsNullOrEmpty(message))
+                    {
+                        <MudAlert Severity="@severity">@message</MudAlert>
+                    }
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" sm="5">
+                <MudPaper Class="pa-4 mud-height-full">
+                    <MudText Typo="Typo.body1">Outros meios de contato</MudText>
+                    <br><br><br><br><br>
+                    <div style=" text-align: end; display: flex; flex-direction: column">
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://wa.me/05511983583564" target="_blank" rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon> (11) 9 8358-3564
+                        </MudElement>
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://wa.me/05511957782766" target="_blank" rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon> (11) 9 5778-2766
+                        </MudElement>
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="mailto:sac@proautokimium.com.br" target="_blank" rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Material.Filled.Email"></MudIcon> sac@proautokimium.com.br
+                        </MudElement>
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://maps.app.goo.gl/LujYJt2qmgmMSbN2A" target="_blank" rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Material.Filled.Map"></MudIcon> Av. João do Prado, 300 - Capuava, Santo André - SP, 09270-160
+                        </MudElement>
+                    </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancelar</MudButton>
+        @if (isLoading)
+        {
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+        }
+        else
+        {
+            <MudButton Color="Color.Tertiary" OnClick="Submit" Disabled="!isFormValid">Entrar em contato</MudButton>
+        }
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; }
+
+    private bool isFormValid;
+    private MudForm form;
+    private ContatoRequest _contato = new();
+    private bool isLoading = false;
+
+    private string? message;
+    private Severity severity;
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        message = String.Empty;
+        await form.Validate();
+
+        if (!form.IsValid)
+        {
+            message = "Existem campos obrigatórios não preenchidos.";
+            severity = Severity.Warning;
+            return;
+        }
+        _contato.StatusContato = StatusContato_e.ContatoSolicitado;
+        isLoading = true;
+        var response = await Http.PostAsJsonAsync("api/contato", _contato);
+        message = await response.Content.ReadAsStringAsync();
+        severity = response.IsSuccessStatusCode ? Severity.Success : Severity.Error;
+        isLoading = false;
+    }
+
+    private string GetDisplayName(TipoContato_e tipo)
+    {
+        var field = tipo.GetType().GetField(tipo.ToString());
+        var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
+        return attr?.Name ?? tipo.ToString();
+    }
+}

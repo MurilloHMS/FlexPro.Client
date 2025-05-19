@@ -1,4 +1,5 @@
-
+@using FlexPro.Client.Pages.Site.Contato
+@inject IDialogService DialogService
 <section class="home">
 	<div class="home-text">
 		<h2>Consultoria e Gestão de Processos</h2>
@@ -6,7 +7,7 @@
 			Na Proauto Kimium, nós ajudamos sua empresa a atingir níveis de excelência em processos,
 			diminuindo custos e aumentando seus ganhos financeiros</p>
 
-		<a href="https://wa.me/5511983583564" target="_blank" class="cta-button">FALE CONOSCO</a>
+		<a @onclick="OpenDialogAsync" class="cta-button">FALE CONOSCO</a>
 	</div>
 	<div class="home-image">
 		<img src="assets/images/consultoria-gestao-processo.jpg" alt="ilustração consultoria">
@@ -29,5 +30,10 @@
 	</div>
 </section>
 @code {
-	
+
+	private Task OpenDialogAsync()
+	{
+		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+		return DialogService.ShowAsync<Contato>("Entre em Contato", options);
+	}
 }
