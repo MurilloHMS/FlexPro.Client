@@ -1,3 +1,5 @@
+@using FlexPro.Client.Pages.Site.Contato
+@inject IDialogService DialogService
 <header class="header">
 	<div class="logo">
 		<img src="assets/images/logo-proauto.png" alt="Logo da Empresa">
@@ -18,7 +20,7 @@
 				<a Href="Empresa">Empresa</a>
 			</li>
 			<li>
-				<a Href="">Contato</a>
+				<a @onclick="OpenDialogAsync">Contato</a>
 			</li>
 		</ul>
 	</nav>
@@ -47,6 +49,12 @@
 	{
 		ItensCarrinho = 2;
 		return base.OnInitializedAsync();
+	}
+	
+	private Task OpenDialogAsync()
+	{
+		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+		return DialogService.ShowAsync<Contato>("Entre em Contato", options);
 	}
 
 }

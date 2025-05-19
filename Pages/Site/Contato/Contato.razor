@@ -1,0 +1,68 @@
+@using FlexPro.Client.Domain.Enums
+<MudDialog>
+	<TitleContent>
+		Entre em contato
+	</TitleContent>
+	<DialogContent>
+		<MudGrid>
+			<MudItem xs="12" sm="7">
+				<MudPaper Class="pa-4">
+					<MudForm @ref="form" @bind-IsValid="@success">
+						<MudTextField T="string" Label="Nome" HelperText="Digite seu nome"/>
+						<MudTextField T="string" Label="Email" HelperText="Digite seu email para entrarmos em contato"/>
+						<MudTextField T="string" Label="Nome Empresa" HelperText="Digite o nome da empresa em que trabalha"/>
+						<MudSelect T="TipoContato_e" Label="Selecione o motivo" @bind-Value="_tipoSelecionado" Variant="Variant.Text" Clearable>
+							@foreach (var tipo in Enum.GetValues<TipoContato_e>())
+							{
+								<MudSelectItem T="TipoContato_e" Value="tipo">@GetDisplayName(tipo)</MudSelectItem>
+							}
+						</MudSelect>
+						@if (_tipoSelecionado == TipoContato_e.Outros)
+						{
+							<MudTextField T="string" Label="Digite o motivo"/>
+						}
+						
+						<MudTextField T="string" Label="Digite sua mensagem" Lines="5"/>
+					</MudForm>
+				</MudPaper>
+			</MudItem>
+			<MudItem xs="12" sm="5">
+				<MudPaper Class="pa-4 mud-height-full">
+					<MudText Typo="Typo.body1">Outros meios de contato</MudText>
+					<br><br><br><br><br>
+					<div style=" text-align: end; display: flex; flex-direction: column">
+						<MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://wa.me/05511983583564" target="_blank" rel="noopener noreferrer"><MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon> (11) 9 8358-3564</MudElement>
+						<MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://wa.me/05511957782766" target="_blank" rel="noopener noreferrer"><MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon> (11) 9 5778-2766</MudElement>
+						<MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="mailto:sac@proautokimium.com.br" target="_blank" rel="noopener noreferrer"><MudIcon Icon="@Icons.Material.Filled.Email"></MudIcon> sac@proautokimium.com.br</MudElement>
+						<MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://maps.app.goo.gl/LujYJt2qmgmMSbN2A" target="_blank" rel="noopener noreferrer"><MudIcon Icon="@Icons.Material.Filled.Map"></MudIcon> Av. João do Prado, 300 - Capuava, Santo André - SP, 09270-160</MudElement>
+					</div>
+				</MudPaper>
+			</MudItem>
+		</MudGrid>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="Cancel">Cancelar</MudButton>
+		<MudButton Color="Color.Tertiary" OnClick="Submit">Entrar em contato</MudButton>
+	</DialogActions>
+</MudDialog>
+
+
+@code {
+	[CascadingParameter]
+	private IMudDialogInstance MudDialog { get; set; }
+
+	private bool success;
+	private MudForm form;
+	private TipoContato_e _tipoSelecionado;
+	
+	private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+	private void Cancel() => MudDialog.Cancel();
+
+	private string GetDisplayName(TipoContato_e tipo)
+	{
+		var field = tipo.GetType().GetField(tipo.ToString());
+		var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
+		return attr?.Name ?? tipo.ToString();
+	}
+}
