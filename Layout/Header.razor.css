@@ -41,6 +41,10 @@ menu li {
     position: relative;
 }
 
+.menu a:hover {
+    cursor: pointer;    
+}
+
 .menu a::before{
     content: "";
     position: absolute;
