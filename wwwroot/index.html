@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Proauto Kimium</title>
-<!--     <base href="/" /> -->
-    <base href="/FlexPro.Client/">
+     <base href="/" /> 
+<!--    <base href="/FlexPro.Client/">-->
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="icon-512.png" />
@@ -21,7 +21,6 @@
     <meta name="robots" content="index, follow">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="+35 anos cuidando da suas higienização ♻️ Consumo consciente e qualidade.">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.example.com;">
     
     <!-- Meta Tags Identidade Visual-->
     <meta name="theme-color" content="#5ec4af">
@@ -43,18 +42,27 @@
     <meta name="twitter:title" content="ProautoKimium">
     <meta name="twitter:description" content="+35 anos cuidando da suas higienização ♻️ Consumo consciente e qualidade.">
     <meta name="twitter:image" content="https://proautokimium.vercel.app/assets/images/backgroundProauto.png">
+
+    <script>
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    </script>
+
 </head>
 
 <body>
-    <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+<div id="app">
+    <div class="loading-container">
+        <img src="assets/images/logo.png" alt="Logo Proauto" class="logo-loading"/>
+        <h2 class="loadint-text">Carregando<span class="dots"></span></h2>
     </div>
+</div>
 
-    <div id="blazor-error-ui">
+<div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="." class="reload">Reload</a>
         <span class="dismiss">🗙</span>

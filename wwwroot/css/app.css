@@ -40,6 +40,11 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+
 h1:focus {
     outline: none;
 }
@@ -149,4 +154,73 @@ code {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    color: #555;
+}
+
+.logo-loading {
+    width: 200px;
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.loading-text {
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 10px;
+    color: #1D3557;
+}
+
+.dots::after {
+    content: '';
+    display: inline-block;
+    animation: dots 1.5s steps(4, end) infinite;
+    width: 1rem;
+    text-align: left;
+}
+
+@keyframes dots{
+    0% {
+        content: '';
+    }
+
+    25% {
+        content: '.';
+    }
+
+    50% {
+        content: '..';;
+    }
+
+    75%{
+        content: '...'
+    }
+
+    100% {
+        content: '';
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.2;
+    }
 }
