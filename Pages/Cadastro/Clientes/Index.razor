@@ -3,7 +3,7 @@
 @using FlexPro.Client.Models.Response
 
 @inject IDialogService DialogService;
-@inject HttpClient Http;
+@inject ClienteService ClienteService;
 @inject ISnackbar Snackbar;
 
 @attribute [Authorize]
@@ -23,6 +23,7 @@
         <PropertyColumn Property="x => x.CodigoSistema" Title="Código Sistema" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Nome" Title="Nome" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Email" Title="E-Mail" Sortable="true" Filterable="true"/>
+        <PropertyColumn Property="x => x.Status" Title="Status" Sortable="true" Filterable="true"/>
         <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
             <CellTemplate>
                 <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialogAsync(@context.Item))"/>
@@ -54,9 +55,9 @@
     {
         try
         {
-            _clientes = await Http.GetFromJsonAsync<List<ClienteResponse>>("api/cliente");
+            _clientes = await ClienteService.GetClientes();
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex)
         {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             _clientes = default;

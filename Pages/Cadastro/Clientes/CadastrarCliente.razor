@@ -1,3 +1,4 @@
+@using FlexPro.Client.Domain.Enums
 @using FlexPro.Client.Models.Request
 @using FlexPro.Client.Models.Response
 @inject HttpClient Http
@@ -13,7 +14,18 @@
                     <MudTextField Label="Codigo Sistema" @bind-Value="_cliente.CodigoSistema" Required="true"/>
                     <MudTextField Label="Nome" @bind-Value="_cliente.Nome" Required="true"/>
                     <MudTextField Label="Email" @bind-Value="_cliente.Email" Required="true"/>
-                    <MudCheckBox Label="Enviar Emails" @bind-Value="_cliente.Status" Color="Color.Success" Required="true"/>
+                    <MudSelect T="StatusContato_e"
+                               Label="Selecione o motivo"
+                               @bind-Value="_cliente.Status"
+                               For="@(() => _cliente.Status)"
+                               Variant="Variant.Text"
+                               Clearable
+                               Required>
+                        @foreach (var tipo in Enum.GetValues<StatusContato_e>())
+                        {
+                            <MudSelectItem T="StatusContato_e" Value="tipo">@GetDisplayName(tipo)</MudSelectItem>
+                        }
+                    </MudSelect>
                 </MudForm>
             </MudItem>
         </MudGrid>
@@ -85,6 +97,13 @@
         }
         
         MudDialog?.Close(DialogResult.Ok(_cliente));
+    }
+    
+    private string GetDisplayName(StatusContato_e tipo)
+    {
+        var field = tipo.GetType().GetField(tipo.ToString());
+        var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
+        return attr?.Name ?? tipo.ToString();
     }
 
     
