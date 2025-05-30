@@ -13,9 +13,9 @@
 			<li>
 				<a href="">Home</a>
 			</li>
-			<li>
-				<a Href="Produtos/lista">Produtos</a>
-			</li>
+			@* <li> *@
+			@* 	<a Href="Produtos/lista">Produtos</a> *@
+			@* </li> *@
 			<li>
 				<a Href="Empresa">Empresa</a>
 			</li>
@@ -32,8 +32,8 @@
 				</a>
 			</li>
 			<li class="carrinho-container">
-				<a href="carrinho">
-					<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error">
+				<a href="#">
+					<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
 						<img src="assets/images/carrinho-compras.png" alt="Carrinho de compras">
 					</MudBadge>
 				</a>
@@ -47,7 +47,7 @@
 
 	protected override Task OnInitializedAsync()
 	{
-		ItensCarrinho = 2;
+		ItensCarrinho = 0;
 		return base.OnInitializedAsync();
 	}
 	
