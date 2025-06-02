@@ -37,14 +37,15 @@
 <MudButton OnClick="@(() => ImportarDados())" Variant="Variant.Filled" Disabled="@_isValid">Importar Dados</MudButton>
 <br><br>
 
-@if (!dataLoaded)
-{
-    <MudOverlay Visible="visible" DarkBackground >
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>  
-    </MudOverlay>
-}
-
-<MudDataGrid Items="@AbastecimentosFiltrados" T="Abastecimento" Hover="true" Bordered="true" Striped="true" Dense="true" SortMode="SortMode.Multiple" Filterable="true" Virtualize="true">
+<MudDataGrid Items="@AbastecimentosFiltrados" T="Abastecimento"
+             Hover="true" 
+             Bordered="true" 
+             Striped="true"
+             Dense="true" 
+             SortMode="SortMode.Multiple" 
+             Filterable="true" 
+             Virtualize="true"
+             Loading="dataLoaded">
     <ToolBarContent>
         <MudStack Row="true" Spacing="3">
             <MudFab OnClick="@(() => ExportarDados())" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Download" Size="Size.Small" Label="Exportar"/>
@@ -103,7 +104,7 @@
 
 @code {
     private bool _isValid = true;
-    private bool dataLoaded;
+    private bool dataLoaded = false;
     private bool visible;
 
     private IEnumerable<Abastecimento> _abastecimentos;
@@ -130,7 +131,7 @@
     {
         try
         {
-            dataLoaded = false;
+            dataLoaded = true;
             visible = true;
             List<Abastecimento> listaDeAbastecimentos = await Http.GetFromJsonAsync<List<Abastecimento>>("api/abastecimento");
             _abastecimentos = listaDeAbastecimentos;
@@ -141,7 +142,7 @@
         }
         finally
         {
-            dataLoaded = true;
+            dataLoaded = false;
             visible = false;
         }
     }
@@ -149,7 +150,7 @@
 
     private async Task ImportarDados()
     {
-        dataLoaded = false;
+        dataLoaded = true;
         visible = true;
         if (_files.Any())
         {
@@ -181,7 +182,7 @@
             Snackbar.Add("Erro: Nenuma informação encontrada", Severity.Error);
         }
 
-        dataLoaded = true;
+        dataLoaded = false;
         visible = false;
         _isValid = true;
     }
@@ -226,6 +227,7 @@
 
     private async Task ExportarDados()
     {
+        dataLoaded = true;
         if(!AbastecimentosFiltrados.Any())
         {
             Snackbar.Add("Dados Abastecimentos não encontrados", Severity.Error);
@@ -282,6 +284,7 @@
         }
         var fileBytes = System.IO.File.ReadAllBytes(fileName);
         Snackbar.Add("Dados Exportados Com Sucesso!", Severity.Success);
+        dataLoaded = false;
         await DownloadFile(fileBytes, Path.GetFileName(fileName));
     }
     private async Task DownloadFile(byte[] fileBytes, string fileName)
