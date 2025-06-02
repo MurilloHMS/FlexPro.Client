@@ -26,6 +26,7 @@ builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("FlexProAPI"));
 builder.Services.AddScoped<ClienteService>();
+builder.Services.AddScoped<ProdutoService>();
 
 //mudblazor
 builder.Services.AddMudServices();
