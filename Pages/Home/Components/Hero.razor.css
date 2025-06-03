@@ -1,15 +1,13 @@
 
 .hero{
-    background-image: url("assets/images/foto-3-min-1024x683.png");
+    background: linear-gradient(125deg, #0e326f, #1856bf);
     background-size: cover;
     background-position: center;
     color: var(--secondary-text-color);
-    text-align: center;
     padding: 50px;
     position: relative;
     height: 800px;
     display: flex;
-    justify-content: center;
     align-items: center;
 
     @media (max-width: 768px) {
@@ -23,19 +21,11 @@
     }
 }
 
-.hero::before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-}
+
 
 .content{
     position: relative;
-
+    
     h1 {
         font-size: 3em;
         margin-bottom: 20px;
@@ -46,6 +36,19 @@
 
         @media (max-width: 480px) {
             font-size: 2.5em;
+        }
+    }
+    h2 {
+        font-size: 2em;
+        margin-bottom: 20px;
+        font-weight: normal;
+
+        @media (max-width: 768px) {
+            font-size: 1.8em;
+        }
+
+        @media (max-width: 480px) {
+            font-size: 1.3em;
         }
     }
 
@@ -61,8 +64,12 @@
             font-size: 1em;
         }
     }
+    
+    li{
+        list-style: none;
+    }
+    
 }
-
 
 .cta-button {
     background-color: var(--secondary-color);
@@ -72,11 +79,13 @@
     border-radius: 15px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px;
+    font-weight: 500;
     text-decoration: none;
+    transition: transform .3s, box-shadow .3s , background-color 0.2s ease-in-out, color 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
     &:hover {
         background-color: var(--primary-color);
+        transform: translateY(-3px);
     }
 
     @media (max-width: 768px) {
@@ -87,5 +96,18 @@
     @media (max-width: 480px) {
         font-size: 12px;
         padding: 6px 12px;
+    }
+}
+
+.slide-in-left{
+    animation: slideInLeft 1s ease-out forwards;
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+@keyframes slideInLeft {
+    to{
+        opacity: 1;
+        transform: translateX(0px);
     }
 }
