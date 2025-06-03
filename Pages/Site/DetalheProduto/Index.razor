@@ -1,0 +1,42 @@
+@page "/produtos/{Id:int}"
+@using FlexPro.Client.Models.Response
+@inject NavigationManager NavigationManager
+@inject CartService CartService
+@inject ProdutoService ProdutoService
+
+<div class="product-page">
+    <div class="product-images">
+        <div class="product-main-image">
+            <img src="data:image/jpg;base64,@Convert.ToBase64String(Produto.Imagem)" alt="Imagem principal" />
+        </div>
+        <div class="product-thumbnails">
+            
+        </div>
+    </div>
+
+    <div class="product-info">
+        <h1>@Produto.Nome</h1>
+        <div class="product-price">R$ @Produto.Cor</div>
+
+        <div class="product-actions">
+            <button class="add-cart" @onclick="AddCart">Adicionar ao carrinho</button>
+        </div>
+
+        <h3>Descrição</h3>
+        <p>@Produto.Descricao</p>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    
+    private ProdutoLojaResponse Produto { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Produto = await ProdutoService.GetByIdAsync(Id);
+    }
+
+    private async Task AddCart() => await CartService.AddToCartAsync(Produto);
+
+}
