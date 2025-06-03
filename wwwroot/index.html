@@ -72,4 +72,25 @@
     <script>navigator.serviceWorker.register('service-worker.js', { scope: './' });</script>
 </body>
 
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(reg => {
+            if (reg && reg.waiting) {
+                reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                window.location.reload();
+            }
+
+            reg && reg.addEventListener('updatefound', () => {
+                const newWorker = reg.installing;
+                newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    }
+</script>
+
+
 </html>
