@@ -28,17 +28,13 @@
 	</nav>
 	<div>
 		<ul class="grp-menu">
-			<li class="menu">
-				<a href="Account/login">
-					Login
-				</a>
-			</li>
 			<li class="carrinho-container">
 				<a href="#">
 					<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
-						<img src="assets/images/carrinho-compras.png" alt="Carrinho de compras">
+						<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Tertiary" Size="Size.Small"/>
 					</MudBadge>
 				</a>
+				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Tertiary" Size="Size.Small"/>
 			</li>
 		</ul>
 	</div>
