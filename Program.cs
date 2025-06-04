@@ -28,6 +28,7 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<ParceiroService>();
 
 //mudblazor
 builder.Services.AddMudServices();

@@ -1,29 +1,29 @@
-@page "/clientes"
+@page "/parceiros"
 @using FlexPro.Client.Models.Request
 @using FlexPro.Client.Models.Response
 
 @inject IDialogService DialogService;
-@inject ClienteService ClienteService;
+@inject ParceiroService service;
 @inject ISnackbar Snackbar;
 
 @attribute [Authorize]
 
-<PageTitle>Clientes</PageTitle>
+<PageTitle>Parceiros</PageTitle>
 
-<MudText Typo="Typo.h2">Clientes</MudText>
+<MudText Typo="Typo.h2">Parceiros</MudText>
 <br><br><br>
-<MudDataGrid Items="@clientesFiltrados" T="ClienteResponse" Hover="true" Bordered="true" Striped="true" Dense="true" SortMode="SortMode.Multiple">
+<MudDataGrid Items="@parceirosFiltrados" T="ParceiroResponseDTO" Hover="true" Bordered="true" Striped="true" Dense="true" SortMode="SortMode.Multiple">
     <ToolBarContent>
         <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Novo</MudButton>
         <MudSpacer/>
-        <MudTextField @bind-Value="_searchString" Placeholder="Buscar cliente" Adornment="Adornment.Start" Immediate="true"
+        <MudTextField @bind-Value="_searchString" Placeholder="Buscar parceiro" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"/>
     </ToolBarContent>
     <Columns>
         <PropertyColumn Property="x => x.CodigoSistema" Title="Código Sistema" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Nome" Title="Nome" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Email" Title="E-Mail" Sortable="true" Filterable="true"/>
-        <PropertyColumn Property="x => x.Status" Title="Status" Sortable="true" Filterable="true"/>
+        <PropertyColumn Property="x => x.RazaoSocial" Title="Razão Social" Sortable="true" Filterable="true"/>
         <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
             <CellTemplate>
                 <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialogAsync(@context.Item))"/>
@@ -33,84 +33,84 @@
         </TemplateColumn>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="ClienteResponse"/>
+        <MudDataGridPager T="ParceiroResponseDTO"/>
     </PagerContent>
 </MudDataGrid>
 
 
 @code {
-    private List<ClienteResponse> _clientes = new ();
+    private List<ParceiroResponseDTO> _parceiros = new ();
     private string _searchString = "";
 
-    private IEnumerable<ClienteResponse> clientesFiltrados => string.IsNullOrWhiteSpace(_searchString)
-        ? _clientes
-        : _clientes.Where(x => x.Nome.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+    private IEnumerable<ParceiroResponseDTO> parceirosFiltrados => string.IsNullOrWhiteSpace(_searchString)
+        ? _parceiros
+        : _parceiros.Where(x => x.RazaoSocial.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadClients();
+        await LoadData();
     }
 
-    private async Task LoadClients()
+    private async Task LoadData()
     {
         try
         {
-            _clientes = await ClienteService.GetClientes();
+            _parceiros = await service.GetAllAsync();
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
         {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
-            _clientes = default;
+            _parceiros = default;
         }
     }
 
     private async Task OpenDialogAsync()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = await DialogService.ShowAsync<CadastrarCliente>("Cadastro de Clientes", options);
+        var dialog = await DialogService.ShowAsync<CadastrarParceiro>("Cadastro de Parceiros", options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-            await LoadClients();
+            await LoadData();
         }
     }
 
-    private async Task OpendDeleteDialogAsync(ClienteResponse cliente)
+    private async Task OpendDeleteDialogAsync(ParceiroResponseDTO parceiro)
     {
-        var parametros = new DialogParameters<DialogCliente>
+        var parametros = new DialogParameters<DialogParceiro>
         {
             { x => x.ContentText, "Tem certeza que você quer deletar este registro? Este processo não pode ser revertido!" },
             { x => x.ButtonText, "Deletar" },
             { x => x.Color, Color.Error },
-            { x => x.Cliente, cliente }
+            { x => x.Parceiro, parceiro }
         };
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        var dialog = await DialogService.ShowAsync<DialogCliente>("Deletar", parametros, options);
+        var dialog = await DialogService.ShowAsync<DialogParceiro>("Deletar", parametros, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-            await LoadClients();
+            await LoadData();
         }
     }
 
-    private async Task OpenEditDialogAsync(ClienteResponse cliente)
+    private async Task OpenEditDialogAsync(ParceiroResponseDTO parceiro)
     {
-        var parametros = new DialogParameters<CadastrarCliente>
+        var parametros = new DialogParameters<CadastrarParceiro>
         {
-            {x => x.cliente, cliente}
+            {x => x.parceiro, parceiro}
         };
 
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
-        var dialog = await DialogService.ShowAsync<CadastrarCliente>("Atualizar Cliente", parametros, options);
+        var dialog = await DialogService.ShowAsync<CadastrarParceiro>("Atualizar Parceiro", parametros, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-            await LoadClients();
+            await LoadData();
         }
     }
     
