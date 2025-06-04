@@ -1,5 +1,4 @@
 using System.Text.Json;
-using FlexPro.Client.Models;
 using FlexPro.Client.Models.Response;
 
 namespace FlexPro.Client.Services;
