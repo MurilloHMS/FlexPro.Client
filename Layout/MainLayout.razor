@@ -51,9 +51,17 @@
 </div>
 
 @code {
-    private MudTheme _theme = new();
     private bool _isDarkMode;
     private bool _drawerOpen = false;
+
+    private MudTheme _theme = new()
+    {
+        PaletteLight = new PaletteLight
+        {
+            Primary = "#232e61",
+            Secondary = "#57c1ab"
+        }
+    };
 
     private void DrawerToggle()
     {
