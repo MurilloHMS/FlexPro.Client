@@ -141,15 +141,3 @@
     }
 }
 
-.slide-in-left{
-    animation: slideInLeft 1s ease-out forwards;
-    opacity: 0;
-    transform: translateX(-30px);
-}
-
-@keyframes slideInLeft {
-    to{
-        opacity: 1;
-        transform: translateX(0px);
-    }
-}
