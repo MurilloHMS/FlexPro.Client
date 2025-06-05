@@ -1,41 +1,56 @@
 
 .hero{
-    background: linear-gradient(125deg, #0e326f, #1856bf);
+    background: linear-gradient(125deg, #0e326f, #232E61);
     background-size: cover;
     background-position: center;
     color: var(--secondary-text-color);
     padding: 50px;
     position: relative;
-    height: 800px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    height: 80vh;
+    border-radius: 50px;
 
-    @media (max-width: 768px) {
-        height: 600px;
+    @media (max-width: 1024px) {
+        flex-direction: column;
+        text-align: center;
         padding: 30px;
     }
 
+    @media (max-width: 768px) {
+        padding: 30px;
+        height: auto;
+    }
+
     @media (max-width: 480px) {
-        height: 400px;
         padding: 20px;
+        height: auto;
     }
 }
 
 
 
-.content{
-    position: relative;
+.hero-content{
+    max-width: 50%;
+
+    @media (max-width: 1024px) {
+        max-width: 100%;
+    }
     
     h1 {
         font-size: 3em;
         margin-bottom: 20px;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-family: 'popins', sans-serif;
 
         @media (max-width: 768px) {
-            font-size: 3em;
+            font-size: 2.5em;
         }
 
         @media (max-width: 480px) {
-            font-size: 2.5em;
+            font-size: 2em;
         }
     }
     h2 {
@@ -67,8 +82,35 @@
     
     li{
         list-style: none;
+        font-size: 1.3em;
+        
+        @media (max-width: 768px) {
+            font-size: 1.2em; 
+        }
+        
+        @media (max-width: 480px) {
+            font-size: 1em;
+        }
     }
     
+}
+
+.hero-image{
+    max-width: 40%;
+
+    @media (max-width: 1024px) {
+        max-width: 80%;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        max-width: 100%;
+    }
+}
+
+.hero-image img{
+    width: 100%;
+    border-radius: 10px;
 }
 
 .cta-button {
