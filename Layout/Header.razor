@@ -7,7 +7,7 @@
 		<img src="assets/images/logo-proauto.png" alt="Logo da Empresa">
 	</div>
 	<button class="menu-toggle" onclick="@(() => ToggleMenu())">
-		☰
+		<MudIcon Icon="@Icons.Material.Filled.Menu" Size="Size.Small" Color="Color.Primary"/>
 	</button>
 	
 	<nav class="menu @(_isOpen ? "active" : "")">
@@ -31,10 +31,10 @@
 			<li class="carrinho-container">
 				<a href="#">
 					<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
-						<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Tertiary" Size="Size.Small"/>
+						<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small"/>
 					</MudBadge>
 				</a>
-				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Tertiary" Size="Size.Small"/>
+				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Primary" Size="Size.Small"/>
 			</li>
 		</ul>
 	</div>
