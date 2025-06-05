@@ -31,7 +31,14 @@
         </MudStep>
         <MudStep Title="Passo 4" SecondaryText="Validação">
             <MudText>Selecione os clientes aprovados para enviar o e-mail</MudText>
-            <MudDataGrid T="Informativo" MultiSelection="true" Items="_informativos" SortMode="SortMode.Multiple" Filterable="true" Hideable="true" SelectedItemsChanged="@SelectedItemsChanged">
+            <MudDataGrid T="Informativo"
+                         MultiSelection="true" 
+                         Items="_informativos" 
+                         SortMode="SortMode.Multiple" 
+                         Filterable="true" 
+                         Hideable="true" 
+                         SelectedItemsChanged="@SelectedItemsChanged"
+                         Loading="_isLoading">
                 <ToolBarContent>
                     <MudText Typo="Typo.h6">Informativo Clientes</MudText>
                     <MudSpacer/>
@@ -93,6 +100,8 @@
 
     private IEnumerable<Informativo> _clientesSelecionados = new List<Informativo>();
     private string _searchString;
+
+    private bool _isLoading = false;
     
     #region Controladores UploadFile
 
@@ -186,13 +195,14 @@
 
     private async Task AtualizarDadosDaTabela()
     {
+        _isLoading = true;
         DadosRequest request = new DadosRequest()
         {
             InformativoNFes = (List<InformativoNFe>)_informativoNFe,
             informativoOs = (List<InformativoOS>)_informativoOs,
             InformativoPecasTrocadas = (List<InformativoPecasTrocadas>)_informativoPecasTrocadas
         };
-
+        
         var response = await Http.PostAsJsonAsync<DadosRequest>("api/Informativo/calcular",request);
         if (response.IsSuccessStatusCode)
         {
@@ -202,6 +212,8 @@
         {
             Snackbar.Add($"Error: { await response.Content.ReadAsStringAsync()}", Severity.Error);
         }
+
+        _isLoading = false;
     }
 
     void SelectedItemsChanged(HashSet<Informativo> items)
@@ -222,7 +234,9 @@
                 Snackbar.Add("Nenhum Cliente selecionado, certifique-se de selecionar pelo menos 1 cliente da lista", Severity.Warning);
                 return;
             }
-            
+
+            _isLoading = true;
+            Http.Timeout = TimeSpan.FromMinutes(10);
             var response = await Http.PostAsJsonAsync<IEnumerable<Informativo>>("api/Email/send/informativos", _clientesSelecionados);
             if (response.IsSuccessStatusCode)
             {
@@ -231,11 +245,13 @@
             else
             {
                 Snackbar.Add($"Ocorreu um erro ao enviar os informativos: {response.RequestMessage}", Severity.Error);
+                _isLoading = false;
             }
         }
         catch (Exception ex)
         {   
             Snackbar.Add($"Ocorreu um erro desconhecido: {ex.Message}\n\n stackTrace : {ex.StackTrace}", Severity.Error);
+            _isLoading = false;
         }
     }
     #endregion
