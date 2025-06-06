@@ -1,6 +1,8 @@
+@using FlexPro.Client.Components
 @using FlexPro.Client.Pages.Site.Contato
 @inject IDialogService DialogService
 @inject CartService CartService
+@implements IDisposable
 
 <header class="header">
 	<div class="logo">
@@ -15,7 +17,7 @@
 			<li>
 				<a href="">Home</a>
 			</li>
-			 @*<li> 
+			@*<li> 
 			 	<a Href="Produtos/lista">Produtos</a> 
 			</li> *@
 			<li>
@@ -31,7 +33,7 @@
 			<li class="carrinho-container">
 				<a href="#">
 					<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
-						<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small"/>
+						<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small" OnClick="OpenCart"/>
 					</MudBadge>
 				</a>
 				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Primary" Size="Size.Small"/>
@@ -40,9 +42,12 @@
 	</div>
 </header>
 
+<Carrinho @bind-IsOpen="_openCart"/>
+
 @code {
 	private int ItensCarrinho;
 	private bool _isOpen = false;
+	private bool _openCart;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -67,7 +72,9 @@
 		ItensCarrinho = count;
 	}
 
-	private void Dispose()
+	private void OpenCart() => _openCart = true;
+
+	public void Dispose()
 	{
 		CartService.CartCountChanged -= UpdateCount;
 	}

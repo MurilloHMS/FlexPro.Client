@@ -1,0 +1,38 @@
+<MudDrawer @bind-Open="IsOpen"
+           Anchor="Anchor.End"
+           Elevation="1"
+           Variant="@DrawerVariant.Temporary"
+           OverlayAutoClose="true"
+           Class="drawer-content">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Carrinho</MudText>
+    </MudDrawerHeader>
+    <div class="drawer-body">
+
+        <div class="bottom-buttons">
+            <MudButtonGroup Size="Size.Small" OverrideStyles="false">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">Solicitar Orçamento</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true" OnClick="_ => _isOpen=false">Fechar</MudButton>
+            </MudButtonGroup>
+        </div>
+    </div>
+</MudDrawer>
+
+@code {
+    private bool _isOpen;
+
+    [Parameter]
+    public bool IsOpen
+    {
+        get => _isOpen;
+        set
+        {
+            if (_isOpen == value) return;
+            _isOpen = value;
+            IsOpenChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> IsOpenChanged { get; set; }
+}
