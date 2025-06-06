@@ -12,27 +12,28 @@
         <div class="bottom-buttons">
             <MudButtonGroup Size="Size.Small" OverrideStyles="false">
                 <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">Solicitar Orçamento</MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true" OnClick="_ => _isOpen=false">Fechar</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true" OnClick="FecharCarrinho">Fechar</MudButton>
             </MudButtonGroup>
         </div>
     </div>
 </MudDrawer>
 
 @code {
-    private bool _isOpen;
+    private bool _isOpen = false;
 
     [Parameter]
     public bool IsOpen
     {
         get => _isOpen;
-        set
-        {
-            if (_isOpen == value) return;
-            _isOpen = value;
-            IsOpenChanged.InvokeAsync(value);
-        }
+        set => _isOpen = value;
     }
 
     [Parameter]
     public EventCallback<bool> IsOpenChanged { get; set; }
+
+    private void FecharCarrinho()
+    {
+        IsOpen = false;
+        IsOpenChanged.InvokeAsync(false);
+    }
 }
