@@ -18,7 +18,7 @@
         text-decoration: none;
         
         &:hover{
-            color: black;
+            color: var(--secondary-color);
         }
     }
 }
@@ -66,6 +66,7 @@
 
 .footer-column ul li a:hover {
     cursor: pointer;
+    color: var(--secondary-color);
 }
 
 .footer-column p a {
@@ -76,6 +77,7 @@
 
 .footer-column p a:hover {
     cursor: pointer;
+    color: var(--secondary-color);
 }
 
 .footer-column p a img {
