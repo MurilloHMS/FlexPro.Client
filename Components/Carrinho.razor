@@ -25,7 +25,12 @@
     public bool IsOpen
     {
         get => _isOpen;
-        set => _isOpen = value;
+        set
+        {
+            if (_isOpen == value) return;
+            _isOpen = value;
+            IsOpenChanged.InvokeAsync(value);
+        }
     }
 
     [Parameter]
