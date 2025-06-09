@@ -33,7 +33,7 @@
                 </MudText>
                 @if (_fileNames != null && _fileNames.Any())
                 {
-                    @for (int i = 0; i < 20 && i < _fileNames.Count; i++)
+                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++)
                     {
                         <MudChip T="string"
                                  Color="Color.Dark"
@@ -84,7 +84,7 @@
     private readonly List<IBrowserFile> _fileNames = new();
     private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
 
-    public List<DadosNotasFiscais> DadosNFe = new ();
+    public List<DadosNotasFiscais> DadosNFe = new();
 
     private async Task ClearAsync()
     {
@@ -95,7 +95,9 @@
     }
 
     private Task OpenFilePickerAsync()
-        => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    {
+        return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
@@ -135,14 +137,17 @@
         {
             Snackbar.Add("Erro ao processar os arquivos.", Severity.Error);
         }
-
     }
 
     private void SetDragClass()
-        => _dragClass = $"{DefaultDragClass} mud-border-primary";
+    {
+        _dragClass = $"{DefaultDragClass} mud-border-primary";
+    }
 
     private void ClearDragClass()
-        => _dragClass = DefaultDragClass;
+    {
+        _dragClass = DefaultDragClass;
+    }
 
     private async Task DownloadFile(byte[] fileBytes, string fileName)
     {
@@ -151,5 +156,6 @@
 
         await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
+
 }
 

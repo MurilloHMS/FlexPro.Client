@@ -3,23 +3,24 @@
 
 @attribute [Authorize]
 
-<MudDialog >
+<MudDialog>
     <DialogContent>
         <MudGrid>
             <MudItem xs="12" sm="12">
                 <MudForm @ref="form" @bind-IsValid="isFormValid">
                     <MudTextField Label="Nome" @bind-Value="veiculo.Nome" Required="true"/>
-                    <MudTextField Label="Placa" @bind-Value="veiculo.Placa" Required="true" />
+                    <MudTextField Label="Placa" @bind-Value="veiculo.Placa" Required="true"/>
                     <MudSelect Label="Marca" @bind-Value="veiculo.Marca">
                         @foreach (var marca in marcas)
                         {
                             <MudSelectItem Value="marca">@marca</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudTextField Label="Consumo Urbano (Álcool)" @bind-Value="veiculo.ConsumoUrbanoAlcool" />
-                    <MudTextField Label="Consumo Rodoviário (Álcool)" @bind-Value="veiculo.ConsumoRodoviarioAlcool" />
-                    <MudTextField Label="Consumo Urbano (Gasolina)" @bind-Value="veiculo.ConsumoUrbanoGasolina" />
-                    <MudTextField Label="Consumo Rodoviário (Gasolina)" @bind-Value="veiculo.ConsumoRodoviarioGasolina" />
+                    <MudTextField Label="Consumo Urbano (Álcool)" @bind-Value="veiculo.ConsumoUrbanoAlcool"/>
+                    <MudTextField Label="Consumo Rodoviário (Álcool)" @bind-Value="veiculo.ConsumoRodoviarioAlcool"/>
+                    <MudTextField Label="Consumo Urbano (Gasolina)" @bind-Value="veiculo.ConsumoUrbanoGasolina"/>
+                    <MudTextField Label="Consumo Rodoviário (Gasolina)"
+                                  @bind-Value="veiculo.ConsumoRodoviarioGasolina"/>
                 </MudForm>
             </MudItem>
         </MudGrid>
@@ -31,24 +32,23 @@
 </MudDialog>
 
 @code {
-    private Veiculo veiculo = new Veiculo();
+    private Veiculo veiculo = new();
     private MudForm form;
     private bool isFormValid;
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter] 
-    public Veiculo _veiculo { get; set; }
+    [Parameter] public Veiculo _veiculo { get; set; }
 
-    private string[] marcas = 
+    private readonly string[] marcas =
     {
-        "ACURA", "ALFA ROMEO", "AUDI", "BMW", "BUICK", "CADILLAC", "CHEVROLET", 
-        "CHERY", "CITROËN", "DODGE", "FERRARI", "FIAT", "FORD", "GMC", "HONDA", 
-        "HYUNDAI", "INFINITI", "JAGUAR", "JEEP", "KIA", "LAMBORGHINI", 
-        "LAND ROVER", "LEXUS", "LINCOLN", "MITSUBISHI", "MERCEDES-BENZ", 
-        "MINI", "MITSUBISHI", "NISSAN", "PEUGEOT", "PORSCHE", "RAM", "RENAULT", 
-        "SANTA FÉ", "SEAT", "SUBARU", "SUZUKI", "TESLA", "TOYOTA", "VOLKSWAGEN", 
-        "VOLVO", "ZAZ", "TROLLER", "JAC MOTORS", "FOTON", "GREAT WALL", "TATA", 
-        "BYD", "DIESEL", "MERCURY", "SPYKER", "SMART", "DAEWOO", "FIAT CHRYSLER", 
+        "ACURA", "ALFA ROMEO", "AUDI", "BMW", "BUICK", "CADILLAC", "CHEVROLET",
+        "CHERY", "CITROËN", "DODGE", "FERRARI", "FIAT", "FORD", "GMC", "HONDA",
+        "HYUNDAI", "INFINITI", "JAGUAR", "JEEP", "KIA", "LAMBORGHINI",
+        "LAND ROVER", "LEXUS", "LINCOLN", "MITSUBISHI", "MERCEDES-BENZ",
+        "MINI", "MITSUBISHI", "NISSAN", "PEUGEOT", "PORSCHE", "RAM", "RENAULT",
+        "SANTA FÉ", "SEAT", "SUBARU", "SUZUKI", "TESLA", "TOYOTA", "VOLKSWAGEN",
+        "VOLVO", "ZAZ", "TROLLER", "JAC MOTORS", "FOTON", "GREAT WALL", "TATA",
+        "BYD", "DIESEL", "MERCURY", "SPYKER", "SMART", "DAEWOO", "FIAT CHRYSLER",
         "HONDA", "LIFAN", "CHERY", "CROSSFOX", "RENAULT", "FORD"
     };
 
@@ -82,7 +82,7 @@
         {
             if (_veiculo is not null)
             {
-                var response = await Http.PutAsJsonAsync<Veiculo>($"api/veiculo/{veiculo.Id}", veiculo);
+                var response = await Http.PutAsJsonAsync($"api/veiculo/{veiculo.Id}", veiculo);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Veiculo Atualizado com Sucesso!", Severity.Success);
@@ -90,7 +90,7 @@
             }
             else
             {
-                var response = await Http.PostAsJsonAsync<Veiculo>("api/veiculo", veiculo);
+                var response = await Http.PostAsJsonAsync("api/veiculo", veiculo);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Veiculo Cadastrado com Sucesso!", Severity.Success);
@@ -99,9 +99,11 @@
         }
         catch (Exception e)
         {
-            Snackbar.Add($"Ocorreu um erro ao cadastrar o veiculo: {e.Message}",Severity.Error);
+            Snackbar.Add($"Ocorreu um erro ao cadastrar o veiculo: {e.Message}", Severity.Error);
             throw;
         }
+
         MudDialog?.Close(DialogResult.Ok(veiculo));
     }
+
 }

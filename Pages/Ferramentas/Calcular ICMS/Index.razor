@@ -32,7 +32,7 @@
                 </MudText>
                 @if (_fileNames != null && _fileNames.Any())
                 {
-                    @for (int i = 0; i < 20 && i < _fileNames.Count; i++)
+                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++)
                     {
                         <MudChip T="string"
                                  Color="Color.Dark"
@@ -90,7 +90,9 @@
     }
 
     private Task OpenFilePickerAsync()
-        => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    {
+        return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
@@ -134,14 +136,19 @@
     }
 
     private void SetDragClass()
-        => _dragClass = $"{DefaultDragClass} mud-border-primary";
+    {
+        _dragClass = $"{DefaultDragClass} mud-border-primary";
+    }
 
     private void ClearDragClass()
-        => _dragClass = DefaultDragClass;
+    {
+        _dragClass = DefaultDragClass;
+    }
 
     private async Task DownloadFile(byte[] fileBytes, string fileName)
     {
         var base64File = Convert.ToBase64String(fileBytes);
         await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
+
 }

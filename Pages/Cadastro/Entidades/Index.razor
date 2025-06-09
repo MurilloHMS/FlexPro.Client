@@ -11,9 +11,12 @@
 <MudText Typo="Typo.h2" Align="Align.Center">Prestadores e Fornecedores</MudText>
 <br><br><br>
 
-<MudDataGrid Items="@EntidadesFiltradas" T="Entidade" Hover="true" Bordered="true" Striped="true" Dense="true" SortMode="SortMode.Multiple" Virtualize>
+<MudDataGrid Items="@EntidadesFiltradas" T="Entidade" Hover="true" Bordered="true" Striped="true" Dense="true"
+             SortMode="SortMode.Multiple" Virtualize>
     <ToolBarContent>
-        <MudButton @onclick="@(() =>OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Cadastrar</MudButton>
+        <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
+                   Color="Color.Primary">Cadastrar
+        </MudButton>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"/>
@@ -22,14 +25,16 @@
         <PropertyColumn Property="x => x.Nome" Title="Nome" Sortable="true" Filterable="true"/>
         <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
             <CellTemplate>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialogAsync(@context.Item))"/>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Edit"
+                               OnClick="@(() => OpenEditDialogAsync(context.Item))"/>
                 <MudSpacer/>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => ApagarEntidades(@context.Item))"/>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete"
+                               OnClick="@(() => ApagarEntidades(context.Item))"/>
             </CellTemplate>
         </TemplateColumn>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="Entidade" />
+        <MudDataGridPager T="Entidade"/>
     </PagerContent>
 </MudDataGrid>
 
@@ -48,7 +53,6 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadData();
-
     }
 
     private async Task LoadData()
@@ -73,21 +77,21 @@
             { x => x.Color, Color.Error },
             { x => x.Entidade, entidade }
         };
-        
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
         var dialog = await DialogService.ShowAsync<DialogEntidades>("Deletar", parametros, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-            await LoadData(); 
+            await LoadData();
         }
     }
-    
+
     private async Task OpenDialogAsync()
     {
-        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarEntidades>("Cadastro de Prestadores e Fornecedores", options);
         var result = await dialog.Result;
 
@@ -96,16 +100,16 @@
             await LoadData();
         }
     }
-    
+
     private async Task OpenEditDialogAsync(Entidade entidade)
     {
         var parametros = new DialogParameters<CadastrarEntidades>
         {
             { x => x._entidade, entidade }
         };
-        
-        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
-        var dialog = await DialogService.ShowAsync<CadastrarEntidades>("Editar Prestadores e Fornecedores", parametros ,options);
+
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<CadastrarEntidades>("Editar Prestadores e Fornecedores", parametros, options);
         var result = await dialog.Result;
 
         if (!result.Canceled)

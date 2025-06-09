@@ -1,7 +1,8 @@
 @page "/RenomearNotas"
+@using System.IO.Compression
 
 @inject ISnackbar Snackbar
-@inject  IJSRuntime JSRuntime
+@inject IJSRuntime JSRuntime
 
 <MudText Typo="Typo.h4" Align="Align.Center">Renomear Notas Via Planilha</MudText>
 
@@ -29,7 +30,7 @@
                 </MudText>
                 @if (_fileNames != null && _fileNames.Any())
                 {
-                    @for (int i = 0; i < 20 && i < _fileNames.Count; i++)
+                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++)
                     {
                         <MudChip T="string"
                                  Color="Color.Dark"
@@ -65,7 +66,7 @@
 <script>
     function downloadFileFromStream(fileName, fileBase64) {
         const link = document.createElement('a');
-        link.href = 'data:application/zip;base64,' + fileBase64; 
+        link.href = 'data:application/zip;base64,' + fileBase64;
         link.download = fileName;
         document.body.appendChild(link);
         link.click();
@@ -82,8 +83,15 @@
 
     private List<DadosNota> dados = new();
 
-    private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
-    private void ClearDragClas() => _dragClass = DefaultDragClass;
+    private void SetDragClass()
+    {
+        _dragClass = $"{DefaultDragClass} mud-border-primary";
+    }
+
+    private void ClearDragClas()
+    {
+        _dragClass = DefaultDragClass;
+    }
 
     private async Task ClearAsync()
     {
@@ -92,17 +100,20 @@
         ClearDragClas();
     }
 
-    private Task OpenFilePickerAsync() => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    private Task OpenFilePickerAsync()
+    {
+        return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
         ClearDragClas();
         var files = e.GetMultipleFiles(1000);
-        Snackbar.Add($"Obtendo Arquivos");
+        Snackbar.Add("Obtendo Arquivos");
         foreach (var file in files)
         {
             var extension = Path.GetExtension(file.Name)?.ToLower();
-            if (extension is".pdf" or ".xlsx")
+            if (extension is ".pdf" or ".xlsx")
             {
                 _fileNames.Add(file);
             }
@@ -126,6 +137,7 @@
                 dados = await ObterIndices(file);
             }
         }
+
         foreach (var file in _fileNames)
         {
             if (Path.GetExtension(file.Name).Contains("pdf"))
@@ -143,14 +155,14 @@
 
     private async Task Download()
     {
-        Snackbar.Add($"iniciando Download dos Arquivos...");
+        Snackbar.Add("iniciando Download dos Arquivos...");
         var outputFolder = Path.Combine(Path.GetTempPath(), "NotasRenomeadas");
         if (!Directory.Exists(outputFolder)) return;
 
         var tempZipPath = Path.Combine(Path.GetTempPath(), "PDF_Renomeados.zip");
         if (File.Exists(tempZipPath)) File.Delete(tempZipPath);
 
-        System.IO.Compression.ZipFile.CreateFromDirectory(outputFolder, tempZipPath);
+        ZipFile.CreateFromDirectory(outputFolder, tempZipPath);
 
         var bytes = await File.ReadAllBytesAsync(tempZipPath);
         var base64File = Convert.ToBase64String(bytes);
@@ -161,7 +173,7 @@
         File.Delete(tempZipPath);
     }
 
-   
+
     private async Task AlterarNomesNotas(string filePath)
     {
         if (dados == null || !dados.Any()) return;
@@ -179,17 +191,17 @@
             if (nomeDaNota.Equals(nota.Identificador, StringComparison.OrdinalIgnoreCase))
             {
                 var novoCaminho = Path.Combine(outputFolder, $"NFe_{nota.NumeroNFe}.pdf");
-                
-                File.Copy(filePath, novoCaminho, overwrite: true);
+
+                File.Copy(filePath, novoCaminho, true);
                 Snackbar.Add($"Nota renomeada: {novoCaminho}", Severity.Success);
-                return; 
+                return;
             }
         }
 
         // Snackbar.Add($"Nenhuma correspondência encontrada para: {filePath}", Severity.Warning);
     }
 
-    
+
     private async Task<List<DadosNota>> ObterIndices(IBrowserFile file)
     {
         Snackbar.Add("Iniciando coleta dos dados", Severity.Info);
@@ -199,8 +211,8 @@
             {
                 await file.OpenReadStream().CopyToAsync(stream);
                 stream.Position = 0;
-                
-                using (XLWorkbook wb = new (stream))
+
+                using (XLWorkbook wb = new(stream))
                 {
                     var planilha = wb.Worksheet(1);
                     var fileData = planilha.RowsUsed()
@@ -231,6 +243,6 @@
     {
         public string Identificador { get; set; }
         public string NumeroNFe { get; set; }
-        
     }
+
 }

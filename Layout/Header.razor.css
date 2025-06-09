@@ -1,4 +1,4 @@
-.header{
+.header {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -15,15 +15,15 @@
     border-radius: 50px;
 }
 
-.content{
+.content {
     margin-top: 60px;
 }
 
-.logo img{
+.logo img {
     height: 35px;
 }
 
-.menu ul{
+.menu ul {
     list-style: none;
     display: flex;
     margin: 0;
@@ -34,7 +34,7 @@ menu li {
     margin: 0 15px;
 }
 
-.menu a{
+.menu a {
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
@@ -44,10 +44,10 @@ menu li {
 }
 
 .menu a:hover {
-    cursor: pointer;    
+    cursor: pointer;
 }
 
-.menu a::before{
+.menu a::before {
     content: "";
     position: absolute;
     width: 100%;
@@ -62,7 +62,7 @@ menu li {
     transition: all 0.5s ease-in-out 0s;
 }
 
-.menu a:hover::before{
+.menu a:hover::before {
     visibility: visible;
     -webkit-transform: scaleX(1);
     transform: scaleX(1);
@@ -75,21 +75,21 @@ menu li {
     padding: 0;
 }
 
-.grp-menu li{
+.grp-menu li {
     margin: 0 10px;
 }
 
-.grp-menu a img{
+.grp-menu a img {
     width: 24px;
     height: 24px;
     transition: transform 0.3s;
 }
 
-.grp-menu a:hover img{
+.grp-menu a:hover img {
     transform: scale(1.2);
 }
 
-.grp-menu button{
+.grp-menu button {
     width: 100%;
     font-size: 14px;
     font-weight: bold;
@@ -100,12 +100,12 @@ menu li {
     color: white;
 }
 
-.grp-menu button:hover{
+.grp-menu button:hover {
     transform: scale(1.2);
     cursor: pointer;
 }
 
-.grp-menu button a{
+.grp-menu button a {
     text-decoration: none;
     color: white;
 }

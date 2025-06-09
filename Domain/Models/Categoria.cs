@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FlexPro.Client.Models
+namespace FlexPro.Client.Models;
+
+public class Categoria
 {
-    public class Categoria
-    {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public string Nome { get; set; }
-    }
+    [Key] public int Id { get; set; }
+
+    [Required] public string Nome { get; set; }
 }

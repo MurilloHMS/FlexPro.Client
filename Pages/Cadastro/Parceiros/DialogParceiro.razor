@@ -11,21 +11,17 @@
         <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">@ButtonText</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter]
-    public string ContentText { get; set; }
+    [Parameter] public string ContentText { get; set; }
 
-    [Parameter]
-    public string ButtonText { get; set; }
+    [Parameter] public string ButtonText { get; set; }
 
-    [Parameter]
-    public Color Color { get; set; }
+    [Parameter] public Color Color { get; set; }
 
-    [Parameter]
-    public ParceiroResponseDTO Parceiro { get; set; }
+    [Parameter] public ParceiroResponseDTO Parceiro { get; set; }
 
     public async Task Submit()
     {
@@ -38,10 +34,14 @@
         {
             SnackBar.Add($"Ocorreu um erro ao deletar o parceiro \n Erro; {e.Message}");
         }
+
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
 
-    
+
 }

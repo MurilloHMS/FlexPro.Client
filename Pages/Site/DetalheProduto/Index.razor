@@ -7,10 +7,10 @@
 <div class="product-page">
     <div class="product-images">
         <div class="product-main-image">
-            <img src="data:image/jpg;base64,@Convert.ToBase64String(Produto.Imagem)" alt="Imagem principal" />
+            <img src="data:image/jpg;base64,@Convert.ToBase64String(Produto.Imagem)" alt="Imagem principal"/>
         </div>
         <div class="product-thumbnails">
-            
+
         </div>
     </div>
 
@@ -29,7 +29,7 @@
 
 @code {
     [Parameter] public int Id { get; set; }
-    
+
     private ProdutoLojaResponse Produto { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -37,6 +37,9 @@
         Produto = await ProdutoService.GetByIdAsync(Id);
     }
 
-    private async Task AddCart() => await CartService.AddToCartAsync(Produto);
+    private async Task AddCart()
+    {
+        await CartService.AddToCartAsync(Produto);
+    }
 
 }

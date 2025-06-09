@@ -15,7 +15,9 @@
 <MudGrid>
     <MudItem xs="12">
         <MudPaper>
-            <MudSelect @bind-Value="_receita.Id" Label="Selecione uma receita" HelperText="Receita do produto para emissão da nota fiscal" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary">
+            <MudSelect @bind-Value="_receita.Id" Label="Selecione uma receita"
+                       HelperText="Receita do produto para emissão da nota fiscal"
+                       AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary">
                 @foreach (var item in _receitas)
                 {
                     <MudSelectItem Value="@item.Id">@item.Nome</MudSelectItem>
@@ -24,55 +26,75 @@
         </MudPaper>
     </MudItem>
     <MudItem xs="12" sm="8">
-        <MudPaper >
+        <MudPaper>
             <MudToolBar>
                 <MudStack Row="true" Spacing="3">
-                    <MudMenu FullWidth="false" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Variant="Variant.Filled" Dense="true">
+                    <MudMenu FullWidth="false" ActivationEvent="@MouseEvent.MouseOver"
+                             AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter"
+                             Variant="Variant.Filled" Dense="true">
                         <ActivatorContent>
-                            <MudFab StartIcon="@Icons.Material.Filled.Receipt" Color="Color.Primary" Size="Size.Small" Label="Receitas"/>
+                            <MudFab StartIcon="@Icons.Material.Filled.Receipt" Color="Color.Primary" Size="Size.Small"
+                                    Label="Receitas"/>
                         </ActivatorContent>
                         <ChildContent>
-                            <MudMenuItem OnClick="@(() => OpenReceiptDialogAsync())" Icon="@Icons.Material.Filled.AddCircle">Cadastrar</MudMenuItem>
-                            <MudMenuItem OnClick="@(() => OpenEditReceiptDialogAsync(_receita))" Icon="@Icons.Material.Filled.Edit">Editar</MudMenuItem>
+                            <MudMenuItem OnClick="@(() => OpenReceiptDialogAsync())"
+                                         Icon="@Icons.Material.Filled.AddCircle">Cadastrar
+                            </MudMenuItem>
+                            <MudMenuItem OnClick="@(() => OpenEditReceiptDialogAsync(_receita))"
+                                         Icon="@Icons.Material.Filled.Edit">Editar
+                            </MudMenuItem>
                             <MudMenuItem Icon="@Icons.Material.Filled.RemoveCircle">Remover</MudMenuItem>
                         </ChildContent>
                     </MudMenu>
-                    <MudMenu FullWidth="false" ActivationEvent="MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopLeft" Variant="Variant.Filled" Dense="true">
+                    <MudMenu FullWidth="false" ActivationEvent="MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter"
+                             TransformOrigin="Origin.TopLeft" Variant="Variant.Filled" Dense="true">
                         <ActivatorContent>
-                            <MudFab StartIcon="@Icons.Material.Filled.ShoppingCart" Color="Color.Primary" Size="Size.Small" Label="Produtos"/>
+                            <MudFab StartIcon="@Icons.Material.Filled.ShoppingCart" Color="Color.Primary"
+                                    Size="Size.Small" Label="Produtos"/>
                         </ActivatorContent>
                         <ChildContent>
-                            <MudMenuItem OnClick="@(() => OpenProductDialogAsync())" Icon="@Icons.Material.Filled.AddCircle">Cadastrar</MudMenuItem>
+                            <MudMenuItem OnClick="@(() => OpenProductDialogAsync())"
+                                         Icon="@Icons.Material.Filled.AddCircle">Cadastrar
+                            </MudMenuItem>
                         </ChildContent>
                     </MudMenu>
                     <MudFab StartIcon="@Icons.Material.Filled.Update" Size="Size.Small" OnClick="@(() => Atualizar())"/>
-                    <MudFab StartIcon="@Icons.Material.Filled.Done" Size="Size.Small" Color="Color.Tertiary" Label="Validar" OnClick="@(() => OpenDrawer())"/>
+                    <MudFab StartIcon="@Icons.Material.Filled.Done" Size="Size.Small" Color="Color.Tertiary"
+                            Label="Validar" OnClick="@(() => OpenDrawer())"/>
                 </MudStack>
             </MudToolBar>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" sm="4" >
+    <MudItem xs="12" sm="4">
         <MudPaper Class="pa-4">
             <MudStack Row="true">
-                <MudTextField @bind-Value="@ValorParaCalcular" Label="Calcular Valor do Produto" Variant="Variant.Outlined" Margin="Margin.Dense"/>
-                <MudIconButton Icon="@Icons.Material.Filled.Calculate" Color="Color.Primary" OnClick="@(() => CalcularValor())"/>
-                <MudTextField @bind-Value="@ResultadoDoCalculo" Label="Resultado" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly="true"/>
+                <MudTextField @bind-Value="@ValorParaCalcular" Label="Calcular Valor do Produto"
+                              Variant="Variant.Outlined" Margin="Margin.Dense"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Calculate" Color="Color.Primary"
+                               OnClick="@(() => CalcularValor())"/>
+                <MudTextField @bind-Value="@ResultadoDoCalculo" Label="Resultado" Variant="Variant.Outlined"
+                              Margin="Margin.Dense" ReadOnly="true"/>
             </MudStack>
         </MudPaper>
     </MudItem>
     <MudFlexBreak/>
     <MudItem xs="12" sm="8">
         <MudPaper Class="pa-4">
-            <MudDataGrid Items="@_produtos" T="Produto" Hover="true" Dense="true" >
+            <MudDataGrid Items="@_produtos" T="Produto" Hover="true" Dense="true">
                 <Columns>
-                    <PropertyColumn Property="x => x.CodigoSistema" Title="Código do sistema" CellStyleFunc="@_cellStyleFunc"/>
+                    <PropertyColumn Property="x => x.CodigoSistema" Title="Código do sistema"
+                                    CellStyleFunc="@_cellStyleFunc"/>
                     <PropertyColumn Property="x => x.Descricao" Title="Descrição" CellStyleFunc="@_cellStyleFunc"/>
-                    <PropertyColumn Property="x => x.QuantidadeFormula" Title="Quantidade Fórmula" Hidden="!_showFormulas" CellStyleFunc="@_cellStyleFunc" Format="N5"/>
-                    <PropertyColumn Property="x => x.QuantidadeProducao" Title="Quantidade Produção" CellStyleFunc="@_cellStyleFunc"/>
-                    <PropertyColumn Property="x => x.MateriaPrima" Title="Tipo Estoque" CellStyleFunc="@_cellStyleFunc"/>
+                    <PropertyColumn Property="x => x.QuantidadeFormula" Title="Quantidade Fórmula"
+                                    Hidden="!_showFormulas" CellStyleFunc="@_cellStyleFunc" Format="N5"/>
+                    <PropertyColumn Property="x => x.QuantidadeProducao" Title="Quantidade Produção"
+                                    CellStyleFunc="@_cellStyleFunc"/>
+                    <PropertyColumn Property="x => x.MateriaPrima" Title="Tipo Estoque"
+                                    CellStyleFunc="@_cellStyleFunc"/>
                     <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
                         <CellTemplate>
-                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditProductDialogAsync(@context.Item))"/>
+                            <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit"
+                                           OnClick="@(() => OpenEditProductDialogAsync(context.Item))"/>
                         </CellTemplate>
                     </TemplateColumn>
                 </Columns>
@@ -85,18 +107,23 @@
     </MudItem>
     <MudItem xs="12" sm="4">
         <MudPaper Class="pa-4 mud-height-full">
-            <MudTextField @bind-Value="@QuantidadeLitrosProduzidos" Label="Quantidade Litros produzidos" Variant="Variant.Text"/>
-            <MudTextField @bind-Value="@QuantidadeEmbalagens" Label="Quantidade Embalagens" Variant="Variant.Filled" ReadOnly/>
-            <MudTextField @bind-Value="@QuantidadeCaixas" Label="Quantidade de Caixas" Variant="Variant.Filled" ReadOnly/>
+            <MudTextField @bind-Value="@QuantidadeLitrosProduzidos" Label="Quantidade Litros produzidos"
+                          Variant="Variant.Text"/>
+            <MudTextField @bind-Value="@QuantidadeEmbalagens" Label="Quantidade Embalagens" Variant="Variant.Filled"
+                          ReadOnly/>
+            <MudTextField @bind-Value="@QuantidadeCaixas" Label="Quantidade de Caixas" Variant="Variant.Filled"
+                          ReadOnly/>
             <MudTextField @bind-Value="@ValorMaoDeObra" Label="Valor Da Mão de Obra" Variant="Variant.Filled" ReadOnly/>
-            <MudTextField @bind-Value="@ValorCobradoMaoDeObra" Label="Valor Cobrado Mão de Obra" Variant="Variant.Filled" ReadOnly/>
+            <MudTextField @bind-Value="@ValorCobradoMaoDeObra" Label="Valor Cobrado Mão de Obra"
+                          Variant="Variant.Filled" ReadOnly/>
             <MudTextField @bind-Value="@PesoLiquido" Label="Peso Liquido" Variant="Variant.Filled" ReadOnly/>
             <MudTextField @bind-Value="@PesoBruto" Label="Peso Bruto" Variant="Variant.Filled" ReadOnly/>
         </MudPaper>
     </MudItem>
 </MudGrid>
 
-<MudDrawer @bind-Open="@_open" Anchor="Anchor.Top" Elevation="1" Variant="@DrawerVariant.Temporary" OverlayAutoClose="false">
+<MudDrawer @bind-Open="@_open" Anchor="Anchor.Top" Elevation="1" Variant="@DrawerVariant.Temporary"
+           OverlayAutoClose="false">
     <MudDrawerHeader>
         <MudText Typo="Typo.h6" Align="Align.Center">Validação Boa Solução</MudText>
     </MudDrawerHeader>
@@ -104,7 +131,7 @@
         <MudGrid>
             <MudItem xs="12" sm="8">
                 <MudPaper>
-                    <MudDataGrid Items="@_boaSolucao" T="BoaSolucao" Hover="true" Dense="true" >
+                    <MudDataGrid Items="@_boaSolucao" T="BoaSolucao" Hover="true" Dense="true">
                         <Columns>
                             <PropertyColumn Property="x => x.CodigoProduto" Title="Codigo Produto"/>
                             <PropertyColumn Property="x => x.Descricao" Title="Descrição (Produto)"/>
@@ -117,7 +144,9 @@
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="4">
-                <MudTextField T="string" @bind-Value="@textToDescription" FullWidth="true" Label="Descrição da nota" AdornmentIcon="@Icons.Material.Filled.SelectAll" Lines="10" OnAdornmentClick="@(() => multilineReference.SelectAsync())"/>
+                <MudTextField T="string" @bind-Value="@textToDescription" FullWidth="true" Label="Descrição da nota"
+                              AdornmentIcon="@Icons.Material.Filled.SelectAll" Lines="10"
+                              OnAdornmentClick="@(() => multilineReference.SelectAsync())"/>
             </MudItem>
             <MudFlexBreak/>
             <MudDivider/>
@@ -125,17 +154,22 @@
             <MudItem xs="12" sm="4">
                 <MudStack Row="true" Spacing="3">
                     <MudFileUpload T="IReadOnlyList<IBrowserFile>"
-                    MaximumFileCount="1"
-                    @ref="@_fileUpload"
-                    OnFilesChanged="OnInputFileChanged">
+                                   MaximumFileCount="1"
+                                   @ref="@_fileUpload"
+                                   OnFilesChanged="OnInputFileChanged">
                         <ActivatorContent>
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" >Upload Arquivo</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary">Upload Arquivo</MudButton>
                         </ActivatorContent>
                     </MudFileUpload>
                     <MudText Typo="Typo.h6">@_fileNames.Count() Arquivo@(_fileNames.Count() == 1 ? "" : "s"):</MudText>
-                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Disabled="@(!_fileNames.Any())" OnClick="@(() => Upload())">Validar</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Info" Disabled="@(!_fileNames.Any())" OnClick="@(() => ClearAsync())">Limpar</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(() => Close())">Fechar</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Disabled="@(!_fileNames.Any())"
+                               OnClick="@(() => Upload())">Validar
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Info" Disabled="@(!_fileNames.Any())"
+                               OnClick="@(() => ClearAsync())">Limpar
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(() => Close())">Fechar
+                    </MudButton>
                 </MudStack>
             </MudItem>
             <MudFlexBreak/>
@@ -145,13 +179,13 @@
 </MudDrawer>
 
 @code {
-    private Receita _receita = new Receita();
+    private readonly Receita _receita = new();
     private IEnumerable<Produto> _produtos = new List<Produto>();
     private IEnumerable<Receita> _receitas = new List<Receita>();
     private IEnumerable<BoaSolucao> _boaSolucao = new List<BoaSolucao>();
     private string textToDescription { get; set; }
-    private bool _showFormulas = false;
-    private bool _open = false;
+    private bool _showFormulas;
+    private bool _open;
 
     private double QuantidadeLitrosProduzidos { get; set; }
     private double QuantidadeEmbalagens { get; set; }
@@ -182,7 +216,9 @@
     }
 
     private Task OpenFilePickerAsync()
-        => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    {
+        return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
@@ -199,9 +235,9 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         Snackbar.Add("Carregando arquivo para analise.");
 
-        decimal produtosBranco = 0m;
-        decimal produtosAmarelos = 0m;
-        decimal produtosCinza = 0m;
+        var produtosBranco = 0m;
+        var produtosAmarelos = 0m;
+        var produtosCinza = 0m;
 
         if (_fileNames.Any())
         {
@@ -237,10 +273,10 @@
                     }
                 }
 
-                decimal mercadoriasEmpregas = produtosBranco + produtosAmarelos;
-                decimal totalCobrado = produtosBranco + produtosCinza;
+                var mercadoriasEmpregas = produtosBranco + produtosAmarelos;
+                var totalCobrado = produtosBranco + produtosCinza;
 
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine($"Valor da mercadoria recebida para industrializacao: {produtosAmarelos:C}");
                 sb.AppendLine();
                 sb.AppendLine($"Valor total das mercadorias empregadas: {mercadoriasEmpregas:C}");
@@ -272,7 +308,7 @@
 
     private Func<Produto, string> _cellStyleFunc => x =>
     {
-        string style = "";
+        var style = "";
 
         if (x.MateriaPrima == "Proauto")
             style += "background-color:#FFFFFF";
@@ -292,7 +328,6 @@
     private void OpenDrawer()
     {
         _open = true;
-
     }
 
     private async Task OpenReceiptDialogAsync()
@@ -304,6 +339,7 @@
         if (!result.Canceled)
             await LoadData();
     }
+
     private async Task OpenEditReceiptDialogAsync(Receita receita)
     {
         var buscaReceita = await Http.GetFromJsonAsync<Receita>($"api/receita/{receita.Id}");
@@ -312,7 +348,7 @@
             { x => x.Receita, buscaReceita }
         };
 
-        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarReceitas>("Editar Receita", parametros, options);
     }
 
@@ -329,7 +365,7 @@
             { x => x.Produto, produto }
         };
 
-        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarProdutos>("Editar Produto", parametros, options);
     }
 
@@ -349,17 +385,16 @@
 
     private async Task CalcularDados(Receita receita)
     {
-        
         QuantidadeEmbalagens = QuantidadeLitrosProduzidos / receita.Embalagem;
         QuantidadeCaixas = receita.Caixas > 0 ? QuantidadeEmbalagens / receita.Caixas : 0;
         ValorMaoDeObra = receita.ValorMaoDeObra;
         ValorCobradoMaoDeObra = ValorMaoDeObra * (decimal)QuantidadeEmbalagens;
         PesoLiquido = QuantidadeLitrosProduzidos * 1.03;
         PesoBruto = QuantidadeLitrosProduzidos * 1.05;
-        
+
         foreach (var produto in _produtos)
         {
-            if (produto.Tipo == "Caixa" )
+            if (produto.Tipo == "Caixa")
             {
                 produto.QuantidadeProducao = (decimal)QuantidadeCaixas;
             }
@@ -369,7 +404,7 @@
             }
             else if (produto.Tipo == "Produto")
             {
-                if (receita.Caixas >0 && receita.Caixas != null)
+                if (receita.Caixas > 0 && receita.Caixas != null)
                 {
                     produto.QuantidadeProducao = (decimal)QuantidadeCaixas;
                 }
@@ -382,18 +417,17 @@
             {
                 produto.QuantidadeProducao = 1m;
             }
-            else 
+            else
             {
                 produto.QuantidadeProducao = produto.QuantidadeFormula * (decimal)QuantidadeLitrosProduzidos;
             }
-            
         }
     }
 
     private async Task CalcularValor()
     {
         decimal calculo;
-        if (QuantidadeCaixas >0 && QuantidadeCaixas != null)
+        if (QuantidadeCaixas > 0 && QuantidadeCaixas != null)
         {
             calculo = ValorParaCalcular / (decimal)QuantidadeCaixas;
         }
@@ -401,7 +435,8 @@
         {
             calculo = ValorParaCalcular / (decimal)QuantidadeEmbalagens;
         }
-        ResultadoDoCalculo = calculo != 0 && calculo != null ? calculo : 0m ;
+
+        ResultadoDoCalculo = calculo != 0 && calculo != null ? calculo : 0m;
     }
 
     public async Task<IEnumerable<BoaSolucao>> ColetarDadosBoaSolucao(IBrowserFile arquivo)
@@ -424,7 +459,7 @@
                     Valor = row.Cell(4).TryGetValue<decimal>(out var valorUnitario) ? valorUnitario : default,
                     ValorTotal = row.Cell(5).TryGetValue<decimal>(out var valorTotal) ? valorTotal : default
                 }).ToList();
-                
+
                 boaSolucao.AddRange(fileData ?? new List<BoaSolucao>());
             }
         }

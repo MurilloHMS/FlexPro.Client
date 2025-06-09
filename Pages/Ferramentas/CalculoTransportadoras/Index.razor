@@ -33,7 +33,7 @@
                 </MudText>
                 @if (_fileNames != null && _fileNames.Any())
                 {
-                    @for (int i = 0; i < 20 && i < _fileNames.Count; i++)
+                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++)
                     {
                         <MudChip T="string"
                                  Color="Color.Dark"
@@ -79,27 +79,28 @@
 
 @if (resultadoDosCalculos is not null)
 {
-    <MudTextField T="string" Label="Resultado" Variant="Variant.Outlined" Text="@resultadoDosCalculos" AutoGrow></MudTextField>
+    <MudTextField T="string" Label="Resultado" Variant="Variant.Outlined" Text="@resultadoDosCalculos"
+                  AutoGrow></MudTextField>
     <MudButton OnClick="Imprimir" Color="Color.Primary" Variant="Variant.Filled">Imprimir</MudButton>
 }
 
 @if (!dataLoaded)
 {
-<MudOverlay Visible="visible" DarkBackground >
-    <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
-</MudOverlay>
+    <MudOverlay Visible="visible" DarkBackground>
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+    </MudOverlay>
 }
 
 @code {
     private string? resultadoDosCalculos { get; set; }
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
-    private List<IBrowserFile> _fileNames = new List<IBrowserFile>();
+    private readonly List<IBrowserFile> _fileNames = new();
     private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
-    
+
     private bool dataLoaded;
     private bool visible;
-    
+
     private async Task Imprimir()
     {
         if (!string.IsNullOrEmpty(resultadoDosCalculos))
@@ -113,13 +114,22 @@
         await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
         _fileNames.Clear();
         resultadoDosCalculos = default;
-
     }
 
-    private Task OpenFilePickerAsync() => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
-    private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
+    private Task OpenFilePickerAsync()
+    {
+        return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    }
 
-    private void ClearDragClass() => _dragClass = DefaultDragClass;
+    private void SetDragClass()
+    {
+        _dragClass = $"{DefaultDragClass} mud-border-primary";
+    }
+
+    private void ClearDragClass()
+    {
+        _dragClass = DefaultDragClass;
+    }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
@@ -142,7 +152,7 @@
             dataLoaded = false;
             visible = true;
             StateHasChanged();
-            
+
             StringBuilder resultado = new();
             var content = new MultipartFormDataContent();
 
@@ -162,7 +172,6 @@
                 dataLoaded = true;
                 visible = false;
                 StateHasChanged();
-
             }
             else
             {
@@ -171,7 +180,6 @@
                 dataLoaded = true;
                 visible = false;
             }
-            
         }
         catch (Exception e)
         {
@@ -182,4 +190,5 @@
             throw;
         }
     }
+
 }

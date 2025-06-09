@@ -31,20 +31,17 @@
 </MudDialog>
 
 @code {
-    private Funcionarios funcionarios = new Funcionarios();
+    private Funcionarios funcionarios = new();
     private MudForm form;
     private bool isFormValid;
 
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter]
-    public Funcionarios _funcionarios { get; set; }
+    [Parameter] public Funcionarios _funcionarios { get; set; }
 
-    [Parameter]
-    public string Tipo { get; set; }
+    [Parameter] public string Tipo { get; set; }
 
-    private string[] hierarquias =
+    private readonly string[] hierarquias =
     {
         "SUPERVISOR", "GERENTE", "COORDENADOR", "CONSULTOR"
     };
@@ -68,7 +65,7 @@
         {
             if (_funcionarios is not null)
             {
-                var response = await Http.PutAsJsonAsync<Funcionarios>($"api/funcionario/{funcionarios.Id}", funcionarios);
+                var response = await Http.PutAsJsonAsync($"api/funcionario/{funcionarios.Id}", funcionarios);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Funcionário Atualizado com Sucesso!", Severity.Success);
@@ -76,7 +73,7 @@
             }
             else
             {
-                var response = await Http.PostAsJsonAsync<Funcionarios>("api/funcionario/", funcionarios);
+                var response = await Http.PostAsJsonAsync("api/funcionario/", funcionarios);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Funcionário cadastrado com Sucesso!", Severity.Success);
@@ -88,7 +85,8 @@
             Snackbar.Add($"Ocorreu um erro ao deletar o Funcionário: {e.Message}", Severity.Error);
             throw;
         }
-        
+
         MudDialog?.Close(DialogResult.Ok(funcionarios));
     }
+
 }

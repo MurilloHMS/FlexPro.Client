@@ -1,5 +1,4 @@
 @page "/Produtos/lista"
-@using System.Collections
 @using FlexPro.Client.Models.Response
 @inject IJSRuntime JS
 @inject ProdutoService ProdutoService
@@ -14,7 +13,7 @@
                     <MudListItem OnClick="() => ScrollToDepartamento(departamento)">
                         <AvatarContent>
                             <MudAvatar Size="Size.Medium" Class="mr-2">
-                                <MudImage Src="assets/images/email.png" />
+                                <MudImage Src="assets/images/email.png"/>
                             </MudAvatar>
                         </AvatarContent>
                         <ChildContent>@departamento</ChildContent>
@@ -34,12 +33,12 @@
                 @foreach (var produto in grupo.Value)
                 {
                     <MudItem xs="12" sm="6" md="4" lg="2" Class="mud-item-hover">
-                        <MudLink Href="@($"/produtos/{produto.Id}")" Style="text-decoration: none;" >
+                        <MudLink Href="@($"/produtos/{produto.Id}")" Style="text-decoration: none;">
                             <MudCard Class="mud-hover">
-                                <MudCardMedia 
-                                    Image="@( "assets/images/placeholder.png")" 
+                                <MudCardMedia
+                                    Image="@("assets/images/placeholder.png")"
                                     Height="200"
-                                    Style="background-size: contain; background-position: center; background-repeat: no-repeat;" />
+                                    Style="background-size: contain; background-position: center; background-repeat: no-repeat;"/>
                                 <MudCardContent>
                                     <MudText Typo="Typo.subtitle1">@produto.Nome</MudText>
                                     <MudText Typo="Typo.body2">@produto.Descricao</MudText>
@@ -61,8 +60,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        IEnumerable<ProdutoLojaResponse> produtos = await ProdutoService.GetProdutoLoja();
-        
+        var produtos = await ProdutoService.GetProdutoLoja();
+
         // Agrupar produtos por departamento
         var produtosPorDep = new Dictionary<string, List<ProdutoLojaResponse>>();
         foreach (var produto in produtos)
@@ -73,7 +72,7 @@
                 {
                     produtosPorDep[dep.Nome] = new List<ProdutoLojaResponse>();
                 }
-        
+
                 produtosPorDep[dep.Nome].Add(produto);
             }
         }

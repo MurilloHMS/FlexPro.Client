@@ -10,21 +10,17 @@
         <MudButton Color="@Color" Variant="Variant.Filled" OnClick="Submit">Deletar</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter]
-    public string ContentText { get; set; }
+    [Parameter] public string ContentText { get; set; }
 
-    [Parameter]
-    public string ButtonText { get; set; }
+    [Parameter] public string ButtonText { get; set; }
 
-    [Parameter]
-    public Color Color { get; set; }
+    [Parameter] public Color Color { get; set; }
 
-    [Parameter]
-    public Revisao Revisao { get; set; }
+    [Parameter] public Revisao Revisao { get; set; }
 
     private async Task Submit()
     {
@@ -41,8 +37,13 @@
             Snackbar.Add("Ocorreu um erro ao deletar o registro da revisão", Severity.Error);
             throw;
         }
+
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
 }

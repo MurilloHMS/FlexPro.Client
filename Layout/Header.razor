@@ -1,7 +1,7 @@
-@using FlexPro.Client.Components
-@using FlexPro.Client.Pages.Site.Contato
 @inject IDialogService DialogService
 @inject CartService CartService
+@using FlexPro.Client.Components
+@using FlexPro.Client.Pages.Site.Contato
 @implements IDisposable
 
 
@@ -14,7 +14,7 @@
 	<button class="menu-toggle" onclick="ToggleMenu()">
 		<MudIcon Icon="@Icons.Material.Filled.Menu" Size="Size.Small" Color="Color.Primary"/>
 	</button>
-	
+
 	<nav class="menu @(_isOpen ? "active" : "")">
 		<ul>
 			<li><a href="">Home</a></li>
@@ -27,9 +27,11 @@
 		<ul class="grp-menu">
 			<li class="carrinho-container">
 				<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
-					<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small" OnClick="OpenCart"/>
+					<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small"
+					               OnClick="OpenCart"/>
 				</MudBadge>
-				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Primary" Size="Size.Small"/>
+				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Primary"
+				               Size="Size.Small"/>
 			</li>
 		</ul>
 	</div>
@@ -39,8 +41,8 @@
 
 @code {
 	private int ItensCarrinho;
-	private bool _isOpen = false;
-	private bool _openCart = false;
+	private bool _isOpen;
+	private bool _openCart;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -48,10 +50,10 @@
 		ItensCarrinho = CartService.GetCartCount();
 		CartService.CartCountChanged += UpdateCount;
 	}
-	
+
 	private Task OpenDialogAsync()
 	{
-		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
 		return DialogService.ShowAsync<Contato>("Entre em Contato", options);
 	}
 
@@ -65,7 +67,10 @@
 		ItensCarrinho = count;
 	}
 
-	private void OpenCart() => _openCart = true;
+	private void OpenCart()
+	{
+		_openCart = true;
+	}
 
 	public void Dispose()
 	{

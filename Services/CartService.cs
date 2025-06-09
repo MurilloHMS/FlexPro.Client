@@ -9,17 +9,20 @@ public class CartService
     private const string CartKey = "cart";
     private readonly IJSRuntime _js;
     private List<ProdutoLojaResponse> _cart = new();
-    public event Action<int>? CartCountChanged;
 
     public CartService(IJSRuntime js)
     {
         _js = js;
     }
 
+    public event Action<int>? CartCountChanged;
+
     public async Task InitializeAsync()
     {
         var json = await _js.InvokeAsync<string>("localStorage.getItem", CartKey);
-        _cart = string.IsNullOrEmpty(json) ? new List<ProdutoLojaResponse>() : JsonSerializer.Deserialize<List<ProdutoLojaResponse>>(json) ??  new List<ProdutoLojaResponse>();
+        _cart = string.IsNullOrEmpty(json)
+            ? new List<ProdutoLojaResponse>()
+            : JsonSerializer.Deserialize<List<ProdutoLojaResponse>>(json) ?? new List<ProdutoLojaResponse>();
         NotifyCountChanged();
     }
 
@@ -44,10 +47,16 @@ public class CartService
         await _js.InvokeVoidAsync("localStorage.removeItem", CartKey);
         NotifyCountChanged();
     }
-    
-    public List<ProdutoLojaResponse> GetCart() => _cart;
-    
-    public int GetCartCount() => _cart.Count;
+
+    public List<ProdutoLojaResponse> GetCart()
+    {
+        return _cart;
+    }
+
+    public int GetCartCount()
+    {
+        return _cart.Count;
+    }
 
     private async Task SaveCartAsync()
     {
@@ -55,6 +64,9 @@ public class CartService
         await _js.InvokeVoidAsync("localStorage.setItem", CartKey, json);
         NotifyCountChanged();
     }
-    
-    private void NotifyCountChanged() => CartCountChanged?.Invoke(GetCartCount());
+
+    private void NotifyCountChanged()
+    {
+        CartCountChanged?.Invoke(GetCartCount());
+    }
 }

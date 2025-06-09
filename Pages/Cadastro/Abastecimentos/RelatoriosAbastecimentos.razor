@@ -9,7 +9,8 @@
         <MudGrid>
             <MudItem xs="12" sm="12">
                 <MudForm @ref="form" @bind-IsValid="isFormValid">
-                    <MudDatePicker Label="Selecione o mês para puxar os dados" @bind-Date="_date" OpenTo="OpenTo.Year" FixDay="1" DateFormat="MMMM/yyyy"/>
+                    <MudDatePicker Label="Selecione o mês para puxar os dados" @bind-Date="_date" OpenTo="OpenTo.Year"
+                                   FixDay="1" DateFormat="MMMM/yyyy"/>
                 </MudForm>
             </MudItem>
         </MudGrid>
@@ -19,18 +20,17 @@
         <MudButton OnClick="EmitirRelatório" Color="Color.Primary" Disabled="!isFormValid">Emitir</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
     private MudForm form;
     private bool isFormValid;
     private DateTime? _date;
-    
+
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
-    
-    [Parameter] 
-    public string tipo { get; set; }
-    
-    [Parameter]
-    public bool isDownload { get; set;}
+
+    [Parameter] public string tipo { get; set; }
+
+    [Parameter] public bool isDownload { get; set; }
 
     private void CloseDialog()
     {
@@ -43,7 +43,7 @@
         {
             if (_date != null)
             {
-                string dataFinalFormatada = _date.Value.ToString("yyyy-MM-dd");
+                var dataFinalFormatada = _date.Value.ToString("yyyy-MM-dd");
                 switch (tipo)
                 {
                     case "Geral":
@@ -61,14 +61,14 @@
             {
                 Snackbar.Add("Por favor, selecione um intervalo de datas válido.", Severity.Warning);
             }
-            
         }
         catch (Exception e)
         {
             Snackbar.Add($"Ocorreu um erro ao Emitir o Relatório {tipo}: {e.Message}", Severity.Error);
             throw;
         }
+
         MudDialog?.Close();
     }
-    
+
 }
