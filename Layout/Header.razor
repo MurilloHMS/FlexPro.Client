@@ -6,38 +6,29 @@
 
 
 <Carrinho @bind-IsOpen="_openCart"/>
+
 <header class="header">
 	<div class="logo">
 		<img src="assets/images/logo-proauto.png" alt="Logo da Empresa">
 	</div>
-	<button class="menu-toggle" onclick="@(() => ToggleMenu())">
+	<button class="menu-toggle" onclick="ToggleMenu()">
 		<MudIcon Icon="@Icons.Material.Filled.Menu" Size="Size.Small" Color="Color.Primary"/>
 	</button>
 	
 	<nav class="menu @(_isOpen ? "active" : "")">
 		<ul>
-			<li>
-				<a href="">Home</a>
-			</li>
-			@*<li> 
-			 	<a Href="Produtos/lista">Produtos</a> 
-			</li> *@
-			<li>
-				<a Href="Empresa">Empresa</a>
-			</li>
-			<li>
-				<a @onclick="OpenDialogAsync">Contato</a>
-			</li>
+			<li><a href="">Home</a></li>
+			@*<li><a Href="Produtos/lista">Produtos</a></li> *@
+			<li><a Href="Empresa">Empresa</a></li>
+			<li><a @onclick="OpenDialogAsync">Contato</a></li>
 		</ul>
 	</nav>
 	<div>
 		<ul class="grp-menu">
 			<li class="carrinho-container">
-				<a>
-					<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
-						<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small" OnClick="OpenCart"/>
-					</MudBadge>
-				</a>
+				<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
+					<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small" OnClick="OpenCart"/>
+				</MudBadge>
 				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Primary" Size="Size.Small"/>
 			</li>
 		</ul>
