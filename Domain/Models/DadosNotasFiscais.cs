@@ -1,4 +1,3 @@
-
 namespace FlexPro.Client.Models;
 
 public class DadosNotasFiscais
@@ -8,6 +7,6 @@ public class DadosNotasFiscais
     public DateTime DataNota { get; set; }
     public string Produto { get; set; }
     public decimal ValorUnitario { get; set; }
-    public decimal ValorTotal { get; set; } 
+    public decimal ValorTotal { get; set; }
     public string CFOP { get; set; }
 }

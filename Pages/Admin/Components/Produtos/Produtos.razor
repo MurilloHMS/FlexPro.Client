@@ -1,23 +1,26 @@
 @using FlexPro.Client.Models.Response
-
 @inject ProdutoService ProdutoService
 
-<MudDataGrid Items="@produtosFiltrados" 
-             T="ProdutoLojaResponse" 
-             Hover="true" 
-             Bordered="true" 
-             Striped="true" 
-             Dense="true" 
-             SortMode="SortMode.Multiple" 
-             Filterable="true" 
+<MudDataGrid Items="@produtosFiltrados"
+             T="ProdutoLojaResponse"
+             Hover="true"
+             Bordered="true"
+             Striped="true"
+             Dense="true"
+             SortMode="SortMode.Multiple"
+             Filterable="true"
              Loading="_isLoading"
              Virtualize>
     <ToolBarContent>
         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
-            <MudButton @onclick="@(() =>OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Cadastrar</MudButton><span> </span>
-            <MudIconButton OnClick="@(() => UpdateData())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
+            <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
+                       Color="Color.Primary">Cadastrar
+            </MudButton>
+            <span> </span>
+            <MudIconButton OnClick="@(() => UpdateData())" Variant="Variant.Filled" Size="Size.Small"
+                           Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
         </MudButtonGroup>
-        <MudSpacer />
+        <MudSpacer/>
         <MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
@@ -29,23 +32,26 @@
         <PropertyColumn Property="x => x.Diluicao" Title="Diluição" Sortable="true" Filterable="true"></PropertyColumn>
         <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
             <CellTemplate>
-                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialogAsync(@context.Item))"/>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit"
+                               OnClick="@(() => OpenEditDialogAsync(context.Item))"/>
                 <MudSpacer/>
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete"/>
             </CellTemplate>
         </TemplateColumn>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="ProdutoLojaResponse" />
+        <MudDataGridPager T="ProdutoLojaResponse"/>
     </PagerContent>
 </MudDataGrid>
 
 @code {
     private string _searchString = string.Empty;
-    private bool _isLoading = false;
+    private bool _isLoading;
     private IEnumerable<ProdutoLojaResponse> produtos = new List<ProdutoLojaResponse>();
-    
-    public async Task OpenDialogAsync(){}
+
+    public async Task OpenDialogAsync()
+    {
+    }
 
     IEnumerable<ProdutoLojaResponse> produtosFiltrados => string.IsNullOrWhiteSpace(_searchString)
         ? produtos
@@ -59,12 +65,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        
     }
 
     private async Task OpenEditDialogAsync(ProdutoLojaResponse contextItem)
     {
-        
     }
 
     private async Task UpdateData()

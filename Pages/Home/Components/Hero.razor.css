@@ -1,5 +1,5 @@
 
-.hero{
+.hero {
     background: linear-gradient(125deg, #0e326f, #232E61);
     background-size: cover;
     background-position: center;
@@ -30,14 +30,13 @@
 }
 
 
-
-.hero-content{
+.hero-content {
     max-width: 50%;
 
     @media (max-width: 1024px) {
         max-width: 100%;
     }
-    
+
     h1 {
         font-size: 3em;
         margin-bottom: 20px;
@@ -53,6 +52,7 @@
             font-size: 2em;
         }
     }
+
     h2 {
         font-size: 2em;
         margin-bottom: 20px;
@@ -79,23 +79,23 @@
             font-size: 1em;
         }
     }
-    
-    li{
+
+    li {
         list-style: none;
         font-size: 1.3em;
-        
+
         @media (max-width: 768px) {
-            font-size: 1.2em; 
+            font-size: 1.2em;
         }
-        
+
         @media (max-width: 480px) {
             font-size: 1em;
         }
     }
-    
+
 }
 
-.hero-image{
+.hero-image {
     max-width: 40%;
 
     @media (max-width: 1024px) {
@@ -108,7 +108,7 @@
     }
 }
 
-.hero-image img{
+.hero-image img {
     width: 100%;
     border-radius: 10px;
 }
@@ -123,7 +123,7 @@
     font-size: 16px;
     font-weight: 500;
     text-decoration: none;
-    transition: transform .3s, box-shadow .3s , background-color 0.2s ease-in-out, color 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: transform .3s, box-shadow .3s, background-color 0.2s ease-in-out, color 0.2s ease-in-out, background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
     &:hover {
         background-color: var(--primary-color);

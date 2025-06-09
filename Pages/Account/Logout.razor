@@ -5,7 +5,9 @@
 @inject AuthService AuthService
 
 <h1>Log Out</h1>
+
 @code {
+
     protected override async Task OnInitializedAsync()
     {
         await LogOut();
@@ -19,4 +21,5 @@
         // Redireciona para a página de login
         NavigationManager.NavigateTo("Account/Login");
     }
+
 }

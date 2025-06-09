@@ -2,37 +2,35 @@
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components;
 
-namespace FlexPro.Client.Services
+namespace FlexPro.Client.Services;
+
+public class AuthDelegatingHandler : DelegatingHandler
 {
-    public class AuthDelegatingHandler : DelegatingHandler
+    private readonly NavigationManager _navigationManager;
+
+    private readonly LocalStorageService _storageService;
+
+    public AuthDelegatingHandler(LocalStorageService storageService, NavigationManager navigationManager)
     {
+        _storageService = storageService;
+        _navigationManager = navigationManager;
+    }
 
-        private readonly LocalStorageService _storageService;
-        private readonly NavigationManager _navigationManager;
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+        CancellationToken cancellationToken)
+    {
+        var token = await _storageService.GetItemAsync("authToken");
+        if (!string.IsNullOrEmpty(token))
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-        public AuthDelegatingHandler(LocalStorageService storageService, NavigationManager navigationManager)
+        var response = await base.SendAsync(request, cancellationToken);
+
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
-            _storageService = storageService;
-            _navigationManager = navigationManager;
+            await _storageService.RemoveItemAsync("authToken");
+            _navigationManager.NavigateTo("Account/login?sessionExpired=true", true);
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var token = await _storageService.GetItemAsync("authToken");
-            if (!string.IsNullOrEmpty(token))
-            {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
-            
-            var response = await base.SendAsync(request, cancellationToken);
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                await _storageService.RemoveItemAsync("authToken");
-                _navigationManager.NavigateTo("Account/login?sessionExpired=true", forceLoad: true);
-            }
-
-            return response;
-        }
+        return response;
     }
 }

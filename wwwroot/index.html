@@ -2,54 +2,57 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Proauto Kimium</title>
-     <base href="/" /> 
-<!--    <base href="/FlexPro.Client/">-->
-    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/app.css" />
-    <link rel="icon" type="image/png" href="icon-512.png" />
-    <link href="FlexPro.Client.styles.css" rel="stylesheet" />
-    <link href="manifest.webmanifest" rel="manifest" />
-    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-    
+    <base href="/"/>
+    <!--    <base href="/FlexPro.Client/">-->
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/app.css" rel="stylesheet"/>
+    <link href="icon-512.png" rel="icon" type="image/png"/>
+    <link href="FlexPro.Client.styles.css" rel="stylesheet"/>
+    <link href="manifest.webmanifest" rel="manifest"/>
+    <link href="icon-512.png" rel="apple-touch-icon" sizes="512x512"/>
+    <link href="icon-192.png" rel="apple-touch-icon" sizes="192x192"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+
     <!-- Meta Tags -->
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="📈 +35 anos cuidando da sua higienização ♻️ Consumo consciente 🧩 +30 de serviços de consultoria.">
-    <meta name="author" content="Proauto Kimium">
-    <meta name="keywords" content="Proauto Kimium, limpeza profissional, consultoria, produtos de limpeza, automotivo, restaurantes, laticínios, hospitais, cozinhas industriais" />
-    
+    <meta content="index, follow" name="robots">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="📈 +35 anos cuidando da sua higienização ♻️ Consumo consciente 🧩 +30 de serviços de consultoria."
+          name="description">
+    <meta content="Proauto Kimium" name="author">
+    <meta content="Proauto Kimium, limpeza profissional, consultoria, produtos de limpeza, automotivo, restaurantes, laticínios, hospitais, cozinhas industriais"
+          name="keywords"/>
+
     <!-- Meta Tags Identidade Visual-->
-    <meta name="theme-color" content="#5ec4af">
-    
+    <meta content="#5ec4af" name="theme-color">
+
     <!-- Meta Tags Mobile apple web app capable -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta content="yes" name="apple-mobile-web-app-capable">
 
     <!-- Meta Meta Tags -->
-    <meta property="og:url" content="https://proautokimium.com.br/">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="ProautoKimium">
-    <meta property="og:description" content="+35 anos cuidando da suas higienização ♻️ Consumo consciente e qualidade.">
-    <meta property="og:image" content="https://proautokimium.vercel.app/assets/images/backgroundProauto.png">
+    <meta content="https://proautokimium.com.br/" property="og:url">
+    <meta content="website" property="og:type">
+    <meta content="ProautoKimium" property="og:title">
+    <meta content="+35 anos cuidando da suas higienização ♻️ Consumo consciente e qualidade." property="og:description">
+    <meta content="https://proautokimium.vercel.app/assets/images/backgroundProauto.png" property="og:image">
 
     <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="proautokimium.com.br">
-    <meta property="twitter:url" content="https://proautokimium.vercel.app/">
-    <meta name="twitter:title" content="ProautoKimium">
-    <meta name="twitter:description" content="+35 anos cuidando da suas higienização ♻️ Consumo consciente e qualidade.">
-    <meta name="twitter:image" content="https://proautokimium.vercel.app/assets/images/backgroundProauto.png">
+    <meta content="summary_large_image" name="twitter:card">
+    <meta content="proautokimium.com.br" property="twitter:domain">
+    <meta content="https://proautokimium.vercel.app/" property="twitter:url">
+    <meta content="ProautoKimium" name="twitter:title">
+    <meta content="+35 anos cuidando da suas higienização ♻️ Consumo consciente e qualidade."
+          name="twitter:description">
+    <meta content="https://proautokimium.vercel.app/assets/images/backgroundProauto.png" name="twitter:image">
 
     <script>
         function scrollToSection(id) {
             const el = document.getElementById(id);
             if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                el.scrollIntoView({behavior: 'smooth', block: 'start'});
             }
         }
     </script>
@@ -59,18 +62,18 @@
 <body>
 <div id="app">
     <div class="loading-container">
-        <img src="assets/images/logo.png" alt="Logo Proauto" class="logo-loading"/>
+        <img alt="Logo Proauto" class="logo-loading" src="assets/images/logo.png"/>
         <h2 class="loadint-text">Carregando<span class="dots"></span></h2>
     </div>
 </div>
 
 <div id="blazor-error-ui">
-        Ocorreu um erro desconhecido. Por favor atualize a página
-        <a href="." class="reload">Atualizar Página</a>
-        <span class="dismiss">🗙</span>
-    </div>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    Ocorreu um erro desconhecido. Por favor atualize a página
+    <a class="reload" href=".">Atualizar Página</a>
+    <span class="dismiss">🗙</span>
+</div>
+<script src="_framework/blazor.webassembly.js"></script>
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
 <!-- <script>navigator.serviceWorker.register('service-worker.js', { scope: './' });</script> -->
 </body>
 </html>

@@ -12,20 +12,15 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter]
-    public string ContentText { get; set; }
+    [Parameter] public string ContentText { get; set; }
 
-    [Parameter]
-    public string ButtonText { get; set; }
+    [Parameter] public string ButtonText { get; set; }
 
-    [Parameter]
-    public Color Color { get; set; }
+    [Parameter] public Color Color { get; set; }
 
-    [Parameter]
-    public Categoria Categoria { get; set; }
+    [Parameter] public Categoria Categoria { get; set; }
 
     private async Task Submit()
     {
@@ -39,8 +34,13 @@
             Snackbar.Add("Ocorreu um erro ao deletar a categoria", Severity.Error);
             throw;
         }
+
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
 }

@@ -19,14 +19,14 @@
         <MudButton OnClick="SalvarCategorias" Color="Color.Primary" Disabled="!isFormValid">Salvar</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
-    private Categoria Categoria = new Categoria();
+    private Categoria Categoria = new();
     private MudForm form;
     private bool isFormValid;
     [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter]
-    public Categoria _categoria {get; set;}
+    [Parameter] public Categoria _categoria { get; set; }
 
     protected override void OnInitialized()
     {
@@ -47,7 +47,7 @@
         {
             if (_categoria is not null)
             {
-                var response = await Http.PutAsJsonAsync<Categoria>($"api/categoria/{Categoria.Id}", Categoria);
+                var response = await Http.PutAsJsonAsync($"api/categoria/{Categoria.Id}", Categoria);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Categoria cadastrada com Sucesso!", Severity.Success);
@@ -55,11 +55,10 @@
             }
             else
             {
-                var response = await Http.PostAsJsonAsync<Categoria>("api/categoria", Categoria);
+                var response = await Http.PostAsJsonAsync("api/categoria", Categoria);
                 if (response.IsSuccessStatusCode)
                 {
                     Snackbar.Add("Categoria cadastrada com Sucesso!", Severity.Success);
-
                 }
             }
         }
@@ -68,7 +67,8 @@
             Snackbar.Add($"Ocorreu um erro ao cadastrar a categoria: {e.Message}", Severity.Error);
             throw;
         }
+
         MudDialog?.Close(DialogResult.Ok(Categoria));
     }
-    
+
 }

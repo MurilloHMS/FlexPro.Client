@@ -11,7 +11,7 @@
 
 @code {
     private string? resultado { get; set; }
-    
+
     [Parameter] public string Data { get; set; }
 
     protected override async Task OnParametersSetAsync()
@@ -20,7 +20,7 @@
         if (response.IsSuccessStatusCode)
         {
             var fileBytes = await response.Content.ReadAsByteArrayAsync();
-            DateTime dataDeEmissao = DateTime.Parse(Data);
+            var dataDeEmissao = DateTime.Parse(Data);
             var fileName = $"Relatório Abastecimento - {dataDeEmissao.ToString("MM-yyyy")}.pdf";
             await DownloadFile(fileBytes, fileName);
             Snackbar.Add("Relatório gerado com sucesso!", Severity.Success);
@@ -30,10 +30,11 @@
             Snackbar.Add($"Erro ao gerar relatório: {response.RequestMessage}");
         }
     }
-    
+
     private async Task DownloadFile(byte[] fileBytes, string fileName)
     {
         var base64File = Convert.ToBase64String(fileBytes);
         await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
+
 }

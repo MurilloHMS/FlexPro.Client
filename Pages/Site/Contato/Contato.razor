@@ -15,19 +15,19 @@
                                       For="@(() => _contato.Nome)"
                                       Label="Nome"
                                       HelperText="Digite seu nome"
-                                      Required />
+                                      Required/>
 
                         <MudTextField @bind-Value="_contato.Email"
                                       For="@(() => _contato.Email)"
                                       Label="Email"
                                       HelperText="Digite seu email para entrarmos em contato"
-                                      Required />
+                                      Required/>
 
                         <MudTextField @bind-Value="_contato.NomeEmpresa"
                                       For="@(() => _contato.NomeEmpresa)"
                                       Label="Nome Empresa"
                                       HelperText="Digite o nome da empresa em que trabalha"
-                                      Required />
+                                      Required/>
 
                         <MudSelect T="TipoContato_e"
                                    Label="Selecione o motivo"
@@ -46,14 +46,14 @@
                         {
                             <MudTextField @bind-Value="_contato.outro"
                                           For="@(() => _contato.outro)"
-                                          Label="Digite o motivo" />
+                                          Label="Digite o motivo"/>
                         }
 
                         <MudTextField @bind-Value="_contato.Mensagem"
                                       For="@(() => _contato.Mensagem)"
                                       Label="Digite sua mensagem"
                                       Lines="5"
-                                      Required />
+                                      Required/>
                     </MudForm>
 
                     @if (!string.IsNullOrEmpty(message))
@@ -68,17 +68,26 @@
                     <MudText Typo="Typo.body1">Outros meios de contato</MudText>
                     <br><br><br><br><br>
                     <div style=" text-align: end; display: flex; flex-direction: column">
-                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://wa.me/05511983583564" target="_blank" rel="noopener noreferrer">
-                            <MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon> (11) 9 8358-3564
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);"
+                                    href="https://wa.me/05511983583564" target="_blank" rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon>
+                            (11) 9 8358-3564
                         </MudElement>
-                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://wa.me/05511957782766" target="_blank" rel="noopener noreferrer">
-                            <MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon> (11) 9 5778-2766
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);"
+                                    href="https://wa.me/05511957782766" target="_blank" rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Custom.Brands.WhatsApp"></MudIcon>
+                            (11) 9 5778-2766
                         </MudElement>
-                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="mailto:sac@proautokimium.com.br" target="_blank" rel="noopener noreferrer">
-                            <MudIcon Icon="@Icons.Material.Filled.Email"></MudIcon> sac@proautokimium.com.br
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);"
+                                    href="mailto:sac@proautokimium.com.br" target="_blank" rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Material.Filled.Email"></MudIcon>
+                            sac@proautokimium.com.br
                         </MudElement>
-                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);" href="https://maps.app.goo.gl/LujYJt2qmgmMSbN2A" target="_blank" rel="noopener noreferrer">
-                            <MudIcon Icon="@Icons.Material.Filled.Map"></MudIcon> Av. João do Prado, 300 - Capuava, Santo André - SP, 09270-160
+                        <MudElement HtmlTag="a" Class="ms-1" Style="color: var(--primary-color);"
+                                    href="https://maps.app.goo.gl/LujYJt2qmgmMSbN2A" target="_blank"
+                                    rel="noopener noreferrer">
+                            <MudIcon Icon="@Icons.Material.Filled.Map"></MudIcon>
+                            Av. João do Prado, 300 - Capuava, Santo André - SP, 09270-160
                         </MudElement>
                     </div>
                 </MudPaper>
@@ -99,22 +108,24 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
     private bool isFormValid;
     private MudForm form;
-    private ContatoRequest _contato = new();
-    private bool isLoading = false;
+    private readonly ContatoRequest _contato = new();
+    private bool isLoading;
 
     private string? message;
     private Severity severity;
 
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
 
     private async Task Submit()
     {
-        message = String.Empty;
+        message = string.Empty;
         await form.Validate();
 
         if (!form.IsValid)
@@ -123,6 +134,7 @@
             severity = Severity.Warning;
             return;
         }
+
         _contato.StatusContato = StatusContato_e.NaoContatado;
         isLoading = true;
         var response = await Http.PostAsJsonAsync("api/contato", _contato);
@@ -137,4 +149,5 @@
         var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
         return attr?.Name ?? tipo.ToString();
     }
+
 }

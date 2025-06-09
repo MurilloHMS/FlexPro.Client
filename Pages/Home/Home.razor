@@ -3,88 +3,90 @@
 <PageTitle>Home</PageTitle>
 <div class="container">
     <AuthorizeView>
-    <NotAuthorized>
-        <Hero/>
-        <Consultoria/>
-        <ProcessoConsultoria/>
-        <MotivosContratar/>
-        <Servicos_e_Produtos/>
-    </NotAuthorized>
-    <Authorized>
-        <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
-            <MudTabPanel Text="Abastecimento">
-                <MudPaper Elevation="2">
-                    <MudToolBar>
-                        <MudIconButton Icon="@Icons.Material.Outlined.Autorenew" Color="Color.Inherit" class="mr-5" OnClick="() => UpdateFuelSupply()"/>
-                    </MudToolBar>
-                </MudPaper>
-                <br><br>
-                <MudGrid>
-                    <MudItem xs="12" sm="3">
-                        <MudCard>
-                            <MudCardContent>
-                                <MudText Align="Align.Center" Style="font-weight: bold;">Total Abastecido</MudText>
-                                <MudText Align="Align.Center">@_totalAbastecido.ToString("N0")</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                    <MudItem xs="12" sm="3">
-                        <MudCard>
-                            <MudCardContent>
-                                <MudText Align="Align.Center" Style="font-weight: bold;">Total Média Km/L</MudText>
-                                <MudText Align="Align.Center">@_mediaKmPorLitro.ToString("F2")</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                    <MudItem xs="12" sm="3">
-                        <MudCard>
-                            <MudCardContent>
-                                <MudText Align="Align.Center" Style="font-weight: bold;">Total Gasto</MudText>
-                                <MudText Align="Align.Center">@_totalGasto.ToString("C")</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                    <MudItem xs="12" sm="3">
-                        <MudCard>
-                            <MudCardContent>
-                                <MudText Align="Align.Center" Style="font-weight: bold;">Total Km Percorrido</MudText>
-                                <MudText Align="Align.Center">@_totalKmPercorrido.ToString("N0")</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                    <MudItem xs="12" sm="4">
-                        <MudPaper Elevation="1">
-                            <MudText Typo="Typo.body1" Align="Align.Center">Top 5 Maiores consumos</MudText>
-                        </MudPaper>
-                    </MudItem>
-                    <MudItem xs="12" sm="4">
-                        <MudPaper Elevation="1">
-                            <MudText Typo="Typo.body1" Align="Align.Center">Top 5 Maiores gastos</MudText>
-                        </MudPaper>
-                    </MudItem>
-                    <MudItem xs="12" sm="4">
-                        <MudPaper Elevation="1">
-                            <MudText Typo="Typo.body1" Align="Align.Center">Top 5 Maiores distancias percorridas</MudText>
-                        </MudPaper>
-                    </MudItem>
-                </MudGrid>
-            </MudTabPanel>
-            <MudTabPanel Text="Veículos">
-                
-            </MudTabPanel>
-        </MudTabs>
-    </Authorized>
-</AuthorizeView>
+        <NotAuthorized>
+            <Hero/>
+            <Consultoria/>
+            <ProcessoConsultoria/>
+            <MotivosContratar/>
+            <Servicos_e_Produtos/>
+        </NotAuthorized>
+        <Authorized>
+            <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
+                <MudTabPanel Text="Abastecimento">
+                    <MudPaper Elevation="2">
+                        <MudToolBar>
+                            <MudIconButton Icon="@Icons.Material.Outlined.Autorenew" Color="Color.Inherit" class="mr-5"
+                                           OnClick="() => UpdateFuelSupply()"/>
+                        </MudToolBar>
+                    </MudPaper>
+                    <br><br>
+                    <MudGrid>
+                        <MudItem xs="12" sm="3">
+                            <MudCard>
+                                <MudCardContent>
+                                    <MudText Align="Align.Center" Style="font-weight: bold;">Total Abastecido</MudText>
+                                    <MudText Align="Align.Center">@_totalAbastecido.ToString("N0")</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" sm="3">
+                            <MudCard>
+                                <MudCardContent>
+                                    <MudText Align="Align.Center" Style="font-weight: bold;">Total Média Km/L</MudText>
+                                    <MudText Align="Align.Center">@_mediaKmPorLitro.ToString("F2")</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" sm="3">
+                            <MudCard>
+                                <MudCardContent>
+                                    <MudText Align="Align.Center" Style="font-weight: bold;">Total Gasto</MudText>
+                                    <MudText Align="Align.Center">@_totalGasto.ToString("C")</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" sm="3">
+                            <MudCard>
+                                <MudCardContent>
+                                    <MudText Align="Align.Center" Style="font-weight: bold;">Total Km Percorrido
+                                    </MudText>
+                                    <MudText Align="Align.Center">@_totalKmPercorrido.ToString("N0")</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudPaper Elevation="1">
+                                <MudText Typo="Typo.body1" Align="Align.Center">Top 5 Maiores consumos</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudPaper Elevation="1">
+                                <MudText Typo="Typo.body1" Align="Align.Center">Top 5 Maiores gastos</MudText>
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudPaper Elevation="1">
+                                <MudText Typo="Typo.body1" Align="Align.Center">Top 5 Maiores distancias percorridas
+                                </MudText>
+                            </MudPaper>
+                        </MudItem>
+                    </MudGrid>
+                </MudTabPanel>
+                <MudTabPanel Text="Veículos">
+
+                </MudTabPanel>
+            </MudTabs>
+        </Authorized>
+    </AuthorizeView>
 </div>
 
 @code {
-    [Inject]
-    private HttpClient Http { get; set; }
+    [Inject] private HttpClient Http { get; set; }
 
-    private double _totalAbastecido = default;
-    private double _mediaKmPorLitro = default;
-    private decimal _totalGasto = default;
-    private double _totalKmPercorrido = default;
+    private double _totalAbastecido;
+    private double _mediaKmPorLitro;
+    private decimal _totalGasto;
+    private double _totalKmPercorrido;
 
     private async Task UpdateFuelSupply()
     {
@@ -97,4 +99,5 @@
         _totalGasto = fuelSupply.Sum(a => a.ValorTotalTransacao);
         _totalKmPercorrido = fuelSupply.Sum(a => a.DiferencaHodometro);
     }
+
 }

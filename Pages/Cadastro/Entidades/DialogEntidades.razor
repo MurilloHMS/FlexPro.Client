@@ -12,20 +12,15 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter]
-    public string ContentText { get; set; }
+    [Parameter] public string ContentText { get; set; }
 
-    [Parameter]
-    public string ButtonText { get; set; }
+    [Parameter] public string ButtonText { get; set; }
 
-    [Parameter]
-    public Color Color { get; set; }
+    [Parameter] public Color Color { get; set; }
 
-    [Parameter]
-    public Entidade Entidade { get; set; }
+    [Parameter] public Entidade Entidade { get; set; }
 
     private async Task Submit()
     {
@@ -42,5 +37,9 @@
         }
     }
 
-    private void Cancel() => MudDialog.Cancel();
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
 }

@@ -11,9 +11,8 @@
 
 @code {
     private string? resultado;
-    
-    [Parameter]
-    public string Data { get; set; }
+
+    [Parameter] public string Data { get; set; }
 
     public DateTime DataConvertida;
 
@@ -22,4 +21,5 @@
         var request = await Http.GetStringAsync($"api/abastecimento/calcular/setor/{Data}");
         resultado = request;
     }
+
 }

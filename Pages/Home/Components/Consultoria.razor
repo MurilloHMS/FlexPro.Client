@@ -29,11 +29,13 @@
 		<p>Soluções completas para atender suas demandas com qualidade e eficiência</p>
 	</div>
 </section>
+
 @code {
 
 	private Task OpenDialogAsync()
 	{
-		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
 		return DialogService.ShowAsync<Contato>("Entre em Contato", options);
 	}
+
 }

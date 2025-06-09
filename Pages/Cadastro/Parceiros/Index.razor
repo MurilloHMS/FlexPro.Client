@@ -1,5 +1,4 @@
 @page "/parceiros"
-@using FlexPro.Client.Models.Request
 @using FlexPro.Client.Models.Response
 
 @inject IDialogService DialogService;
@@ -12,11 +11,15 @@
 
 <MudText Typo="Typo.h2">Parceiros</MudText>
 <br><br><br>
-<MudDataGrid Items="@parceirosFiltrados" T="ParceiroResponseDTO" Hover="true" Bordered="true" Striped="true" Dense="true" SortMode="SortMode.Multiple">
+<MudDataGrid Items="@parceirosFiltrados" T="ParceiroResponseDTO" Hover="true" Bordered="true" Striped="true"
+             Dense="true" SortMode="SortMode.Multiple">
     <ToolBarContent>
-        <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Novo</MudButton>
+        <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
+                   Color="Color.Primary">Novo
+        </MudButton>
         <MudSpacer/>
-        <MudTextField @bind-Value="_searchString" Placeholder="Buscar parceiro" Adornment="Adornment.Start" Immediate="true"
+        <MudTextField @bind-Value="_searchString" Placeholder="Buscar parceiro" Adornment="Adornment.Start"
+                      Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"/>
     </ToolBarContent>
     <Columns>
@@ -26,9 +29,11 @@
         <PropertyColumn Property="x => x.RazaoSocial" Title="Razão Social" Sortable="true" Filterable="true"/>
         <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
             <CellTemplate>
-                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialogAsync(@context.Item))"/>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit"
+                               OnClick="@(() => OpenEditDialogAsync(context.Item))"/>
                 <MudSpacer/>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => OpendDeleteDialogAsync(@context.Item))"/>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete"
+                               OnClick="@(() => OpendDeleteDialogAsync(context.Item))"/>
             </CellTemplate>
         </TemplateColumn>
     </Columns>
@@ -39,7 +44,7 @@
 
 
 @code {
-    private List<ParceiroResponseDTO> _parceiros = new ();
+    private List<ParceiroResponseDTO> _parceiros = new();
     private string _searchString = "";
 
     private IEnumerable<ParceiroResponseDTO> parceirosFiltrados => string.IsNullOrWhiteSpace(_searchString)
@@ -86,7 +91,7 @@
             { x => x.Parceiro, parceiro }
         };
 
-        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
         var dialog = await DialogService.ShowAsync<DialogParceiro>("Deletar", parametros, options);
         var result = await dialog.Result;
@@ -101,10 +106,10 @@
     {
         var parametros = new DialogParameters<CadastrarParceiro>
         {
-            {x => x.parceiro, parceiro}
+            { x => x.parceiro, parceiro }
         };
 
-        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarParceiro>("Atualizar Parceiro", parametros, options);
         var result = await dialog.Result;
 
@@ -113,6 +118,6 @@
             await LoadData();
         }
     }
-    
+
 
 }

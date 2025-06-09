@@ -1,12 +1,12 @@
-.banner-servicos-produtos{
+.banner-servicos-produtos {
     margin-top: 20px;
     width: 100%;
 }
 
-.servicos-produtos-container{
+.servicos-produtos-container {
     text-align: center;
-    
-    h2{
+
+    h2 {
         font-size: 4rem;
         margin-bottom: 35px;
         margin-top: 35px;
@@ -15,7 +15,7 @@
             font-size: 3rem;
         }
 
-        @media (max-width: 480px){
+        @media (max-width: 480px) {
             font-size: 2rem;
         }
     }

@@ -1,5 +1,4 @@
 @page "/separarPDF"
-@using Microsoft.AspNetCore.Authorization
 @using System.Net.Http.Headers
 
 @inject ISnackbar Snackbar
@@ -33,41 +32,41 @@
                 @foreach (var file in _fileNames)
                 {
                     <MudChip T="string"
-                    Color="Color.Dark"
-                    Text="@file.Name"
-                    tabindex="-1" />
+                             Color="Color.Dark"
+                             Text="@file.Name"
+                             tabindex="-1"/>
                 }
             </MudPaper>
         </ActivatorContent>
     </MudFileUpload>
     <MudToolBar Gutters="@false"
-    Class="relative d-flex justify-end gap-4">
+                Class="relative d-flex justify-end gap-4">
         <MudButton Color="Color.Tertiary"
-        OnClick="@OpenFilePickerAsync"
-        Variant="Variant.Filled">
+                   OnClick="@OpenFilePickerAsync"
+                   Variant="Variant.Filled">
             Selecionar arquivo
         </MudButton>
         <MudButton Color="Color.Primary"
-        Disabled="@(!_fileNames.Any())"
-        OnClick="@Upload"
-        Variant="Variant.Filled">
+                   Disabled="@(!_fileNames.Any())"
+                   OnClick="@Upload"
+                   Variant="Variant.Filled">
             Separar Arquivos
         </MudButton>
         <MudButton Color="Color.Error"
-        Disabled="@(!_fileNames.Any())"
-        OnClick="@LimparAsync"
-        Variant="Variant.Filled">
+                   Disabled="@(!_fileNames.Any())"
+                   OnClick="@LimparAsync"
+                   Variant="Variant.Filled">
             Apagar
         </MudButton>
     </MudToolBar>
 </MudStack>
 
-@if(paginasSeparadas is not null && paginasSeparadas.Any())
+@if (paginasSeparadas is not null && paginasSeparadas.Any())
 {
     <MudStack>
         @foreach (var pagina in paginasSeparadas)
         {
-            <MudTextField Label="Nome do arquivo" @bind-Value="pagina.Nome" />
+            <MudTextField Label="Nome do arquivo" @bind-Value="pagina.Nome"/>
         }
     </MudStack>
     <MudButton OnClick="@(() => SalvarDados())" Color="Color.Primary" Variant="Variant.Filled">Salvar</MudButton>
@@ -75,12 +74,12 @@
 
 <script>
     function downloadFileFromStream(fileName, fileBase64) {
-    const link = document.createElement('a');
-    link.href = 'data:application/zip;base64,' + fileBase64;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+        const link = document.createElement('a');
+        link.href = 'data:application/zip;base64,' + fileBase64;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 </script>
 
@@ -92,7 +91,7 @@
     private MudFileUpload<IBrowserFile>? _fileUpload;
     private string inputPdfPath;
 
-    private List<SepararPDF> paginasSeparadas = new List<SepararPDF>();
+    private List<SepararPDF> paginasSeparadas = new();
 
 
     private async Task LimparAsync()
@@ -100,10 +99,12 @@
         await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
         _fileNames.Clear();
         ClearDragClass();
-
     }
+
     private Task OpenFilePickerAsync()
-        => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    {
+        return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
@@ -121,7 +122,7 @@
         Snackbar.Add("Iniciando Processamento dos arquivos...");
 
         var content = new MultipartFormDataContent();
-        var file = _fileNames.FirstOrDefault();  
+        var file = _fileNames.FirstOrDefault();
         if (file != null)
         {
             var fileContent = new StreamContent(file.OpenReadStream());
@@ -143,21 +144,25 @@
 
 
     private void SetDragClass()
-        => _dragClass = $"{DefaultDragClass} mud-border-primary";
+    {
+        _dragClass = $"{DefaultDragClass} mud-border-primary";
+    }
 
     private void ClearDragClass()
-        => _dragClass = DefaultDragClass;
+    {
+        _dragClass = DefaultDragClass;
+    }
 
 
     private async Task SalvarDados()
     {
         if (paginasSeparadas is not null && paginasSeparadas.Any())
         {
-            var response = await Http.PostAsJsonAsync<List<SepararPDF>>("api/SepararPdf/save", paginasSeparadas);
+            var response = await Http.PostAsJsonAsync("api/SepararPdf/save", paginasSeparadas);
             if (response.IsSuccessStatusCode)
             {
                 var fileBytes = await response.Content.ReadAsByteArrayAsync();
-                var fileName = $"Pdf_Separados.zip";
+                var fileName = "Pdf_Separados.zip";
                 await DownloadFile(fileBytes, fileName);
                 Snackbar.Add("arquivo gerado com sucesso!", Severity.Success);
             }
@@ -173,4 +178,5 @@
         var base64File = Convert.ToBase64String(fileBytes);
         await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
+
 }

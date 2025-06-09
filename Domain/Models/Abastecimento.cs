@@ -16,5 +16,4 @@ public class Abastecimento
     public double Litros { get; set; }
     public decimal Preco { get; set; }
     public decimal ValorTotalTransacao { get; set; }
-    
 }

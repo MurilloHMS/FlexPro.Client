@@ -1,8 +1,7 @@
-﻿namespace FlexPro.Client.Models
+﻿namespace FlexPro.Client.Models;
+
+public class Entidade
 {
-	public class Entidade
-	{
-		public int ID { get; set; }
-		public string Nome { get; set; }
-	}
+    public int ID { get; set; }
+    public string Nome { get; set; }
 }
