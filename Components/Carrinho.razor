@@ -10,12 +10,10 @@
     <div class="drawer-body">
 
         <div class="bottom-buttons">
-            <MudButtonGroup Size="Size.Small" OverrideStyles="false">
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">Solicitar Orçamento
-                </MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true" OnClick="FecharCarrinho">
-                    Fechar
-                </MudButton>
+            <MudButton Color="Color.Secondary">Solicitar Orçamento</MudButton>
+            <MudButtonGroup Size="Size.Small" OverrideStyles="false" Vertical="false">
+                <MudButton FullWidth="true" Color="Color.Error" OnClick="FecharCarrinho">Fechar</MudButton>
+                <MudIconButton Color="Color.Default" Icon="@Icons.Material.Filled.Delete"/>
             </MudButtonGroup>
         </div>
     </div>
