@@ -11,9 +11,9 @@
         <MudLayout>
             <MudAppBar Elevation="1" Dense="true" Style="@($"background: {Colors.Gray.Darken3}")">
                 <MudIconButton Edge="Edge.Start" OnClick="@(e => DrawerToggle())">
-                    <MudImage Src="assets/icons/LogoFlexPro.ico" Width="30"></MudImage>
+                    <MudImage Src="assets/icons/logo.png" Width="30"></MudImage>
                 </MudIconButton>
-                <MudText Typo="Typo.h6" Class="ml-3">FlexPro</MudText>
+                <MudText Typo="Typo.h6" Class="ml-3">Proauto Kimium</MudText>
                 <MudSpacer/>
                 <MudSwitch @bind-Value="_isDarkMode"
                            ThumbIcon="@(_isDarkMode ? Icons.Material.Filled.ModeNight : Icons.Material.Filled.LightMode)"
