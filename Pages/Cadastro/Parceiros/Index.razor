@@ -1,4 +1,7 @@
 @page "/parceiros"
+@using System.Diagnostics
+@using System.Net
+@using System.Net.Http.Headers
 @using FlexPro.Client.Models.Response
 
 @inject IDialogService DialogService;
@@ -12,11 +15,24 @@
 <MudText Typo="Typo.h2">Parceiros</MudText>
 <br><br><br>
 <MudDataGrid Items="@parceirosFiltrados" T="ParceiroResponseDTO" Hover="true" Bordered="true" Striped="true"
-             Dense="true" SortMode="SortMode.Multiple">
+             Dense="true" SortMode="SortMode.Multiple" Filterable="true" Loading="_isLoading" Virtualize>
     <ToolBarContent>
-        <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
-                   Color="Color.Primary">Novo
-        </MudButton>
+        <MudButtonGroup OverrideStyles="false">
+            <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
+                       Color="Color.Primary">Novo
+            </MudButton>
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept=".xlsx">
+                <ActivatorContent>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                               Size="Size.Small">
+                        Selecionar arquivo
+                    </MudButton>
+                </ActivatorContent>
+            </MudFileUpload>
+            <MudButton OnClick="@(() => ImportarDados())" Variant="Variant.Filled" Disabled="@(fileSelected == default)" Size="Size.Small">Importar Parceiros</MudButton>
+        </MudButtonGroup>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString" Placeholder="Buscar parceiro" Adornment="Adornment.Start"
                       Immediate="true"
@@ -44,12 +60,18 @@
 
 
 @code {
-    private List<ParceiroResponseDTO> _parceiros = new();
+    private IEnumerable<ParceiroResponseDTO> _parceiros = default;
     private string _searchString = "";
+    private bool _isLoading;
+    private bool _isValid = true;
+    private IBrowserFile fileSelected = default;
 
-    private IEnumerable<ParceiroResponseDTO> parceirosFiltrados => string.IsNullOrWhiteSpace(_searchString)
+    private IEnumerable<ParceiroResponseDTO> parceirosFiltrados => 
+        string.IsNullOrWhiteSpace(_searchString)
         ? _parceiros
-        : _parceiros.Where(x => x.RazaoSocial.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+        : _parceiros.Where(x => 
+            x.RazaoSocial.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+        );
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,12 +82,15 @@
     {
         try
         {
+            _isLoading = true;
             _parceiros = await service.GetAllAsync();
-        }
-        catch (HttpRequestException ex)
+        }catch (HttpRequestException ex)
         {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             _parceiros = default;
+        }finally
+        {
+            _isLoading = false;
         }
     }
 
@@ -119,5 +144,47 @@
         }
     }
 
+    private void UploadFiles(IBrowserFile file)
+    {
+        fileSelected = file;
+    }
 
+    private async Task ImportarDados()
+    {
+
+        try
+        {
+            _isLoading = true;
+            if (fileSelected.Size > 0)
+            {
+                Snackbar.Add("Iniciando cadastro dos parceiros...", Severity.Normal);
+                var content = new MultipartFormDataContent();
+                var fileContent = new StreamContent(fileSelected.OpenReadStream());
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+
+                content.Add(fileContent, "file", fileSelected.Name);
+                var response = await service.UploadParceiros(content);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Snackbar.Add($"Parceiros cadastrados com sucesso: {response.Message}", Severity.Success);
+                    await LoadData();
+                }
+                else
+                {
+                    Snackbar.Add($"Ocorreu um erro ao processar o arquivo:{Environment.NewLine} StatusCode: {response.StatusCode} {Environment.NewLine} Message: {response.Message}");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add($"Ocorreu um erro desconhecido: {e.Message} {Environment.NewLine} stacktrace: {e.StackTrace}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+            fileSelected = default;
+        }
+       
+    }
 }
