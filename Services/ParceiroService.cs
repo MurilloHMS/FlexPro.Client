@@ -18,9 +18,9 @@ public class ParceiroService
         _options = options;
     }
 
-    public async Task<List<ParceiroResponseDTO>> GetAllAsync()
+    public async Task<IEnumerable<ParceiroResponseDTO>> GetAllAsync()
     {
-        var ret = await _http.GetFromJsonAsync<List<ParceiroResponseDTO>>("api/parceiro");
+        var ret = await _http.GetFromJsonAsync<IEnumerable<ParceiroResponseDTO>>("api/parceiro");
         return ret;
     }
 
@@ -37,5 +37,19 @@ public class ParceiroService
 
         var response = await _http.PostAsJsonAsync("api/parceiro", parceiroRequest);
         return new ApiResponse<ParceiroResponseDTO>(await response.Content.ReadAsStringAsync(), response.StatusCode);
+    }
+
+    public async Task<ApiResponse<string>> UploadParceiros(MultipartFormDataContent content)
+    {
+        try
+        {
+            var response = await _http.PostAsync("api/parceiro/upload", content);
+            return new ApiResponse<string>(await response.Content.ReadAsStringAsync(), response.StatusCode);
+        }
+        catch (HttpRequestException e)
+        {
+            return new ApiResponse<string>(e.Message, HttpStatusCode.BadRequest);
+        }
+        
     }
 }
