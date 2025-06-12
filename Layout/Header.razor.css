@@ -7,13 +7,20 @@
     top: 11px;
     left: 0;
     right: 0;
-    width: 100%;
-    background-color: #fff;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: calc(100% - 20px);
+    margin: 0 10px;
     height: 60px;
     border-radius: 50px;
+    z-index: 1000;
+
+    background: rgba(255, 255, 255, 0.75); /* Transparência */
+    backdrop-filter: blur(10px); /* O efeito acrílico */
+    -webkit-backdrop-filter: blur(10px); /* Suporte Safari */
+
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 
 .content {
     margin-top: 60px;
