@@ -90,6 +90,11 @@
             {
                 await JSRuntime.InvokeVoidAsync("alert", "Login falhou! Verifique suas credenciais.");
             }
+        }catch (HttpRequestException ex)
+        {
+            message = "Servidor Offline ou em manutenção";
+            severity = Severity.Error;
+            isLoading = false;
         }
         catch (Exception ex)
         {
