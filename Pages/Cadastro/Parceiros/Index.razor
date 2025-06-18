@@ -20,6 +20,9 @@
             <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
                        Color="Color.Primary">Novo
             </MudButton>
+            <MudIconButton @onclick="@(() => LoadData())" Variant="Variant.Filled" Size="Size.Small"
+                           Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
+            
             <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept=".xlsx">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled"
@@ -61,7 +64,7 @@
 
 
 @code {
-    private IEnumerable<ParceiroResponseDTO> _parceiros = default;
+    private IEnumerable<ParceiroResponseDTO> _parceiros = new List<ParceiroResponseDTO>();
     private string _searchString = "";
     private bool _isLoading;
     private bool _isValid = true;
@@ -76,7 +79,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadData();
+        //await LoadData();
     }
 
     private async Task LoadData()
