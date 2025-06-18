@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using DocumentFormat.OpenXml.Drawing
+@inherits LayoutComponentBase
+
+@inject AuthService AuthService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <MudThemeProvider IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudPopoverProvider/>
@@ -15,9 +19,32 @@
                 </MudIconButton>
                 <MudText Typo="Typo.h6" Class="ml-3">Proauto Kimium</MudText>
                 <MudSpacer/>
-                <MudSwitch @bind-Value="_isDarkMode"
-                           ThumbIcon="@(_isDarkMode ? Icons.Material.Filled.ModeNight : Icons.Material.Filled.LightMode)"
-                           Color="@(_isDarkMode ? Color.Dark : Color.Inherit)"/>
+                <MudToggleIconButton @bind-Toggled="_isDarkMode"
+                                     Icon="@Icons.Material.Filled.LightMode"
+                                     Color="@Color.Inherit"
+                                     ToggledIcon="@Icons.Material.Filled.ModeNight"
+                                     ToggledColor="@Color.Primary"/>
+                <MudMenu Size="Size.Medium">
+                    <ActivatorContent>
+                        <MudAvatar Style="@($"background: {Colors.Gray.Lighten4}")" Variant="Variant.Filled">
+                            <MudImage Src="assets/images/logo.png"/>
+                        </MudAvatar>
+                    </ActivatorContent>
+                    <ChildContent>
+                        <MudPaper Elevation="0" Style="padding: 10px;">
+                            <MudAvatar Style="@($"background: {Colors.Gray.Lighten4}")" Variant="Variant.Filled">
+                                <MudImage Src="assets/images/logo.png"/>
+                            </MudAvatar>
+                            <br>
+                            <MudText Typo="Typo.overline" Align="Align.Center" Color="Color.Primary">@userName</MudText>
+                        </MudPaper>
+                        <MudMenuItem Label="Conta"/>
+                        <MudMenuItem Label="Configurações"/>
+                        <MudPaper Elevation="0" Style="padding: 10px;">
+                            <MudButton FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Logout" Variant="Variant.Filled" Href="account/logout">Logout</MudButton>
+                        </MudPaper>
+                    </ChildContent>
+                </MudMenu>
                 <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End"
                                Href="https://github.com/MurilloHMS" Target="_blank"/>
             </MudAppBar>
@@ -57,6 +84,8 @@
 @code {
     private bool _isDarkMode;
     private bool _drawerOpen;
+    
+    private string userName;
 
     private readonly MudTheme _theme = new()
     {
@@ -70,6 +99,19 @@
     private void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            userName = user.FindFirst(ClaimTypes.Name)?.Value
+                       ?? user.FindFirst("unique_name")?.Value
+                       ?? "Sem nome";
+        }
     }
 
 }
