@@ -22,4 +22,9 @@
         <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\Admin\AdministrativoSite\Components\Departamento\Departamento.razor" />
+      <AdditionalFiles Include="Pages\Admin\AdministrativoSite\Components\Produtos\Produtos.razor" />
+    </ItemGroup>
+
 </Project>
