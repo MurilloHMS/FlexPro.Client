@@ -67,7 +67,7 @@
         }
         catch (Exception e)
         {
-            Snackbar.Add("Ocorreu um erro ao coletar os dados do veiculo.", Severity.Error);
+            Snackbar.Add($"Ocorreu um erro ao coletar os dados do veiculo. {Environment.NewLine}Error: {e.Message}", Severity.Error);
             throw;
         }
     }
@@ -80,7 +80,7 @@
         }
         catch (Exception e)
         {
-            Snackbar.Add("Ocorreu um erro ao coletar os dados do veiculo.", Severity.Error);
+            Snackbar.Add($"Ocorreu um erro ao coletar os dados da revisao. {Environment.NewLine}Error: {e.Message}", Severity.Error);
             throw;
         }
     }
