@@ -54,7 +54,7 @@ section {
     display: block;
     font-size: 18px;
     line-height: 24px;
-    color: #ff2222;
+    color: var(--secondary-color);
     font-weight: 500;
     margin-bottom: 15px;
 }
@@ -119,7 +119,7 @@ section {
     display: block;
     font-size: 18px;
     padding: 0px;
-    color: #ff2222;
+    color: var(--primary-color);
     font-weight: 600;
     -moz-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
@@ -144,11 +144,11 @@ section {
     font-weight: 600;
     overflow: hidden;
     letter-spacing: 0.02em;
-    background-color: #ff2222;
+    background-color: var(--primary-color);
 }
 
 .btn-style-one:hover{
-    background-color: #001e57;
+    background-color: var(--secondary-color);
     color: #ffffff;
 }
 .about-section{

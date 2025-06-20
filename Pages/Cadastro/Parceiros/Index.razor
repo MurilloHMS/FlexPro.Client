@@ -1,5 +1,4 @@
 @page "/parceiros"
-@using System.Diagnostics
 @using System.Net
 @using System.Net.Http.Headers
 @using FlexPro.Client.Models.Response
@@ -21,6 +20,9 @@
             <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
                        Color="Color.Primary">Novo
             </MudButton>
+            <MudIconButton @onclick="@(() => LoadData())" Variant="Variant.Filled" Size="Size.Small"
+                           Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
+            
             <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept=".xlsx">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled"
@@ -36,7 +38,9 @@
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString" Placeholder="Buscar parceiro" Adornment="Adornment.Start"
                       Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"/>
+                      AdornmentIcon="@Icons.Material.Filled.Search" 
+                      IconSize="Size.Medium" 
+                      Class="mt-0"/>
     </ToolBarContent>
     <Columns>
         <PropertyColumn Property="x => x.CodigoSistema" Title="Código Sistema" Sortable="true" Filterable="true"/>
@@ -60,7 +64,7 @@
 
 
 @code {
-    private IEnumerable<ParceiroResponseDTO> _parceiros = default;
+    private IEnumerable<ParceiroResponseDTO> _parceiros = new List<ParceiroResponseDTO>();
     private string _searchString = "";
     private bool _isLoading;
     private bool _isValid = true;
@@ -75,7 +79,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadData();
+        //await LoadData();
     }
 
     private async Task LoadData()

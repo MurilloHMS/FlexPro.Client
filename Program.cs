@@ -14,11 +14,12 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var environment = builder.HostEnvironment;
+// TODO: update this to environment variables
 var databaseUrl = environment.IsDevelopment() ? "http://localhost:5233/" : "https://flexpro-api.onrender.com/";
 builder.Services.AddHttpClient("FlexProAPI", client => { client.BaseAddress = new Uri(databaseUrl); })
     .AddHttpMessageHandler<AuthDelegatingHandler>();
 
-// Registros de Services
+// Services registry
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<LocalStorageService>();
 builder.Services.AddScoped<AuthService>();
@@ -28,10 +29,10 @@ builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<ParceiroService>();
 
-//mudblazor
+// Mudblazor
 builder.Services.AddMudServices();
 
-// autenticacao
+// Authentication
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthorizationService, DefaultAuthorizationService>();

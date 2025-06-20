@@ -4,8 +4,6 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AuthService AuthService
 
-<h1>Log Out</h1>
-
 @code {
 
     protected override async Task OnInitializedAsync()
@@ -15,10 +13,10 @@
 
     private async Task LogOut()
     {
-        AuthService.Logout();
+        await AuthService.Logout();
         (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsLoggedOut();
 
-        // Redireciona para a página de login
+        // Redirect to login page
         NavigationManager.NavigateTo("Account/Login");
     }
 
