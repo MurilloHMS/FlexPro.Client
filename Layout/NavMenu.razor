@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 
 <MudPaper Elevation="0" Class="py-3">
-    <MudNavMenu Color="Color.Primary">
+    <MudNavMenu Color="Color.Secondary">
         <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Página Inicial</MudNavLink>
         <AuthorizeView>
             <MudNavGroup Title="Gestão" Expanded="false" Icon="@Icons.Material.Filled.Domain">
@@ -35,7 +35,22 @@
                 <MudNavLink Href="categorias" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Category">
                     Categorias
                 </MudNavLink>
+            </MudNavGroup>
+            <MudNavGroup Title="Comercial" Expanded="false" Icon="@Icons.Material.Filled.BusinessCenter">
+                <MudNavGroup Title="Consultas" Expanded="false" Icon="@Icons.Material.Filled.QueryStats">
+                    <MudNavLink Href="Comercial/Consultas/CheckList" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Checklist">
+                        CheckList
+                    </MudNavLink>
                 </MudNavGroup>
+                <MudNavGroup Title="Relatórios" Expanded="false" Icon="@Icons.Material.Filled.Analytics">
+                    
+                </MudNavGroup>
+                <MudNavGroup Title="Documentos" Expanded="false" Icon="@Icons.Material.Filled.Archive">
+                    <MudNavLink Href="Documentos/IdentidadeVisual" Icon="@Icons.Material.Filled.PhotoAlbum">
+                        Identidade Visual
+                    </MudNavLink>
+                </MudNavGroup>
+            </MudNavGroup>
             <MudNavGroup Title="Ferramentas" Expanded="false" Icon="@Icons.Material.Filled.Build">
                 <MudNavGroup Title="PDF" Expanded="false" Icon="@Icons.Material.Filled.PictureAsPdf">
                     <MudNavLink Href="separarPDF" Match="NavLinkMatch.All" Icon="@Icons.Custom.FileFormats.FilePdf">Separar
@@ -80,6 +95,14 @@
                 </MudNavLink>
                 <MudNavLink Href="admin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AdminPanelSettings">
                     Geral
+                </MudNavLink>
+            </MudNavGroup>
+            <MudNavGroup Title="Suporte" Expanded="false" Icon="@Icons.Material.Filled.SupportAgent">
+                <MudNavLink href="Suporte/Chamados" Icon="@Icons.Material.Filled.ContactSupport">
+                    Chamado
+                </MudNavLink>
+                <MudNavLink href="https://flexpro-api.onrender.com/index.html" Target="_blank" Icon="@Icons.Material.Filled.Api">
+                    Api
                 </MudNavLink>
             </MudNavGroup>
         </AuthorizeView>
