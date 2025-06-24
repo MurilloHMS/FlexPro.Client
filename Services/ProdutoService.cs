@@ -18,9 +18,13 @@ public class ProdutoService
 
     public async Task<IEnumerable<ProdutoLojaResponse>> GetProdutoLoja()
     {
-       // var stream = await _http.GetStreamAsync("api/produto/produtoloja");
-       // return await JsonSerializer.DeserializeAsync<List<ProdutoLojaResponse>>(stream, _options);
-       var produtoLoja = new List<ProdutoLojaResponse>
+        var stream = await _http.GetStreamAsync("api/produto/produtoloja");
+        return await JsonSerializer.DeserializeAsync<List<ProdutoLojaResponse>>(stream, _options); 
+    }
+
+    public async Task<IEnumerable<ProdutoLojaResponse>> GetProdutoLojaTeste()
+    {
+        var produtoLoja = new List<ProdutoLojaResponse>
         {
             new ProdutoLojaResponse
             {
@@ -162,8 +166,7 @@ public class ProdutoService
                 }
             }
         };
-
-       return produtoLoja;
+        return produtoLoja;
     }
 
     public async Task<ProdutoLojaResponse> GetByIdAsync(int id)
