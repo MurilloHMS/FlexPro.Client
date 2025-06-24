@@ -1,5 +1,8 @@
 @using FlexPro.Client.Models.Response
+
 @inject ProdutoService ProdutoService
+@inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
 
 <MudDataGrid Items="@produtosFiltrados"
              T="ProdutoLojaResponse"
@@ -49,10 +52,6 @@
     private bool _isLoading;
     private IEnumerable<ProdutoLojaResponse> produtos = new List<ProdutoLojaResponse>();
 
-    public async Task OpenDialogAsync()
-    {
-    }
-
     IEnumerable<ProdutoLojaResponse> produtosFiltrados => string.IsNullOrWhiteSpace(_searchString)
         ? produtos
         : produtos.Where(x =>
@@ -65,10 +64,31 @@
 
     protected override async Task OnInitializedAsync()
     {
+        
+    }
+    
+    private async Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<CadastrarProduto>("Cadastro de Produtos", options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await UpdateData();
+        }
     }
 
     private async Task OpenEditDialogAsync(ProdutoLojaResponse contextItem)
     {
+        var parameters = new DialogParameters<CadastrarProduto>
+        {
+            {x => x.produtoLoja, contextItem}
+        };
+
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+        var dialog = await DialogService.ShowAsync<CadastrarProduto>("Atualizar Produto", parameters, options);
+        var result = await dialog.Result;
     }
 
     private async Task UpdateData()
