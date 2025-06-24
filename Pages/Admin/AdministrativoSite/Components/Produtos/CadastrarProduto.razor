@@ -8,34 +8,58 @@
 
 <MudDialog>
     <DialogContent>
-        <MudForm @ref="form" @bind-IsValid="isFormValid">
-            <MudTextField Label="Código do Sistema" @bind-Value="_produto.CodigoSistema" Required="true" />
-            <MudTextField Label="Nome" @bind-Value="_produto.Nome" Required="true" />
-            <MudTextField Label="Descrição" @bind-Value="_produto.Descricao" />
-            <MudTextField Label="Cor" @bind-Value="_produto.Cor" />
-            <MudTextField Label="Diluição" @bind-Value="_produto.Diluicao" />
+        <MudGrid>
+            <MudItem xs="12" sm="7">
+                <MudPaper Class="pa-4">
+                    <MudForm @ref="form" @bind-IsValid="isFormValid">
+                        <MudTextField Label="Código do Sistema" @bind-Value="_produto.CodigoSistema" Required="true" />
+                        <MudTextField Label="Nome" @bind-Value="_produto.Nome" Required="true" />
+                        <MudTextField Label="Descrição" @bind-Value="_produto.Descricao" />
+                        <MudTextField Label="Cor" @bind-Value="_produto.Cor" />
+                        <MudTextField Label="Diluição" @bind-Value="_produto.Diluicao" />
 
-            <MudText Typo="Typo.subtitle2" Class="mt-4">Imagem</MudText>
-            <InputFile OnChange="OnImageSelected" />
-            @if (_produto.Imagem is not null)
-            {
-                <img src="@($"data:image/png;base64,{Convert.ToBase64String(_produto.Imagem)}")" alt="Preview" style="max-height:150px; margin-top: 10px;" />
-            }
+                        <MudText Typo="Typo.subtitle2" Class="mt-4">Imagem</MudText>
+                        <InputFile OnChange="OnImageSelected" />
+                        @if (_produto.Imagem is not null)
+                        {
+                            <img src="@($"data:image/png;base64,{Convert.ToBase64String(_produto.Imagem)}")" alt="Preview" style="max-height:150px; margin-top: 10px;" />
+                        }
 
-            <MudSelect T="Departamento" Label="Departamentos" @bind-SelectedValues="_produto.Departamentos" MultiSelection="true" Required="true">
-                @foreach (var d in _departamentos)
-                {
-                    <MudSelectItem Value="d">@d.Nome</MudSelectItem>
-                }
-            </MudSelect>
+                        <MudSelect T="Departamento" Label="Departamentos" @bind-SelectedValues="_produto.Departamentos" MultiSelection="true" >
+                            @foreach (var d in _departamentos)
+                            {
+                                <MudSelectItem Value="d">@d.Nome</MudSelectItem>
+                            }
+                        </MudSelect>
 
-            <MudSelect T="Embalagem" Label="Embalagens" @bind-SelectedValues="_produto.Embalagems" MultiSelection="true">
-                @foreach (var e in _embalagens)
-                {
-                    <MudSelectItem Value="e">@e.TipoEmbalagem</MudSelectItem>
-                }
-            </MudSelect>
-        </MudForm>
+                        <MudSelect T="Embalagem" Label="Embalagens" @bind-SelectedValues="_produto.Embalagems" MultiSelection="true">
+                            @foreach (var e in _embalagens)
+                            {
+                                <MudSelectItem Value="e">@e.TipoEmbalagem</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudForm>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" sm="5">
+                <MudPaper Class="pa-4" Height="50%">
+                    <MudText Typo="Typo.h6" Align="Align.Center">Embalagens</MudText>
+                    <MudToolBar>
+                        <MudButtonGroup Variant="Variant.Outlined">
+                            <MudButton StartIcon="@Icons.Material.Filled.Add">Add</MudButton>
+                        </MudButtonGroup>
+                    </MudToolBar>
+                </MudPaper>
+                <MudPaper Class="pa-4" Height="50%">
+                    <MudText Typo="Typo.h6" Align="Align.Center">Departamentos</MudText>
+                    <MudToolBar>
+                        <MudButtonGroup Variant="Variant.Outlined">
+                            <MudButton StartIcon="@Icons.Material.Filled.Add">Add</MudButton>
+                        </MudButtonGroup>
+                    </MudToolBar>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
     </DialogContent>
 
     <DialogActions>
@@ -63,8 +87,8 @@
         else
             _produto = new ProdutoLojaResponse { Departamentos = new List<Departamento>(), Embalagems = new List<Embalagem>() };
 
-        _departamentos = await Http.GetFromJsonAsync<List<Departamento>>("api/departamentos");
-        _embalagens = await Http.GetFromJsonAsync<List<Embalagem>>("api/embalagens");
+        _departamentos = new();//await Http.GetFromJsonAsync<List<Departamento>>("api/departamentos");
+        _embalagens = new() ; //await Http.GetFromJsonAsync<List<Embalagem>>("api/embalagens");
     }
 
     private void CloseDialog() => MudDialog.Cancel();
@@ -75,9 +99,9 @@
         {
             HttpResponseMessage response;
             if (_produto.Id > 0)
-                response = await Http.PutAsJsonAsync($"api/produtosloja/{_produto.Id}", _produto);
+                response = await Http.PutAsJsonAsync($"api/produto/produtoloja/{_produto.Id}", _produto);
             else
-                response = await Http.PostAsJsonAsync("api/produtosloja", _produto);
+                response = await Http.PostAsJsonAsync("api/produto/produtoloja", _produto);
 
             if (response.IsSuccessStatusCode)
             {
