@@ -28,6 +28,7 @@ builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<ParceiroService>();
+builder.Services.AddScoped<DeviceDetector>();
 
 // Mudblazor
 builder.Services.AddMudServices();
