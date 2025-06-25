@@ -5,15 +5,15 @@
 
 <div class="produto-page d-flex">
     <!-- Menu lateral -->
-    <aside class="menu-lateral" style="width: 250px;">
+    <aside class="menu-lateral">
         <MudPaper Elevation="0" Class="pa-4">
             <MudList T="string" Dense="true">
                 @foreach (var departamento in ProdutosPorDepartamento.Keys)
                 {
                     <MudListItem OnClick="() => ScrollToDepartamento(departamento)">
                         <AvatarContent>
-                            <MudAvatar Size="Size.Medium" Class="mr-2">
-                                <MudImage Src="assets/images/email.png"/>
+                            <MudAvatar Size="Size.Small" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled">
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowRight"/>
                             </MudAvatar>
                         </AvatarContent>
                         <ChildContent>@departamento</ChildContent>
