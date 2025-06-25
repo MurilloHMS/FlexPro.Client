@@ -136,6 +136,7 @@
         }
 
         _contato.StatusContato = StatusContato_e.NaoContatado;
+        _contato.DataSolicitadoContato = DateTime.UtcNow;
         isLoading = true;
         var response = await Http.PostAsJsonAsync("api/contato", _contato);
         message = await response.Content.ReadAsStringAsync();
