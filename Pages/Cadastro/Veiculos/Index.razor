@@ -3,6 +3,7 @@
 @inject IDialogService DialogService
 @inject HttpClient Http
 @inject ISnackbar Snackbar
+@inject IVehicleService VehicleService
 
 @attribute [Authorize]
 
@@ -61,20 +62,18 @@
 
     private async Task LoadData()
     {
-        try
+        _isLoading = true;
+        var result = await VehicleService.GetVehicleAsync();
+        if (result.IsSuccess)
         {
-            _isLoading = true;
-            veiculos = await Http.GetFromJsonAsync<IList<Veiculo>>("api/veiculo");
+            veiculos = result.Data;
         }
-        catch (HttpRequestException ex)
+        else
         {
-            Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
-            veiculos = default;
+            Snackbar.Add(result.Message, Severity.Error);
         }
-        finally
-        {
-            _isLoading = false;
-        }
+
+        _isLoading = false;
     }
 
 
