@@ -1,5 +1,6 @@
 @inject HttpClient Http
 @inject ISnackbar Snackbar
+@inject IVehicleService VehicleService
 
 @attribute [Authorize]
 
@@ -39,18 +40,7 @@
 
     [Parameter] public Veiculo _veiculo { get; set; }
 
-    private readonly string[] marcas =
-    {
-        "ACURA", "ALFA ROMEO", "AUDI", "BMW", "BUICK", "CADILLAC", "CHEVROLET",
-        "CHERY", "CITROËN", "DODGE", "FERRARI", "FIAT", "FORD", "GMC", "HONDA",
-        "HYUNDAI", "INFINITI", "JAGUAR", "JEEP", "KIA", "LAMBORGHINI",
-        "LAND ROVER", "LEXUS", "LINCOLN", "MITSUBISHI", "MERCEDES-BENZ",
-        "MINI", "MITSUBISHI", "NISSAN", "PEUGEOT", "PORSCHE", "RAM", "RENAULT",
-        "SANTA FÉ", "SEAT", "SUBARU", "SUZUKI", "TESLA", "TOYOTA", "VOLKSWAGEN",
-        "VOLVO", "ZAZ", "TROLLER", "JAC MOTORS", "FOTON", "GREAT WALL", "TATA",
-        "BYD", "DIESEL", "MERCURY", "SPYKER", "SMART", "DAEWOO", "FIAT CHRYSLER",
-        "HONDA", "LIFAN", "CHERY", "CROSSFOX", "RENAULT", "FORD"
-    };
+    private  string[] marcas => VehicleService.GetVehicleBrands();
 
     protected override void OnInitialized()
     {
@@ -59,18 +49,7 @@
             veiculo = _veiculo;
         }
     }
-
-    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
-    {
-        await Task.Delay(5, token);
-
-        if (string.IsNullOrEmpty(value))
-            return marcas;
-
-        return marcas.Where(x => x.Contains(value, StringComparison.OrdinalIgnoreCase));
-    }
-
-
+    
     private void CloseDialog()
     {
         MudDialog.Cancel();

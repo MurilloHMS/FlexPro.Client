@@ -71,7 +71,6 @@
         try
         {
             isLoading = true;
-            Task.Delay(5000);
             var (statusCode, response) = await AuthService.Login(loginModel);
 
             if (statusCode == HttpStatusCode.OK)
