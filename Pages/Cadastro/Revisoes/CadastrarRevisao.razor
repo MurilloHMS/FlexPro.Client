@@ -69,7 +69,7 @@
             }
 
             _veiculos = await Http.GetFromJsonAsync<IList<Veiculo>>("api/veiculo");
-            _entidades = await Http.GetFromJsonAsync<IList<Entidade>>("api/entidade");
+            _entidades = await Http.GetFromJsonAsync<IList<Entidade>>("api/PrestadorDeServico");
         }
         catch (Exception e)
         {

@@ -26,7 +26,7 @@
     {
         try
         {
-            await Http.DeleteAsync($"api/entidade/{Entidade.ID}");
+            await Http.DeleteAsync($"api/PrestadorDeServico/{Entidade.ID}");
             Snackbar.Add("Entidade Deletada", Severity.Success);
             MudDialog?.Close(DialogResult.Ok(true));
         }

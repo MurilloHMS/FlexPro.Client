@@ -11,7 +11,7 @@
 <br><br><br>
 
 <MudDataGrid Items="@RevisoesFiltradas" T="Revisao" Hover="true" Bordered="true" Striped="true" Dense="true"
-             Filterable="true" SortMode="SortMode.Multiple" Virtualize>
+             Filterable="true" SortMode="SortMode.Multiple" Virtualize Loading="_isLoading">
     <ToolBarContent>
         <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
                    Color="Color.Primary">Cadastrar
@@ -44,6 +44,7 @@
 @code {
     private IEnumerable<Revisao> Revisoes = new List<Revisao>();
     private string _searchString = "";
+    private bool _isLoading;
 
     private IEnumerable<Revisao> RevisoesFiltradas =>
         string.IsNullOrWhiteSpace(_searchString)
@@ -63,12 +64,17 @@
     {
         try
         {
+            _isLoading = true;
             Revisoes = await Http.GetFromJsonAsync<IList<Revisao>>("api/revisao");
         }
         catch (HttpRequestException ex)
         {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             Revisoes = default;
+        }
+        finally
+        {
+            _isLoading = false;
         }
     }
 
