@@ -59,7 +59,7 @@
     {
         try
         {
-            entidades = await Http.GetFromJsonAsync<IList<Entidade>>("api/entidade");
+            entidades = await Http.GetFromJsonAsync<IList<Entidade>>("api/PrestadorDeServico");
         }
         catch (HttpRequestException ex)
         {
