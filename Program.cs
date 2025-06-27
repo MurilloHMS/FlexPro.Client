@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FlexPro.Client;
+using FlexPro.Client.Infrastructure.Interfaces;
 using FlexPro.Client.Providers;
 using FlexPro.Client.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,7 @@ builder.Services.AddScoped<ProdutoService>();
 builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<ParceiroService>();
 builder.Services.AddScoped<DeviceDetector>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
 
 // Mudblazor
 builder.Services.AddMudServices();
