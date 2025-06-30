@@ -5,105 +5,80 @@
 <MudPaper Elevation="0" Class="py-3">
     <MudNavMenu Color="Color.Secondary">
         <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Página Inicial</MudNavLink>
+
         <AuthorizeView>
-            <MudNavGroup Title="Gestão" Expanded="false" Icon="@Icons.Material.Filled.Domain">
-                <MudNavGroup Title="Automóveis" Expanded="false" Icon="@Icons.Material.Filled.DirectionsCar">
-                    <MudNavLink Href="veiculos" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.DirectionsCar">
-                        Veículos
-                    </MudNavLink>
-                    <MudNavLink Href="consulta/veiculo" Match="NavLinkMatch.All"
-                                Icon="@Icons.Material.Filled.Search">Consulta Veiculos
-                    </MudNavLink>
-                    <MudNavLink Href="revisoes" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.CarRepair">
-                        Revisões
-                    </MudNavLink>
-                    <MudNavLink Href="abastecimentos" Match="NavLinkMatch.All"Icon="@Icons.Material.Filled.LocalGasStation">
-                        Abastecimentos
-                    </MudNavLink>
+            <!-- MANAGEMENT -->
+            <MudNavGroup Title="Gestão" Icon="@Icons.Material.Filled.Domain">
+                <MudNavGroup Title="Veiculos" Icon="@Icons.Material.Filled.DirectionsCar">
+                    <MudNavLink Href="management/vehicles" Icon="@Icons.Material.Filled.DirectionsCar">Lista de Veiculos</MudNavLink>
+                    <MudNavLink Href="management/vehicles/search" Icon="@Icons.Material.Filled.Search">Busca</MudNavLink>
+                    <MudNavLink Href="management/vehicles/maintenance" Icon="@Icons.Material.Filled.CarRepair">Manutenções</MudNavLink>
+                    <MudNavLink Href="management/vehicles/fuelings" Icon="@Icons.Material.Filled.LocalGasStation">Abastecimentos</MudNavLink>
                 </MudNavGroup>
-                <MudNavGroup Title="Pessoas" Expanded="false" Icon="@Icons.Material.Filled.People">
-                    <MudNavLink Href="funcionarios" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Group">
-                        Funcionários
-                    </MudNavLink>
-                    <MudNavLink Href="parceiros" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.GroupAdd">
-                        Parceiros
-                    </MudNavLink>
-                    <MudNavLink Href="entidades" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Business">Prestadores
-                        e Fornecedores
-                    </MudNavLink>
+
+                <MudNavGroup Title="Pessoas" Icon="@Icons.Material.Filled.People">
+                    <MudNavLink Href="management/people/employees" Icon="@Icons.Material.Filled.Group">Funcionários</MudNavLink>
+                    <MudNavLink Href="management/people/partners" Icon="@Icons.Material.Filled.GroupAdd">Parceiros</MudNavLink>
+                    <MudNavLink Href="management/people/entities" Icon="@Icons.Material.Filled.Business">Entidades</MudNavLink>
                 </MudNavGroup>
-                <MudNavLink Href="categorias" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Category">
-                    Categorias
-                </MudNavLink>
+
+                <MudNavLink Href="management/categories" Icon="@Icons.Material.Filled.Category">Categorias</MudNavLink>
             </MudNavGroup>
-            <MudNavGroup Title="Comercial" Expanded="false" Icon="@Icons.Material.Filled.BusinessCenter">
-                <MudNavGroup Title="Consultas" Expanded="false" Icon="@Icons.Material.Filled.QueryStats">
-                    <MudNavLink Href="Comercial/Consultas/CheckList" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Checklist">
-                        CheckList
-                    </MudNavLink>
+
+            <!-- SALES -->
+            <MudNavGroup Title="Comercial" Icon="@Icons.Material.Filled.BusinessCenter">
+                <MudNavGroup Title="Consultas" Icon="@Icons.Material.Filled.QueryStats">
+                    <MudNavLink Href="sales/inquiries/checklist" Icon="@Icons.Material.Filled.Checklist">Checklist</MudNavLink>
                 </MudNavGroup>
-                <MudNavGroup Title="Relatórios" Expanded="false" Icon="@Icons.Material.Filled.Analytics">
-                    
+
+                <MudNavGroup Title="Relatórios" Icon="@Icons.Material.Filled.Analytics">
+                    <!-- Add report pages here -->
                 </MudNavGroup>
-                <MudNavGroup Title="Documentos" Expanded="false" Icon="@Icons.Material.Filled.Archive">
-                    <MudNavLink Href="Documentos/IdentidadeVisual" Icon="@Icons.Material.Filled.PhotoAlbum">
-                        Identidade Visual
-                    </MudNavLink>
+
+                <MudNavGroup Title="Documentos" Icon="@Icons.Material.Filled.Archive">
+                    <MudNavLink Href="sales/documents/branding" Icon="@Icons.Material.Filled.PhotoAlbum">Identidade Visual</MudNavLink>
                 </MudNavGroup>
             </MudNavGroup>
-            <MudNavGroup Title="Ferramentas" Expanded="false" Icon="@Icons.Material.Filled.Build">
-                <MudNavGroup Title="PDF" Expanded="false" Icon="@Icons.Material.Filled.PictureAsPdf">
-                    <MudNavLink Href="separarPDF" Match="NavLinkMatch.All" Icon="@Icons.Custom.FileFormats.FilePdf">Separar
-                        PDF
-                    </MudNavLink>
+
+            <!-- TOOLS -->
+            <MudNavGroup Title="Ferramentas" Icon="@Icons.Material.Filled.Build">
+                <MudNavGroup Title="PDF" Icon="@Icons.Material.Filled.PictureAsPdf">
+                    <MudNavLink Href="tools/pdfmanager/splitpdf" Icon="@Icons.Custom.FileFormats.FilePdf">Separar PDF</MudNavLink>
                 </MudNavGroup>
-                <MudNavGroup Title="Calculos" Expanded="false" Icon="@Icons.Material.Filled.Calculate">
-                    <MudNavLink Href="CalculoTransportadoras" Match="NavLinkMatch.All"
-                                Icon="@Icons.Material.Filled.EmojiTransportation">Calcular Transportadoras
-                    </MudNavLink>
-                    <MudNavLink Href="BoaSolucao" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Store">
-                        Boa Solução
-                    </MudNavLink>
+
+                <MudNavGroup Title="Calculos" Icon="@Icons.Material.Filled.Calculate">
+                    <MudNavLink Href="tools/calculators/shippingcost" Icon="@Icons.Material.Filled.EmojiTransportation">Custo Transportadora</MudNavLink>
+                    <MudNavLink Href="tools/calculators/boasolucao" Icon="@Icons.Material.Filled.Store">Boa Solução</MudNavLink>
                 </MudNavGroup>
-                <MudNavGroup Title="Coletas" Expanded="false" Icon="@Icons.Material.Filled.MergeType">
-                    <MudNavLink Href="calcularICMS" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Calculate">
-                        Coletar Dados ICMS
-                    </MudNavLink>
-                    <MudNavLink Href="coletarDadosNotasFiscais" Match="NavLinkMatch.All"
-                                Icon="@Icons.Custom.FileFormats.FileCode">Coletar Dados Notas Fiscais
-                    </MudNavLink>
+
+                <MudNavGroup Title="Coletas" Icon="@Icons.Material.Filled.MergeType">
+                    <MudNavLink Href="tools/filemanager/icmsdata" Icon="@Icons.Material.Filled.Calculate">Dados ICMS</MudNavLink>
+                    <MudNavLink Href="tools/filemanager/invoicedata" Icon="@Icons.Custom.FileFormats.FileCode">Coletar Dados NFe</MudNavLink>
                 </MudNavGroup>
-                <MudNavGroup Title="Renomear / Identificar" Expanded="false" Icon="@Icons.Material.Filled.DriveFileRenameOutline">
-                    <MudNavLink Href="RenomearNotas" Match="NavLinkMatch.All"
-                                Icon="@Icons.Material.Filled.DriveFileRenameOutline">Renomear Notas Fiscais
-                    </MudNavLink>
-                    <MudNavLink Href="/FlexPro/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.CreditCard">Separar
-                        Dados Cartões
-                    </MudNavLink>
+
+                <MudNavGroup Title="Renomear / Identificar" Icon="@Icons.Material.Filled.DriveFileRenameOutline">
+                    <MudNavLink Href="tools/filemanager/identifyinvoices" Icon="@Icons.Material.Filled.DriveFileRenameOutline">Identificar Notas</MudNavLink>
+                    <MudNavLink Href="tools/filemanager/carddata" Icon="@Icons.Material.Filled.CreditCard">Dados Cartões</MudNavLink>
                 </MudNavGroup>
             </MudNavGroup>
-            <MudNavGroup Title="Automações" Expanded="false" Icon="@Icons.Material.Filled.AutoMode">
-                <MudNavGroup Title="Disparos" Expanded="false" Icon="@Icons.Material.Filled.Send">
-                    <MudNavLink Href="Envios/Informativo" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Email">
-                        Enviar Informativo Clientes
-                    </MudNavLink>
+
+            <!-- AUTOMATIONS -->
+            <MudNavGroup Title="Automações" Icon="@Icons.Material.Filled.AutoMode">
+                <MudNavGroup Title="Disparos" Icon="@Icons.Material.Filled.Send">
+                    <MudNavLink Href="automations/triggers/newsletter" Icon="@Icons.Material.Filled.Email">Enviar Newsletter</MudNavLink>
                 </MudNavGroup>
             </MudNavGroup>
-            <MudNavGroup Title="Administrativo" Expanded="false" Icon="@Icons.Material.Filled.AdminPanelSettings">
-                <MudNavLink Href="adminSite" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Web">Site Proauto
-                    Kimium
-                </MudNavLink>
-                <MudNavLink Href="admin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.AdminPanelSettings">
-                    Geral
-                </MudNavLink>
+
+            <!-- ADMINISTRATION -->
+            <MudNavGroup Title="Administração" Icon="@Icons.Material.Filled.AdminPanelSettings">
+                <MudNavLink Href="administration/website" Icon="@Icons.Material.Filled.Web">Website</MudNavLink>
+                <MudNavLink Href="administration/general" Icon="@Icons.Material.Filled.AdminPanelSettings">Geral</MudNavLink>
             </MudNavGroup>
-            <MudNavGroup Title="Suporte" Expanded="false" Icon="@Icons.Material.Filled.SupportAgent">
-                <MudNavLink href="Suporte/Chamados" Icon="@Icons.Material.Filled.ContactSupport">
-                    Chamado
-                </MudNavLink>
-                <MudNavLink href="https://flexpro-api.onrender.com/index.html" Target="_blank" Icon="@Icons.Material.Filled.Api">
-                    Api
-                </MudNavLink>
+
+            <!-- SUPPORT -->
+            <MudNavGroup Title="Suporte" Icon="@Icons.Material.Filled.SupportAgent">
+                <MudNavLink Href="support" Icon="@Icons.Material.Filled.ContactSupport">Chamados</MudNavLink>
+                <MudNavLink Href="https://flexpro-api.onrender.com/index.html" Target="_blank" Icon="@Icons.Material.Filled.Api">API</MudNavLink>
             </MudNavGroup>
         </AuthorizeView>
     </MudNavMenu>
