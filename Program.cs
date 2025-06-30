@@ -16,7 +16,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 var environment = builder.HostEnvironment;
 // TODO: update this to environment variables
-var databaseUrl = !environment.IsDevelopment() ? "http://localhost:5233/" : "https://flexpro-api.onrender.com/";
+var databaseUrl = environment.IsDevelopment() ? "http://localhost:5233/" : "https://flexpro-api.onrender.com/";
 builder.Services.AddHttpClient("FlexProAPI", client => { client.BaseAddress = new Uri(databaseUrl); })
     .AddHttpMessageHandler<AuthDelegatingHandler>();
 
