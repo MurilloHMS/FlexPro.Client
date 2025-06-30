@@ -23,8 +23,81 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Pages\Admin\AdministrativoSite\Components\Departamento\Departamento.razor" />
-      <AdditionalFiles Include="Pages\Admin\AdministrativoSite\Components\Produtos\Produtos.razor" />
+      <AdditionalFiles Include="Pages\Administration\WebSite\Components\Departamento\Departamento.razor" />
+      <AdditionalFiles Include="Pages\Administration\WebSite\Components\Produtos\Produtos.razor" />
+      <AdditionalFiles Include="Pages\Automations\Triggers\NewsLetter\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Categories\CadastrarCategorias.razor" />
+      <AdditionalFiles Include="Pages\Management\Categories\DialogCategorias.razor" />
+      <AdditionalFiles Include="Pages\Management\Categories\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Entities\CadastrarEntidades.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Entities\DialogEntidades.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Entities\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Employees\CadastrarFuncionario.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Employees\DialogFuncionarios.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Employees\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Partners\CadastrarParceiro.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Partners\DialogParceiro.razor" />
+      <AdditionalFiles Include="Pages\Management\People\Partners\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Fuelings\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Fuelings\RelatoriosAbastecimentos.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Fuelings\Relatorios\AbastecimentoGeral\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Fuelings\Relatorios\AbastecimentoIndividual\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Fuelings\Relatorios\AbastecimentoSetor\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Search\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Maintenance\CadastrarRevisao.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Maintenance\DialogRevisao.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\Maintenance\Index.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\VehiclesList\CadastrarVeiculo.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\VehiclesList\DialogVeiculos.razor" />
+      <AdditionalFiles Include="Pages\Management\Vehicles\VehiclesList\Index.razor" />
+      <AdditionalFiles Include="Pages\Sales\Documents\Branding\Index.razor" />
+      <AdditionalFiles Include="Pages\Sales\Inquiries\CheckList\Index.razor" />
+      <AdditionalFiles Include="Pages\Tools\Calculators\BoaSolucao\CadastrarProdutos.razor" />
+      <AdditionalFiles Include="Pages\Tools\Calculators\BoaSolucao\CadastrarReceitas.razor" />
+      <AdditionalFiles Include="Pages\Tools\Calculators\BoaSolucao\Index.razor" />
+      <AdditionalFiles Include="Pages\Tools\Calculators\ShippingCost\Index.razor" />
+      <AdditionalFiles Include="Pages\Tools\FileManager\IcmsData\Index.razor" />
+      <AdditionalFiles Include="Pages\Tools\FileManager\InvoiceData\Index.razor" />
+      <AdditionalFiles Include="Pages\Tools\FileManager\CardData\Index.razor" />
+      <AdditionalFiles Include="Pages\Tools\FileManager\IdentifyInvoices\Index.razor" />
+      <AdditionalFiles Include="Pages\Tools\PdfManager\SplitPdf\Index.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages\Automations\Triggers\" />
+      <Folder Include="Pages\Management\People\" />
+      <Folder Include="Pages\Management\Vehicles\" />
+      <Folder Include="Pages\Sales\Documents\" />
+      <Folder Include="Pages\Sales\Inquiries\" />
+      <Folder Include="Pages\Sales\Reports\" />
+      <Folder Include="Pages\Support\" />
+      <Folder Include="Pages\Tools\Calculators\" />
+      <Folder Include="Pages\Tools\FileManager\" />
+      <Folder Include="Pages\Tools\PdfManager\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Veiculos\CadastrarVeiculo.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Veiculos\DialogVeiculos.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Veiculos\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Funcionarios\CadastrarFuncionario.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Funcionarios\DialogFuncionarios.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Funcionarios\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Parceiros\CadastrarParceiro.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Parceiros\DialogParceiro.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Parceiros\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Entidades\CadastrarEntidades.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Entidades\DialogEntidades.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Entidades\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Abastecimentos\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Abastecimentos\Relatorios\AbastecimentoGeral\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Abastecimentos\Relatorios\AbastecimentoIndividual\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Abastecimentos\Relatorios\AbastecimentoSetor\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\Abastecimentos\RelatoriosAbastecimentos.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\BoaSolucao\CadastrarProdutos.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\BoaSolucao\CadastrarReceitas.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Cadastro\BoaSolucao\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Ferramentas\CalculoTransportadoras\Index.razor" />
     </ItemGroup>
 
 </Project>
