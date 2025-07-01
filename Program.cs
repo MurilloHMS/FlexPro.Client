@@ -31,6 +31,7 @@ builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<ParceiroService>();
 builder.Services.AddScoped<DeviceDetector>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 // Mudblazor
 builder.Services.AddMudServices();
