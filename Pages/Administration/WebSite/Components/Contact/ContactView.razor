@@ -1,0 +1,79 @@
+
+@inject IContactService Service
+@inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
+
+<MudDataGrid Items="@filteredContacts"
+             T="ContactResponse"
+             Hover="true"
+             Bordered="true"
+             Striped="true"
+             Dense="true"
+             SortMode="SortMode.Multiple"
+             Filterable="true"
+             Loading="_isLoading"
+             Virtualize>
+    <ToolBarContent>
+        <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+            <MudIconButton OnClick="@(() => UpdateData())" Variant="Variant.Filled" Size="Size.Small"
+                           Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
+        </MudButtonGroup>
+        <MudSpacer/>
+        <MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="x => x.DataSolicitadoContato" Title="Data Solicitação" Sortable="true" Filterable="true" Format="dd/MM/yyyy"/>
+        <PropertyColumn Property="x => x.Nome" Title="Nome" Sortable="true" Filterable="true"/>
+        <PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" Filterable="true"/>
+        <PropertyColumn Property="x => x.NomeEmpresa" Title="Razão Social" Sortable="true" Filterable="true"/>
+        <PropertyColumn Property="x => x.TipoContato" Title="Diluição" Sortable="true" Filterable="true"/>
+        <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
+            <CellTemplate>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit"
+                               OnClick="@(() => OpenEditDialogAsync(context.Item))"/>
+                <MudSpacer/>
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete"/>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="ContactResponse"/>
+    </PagerContent>
+</MudDataGrid>
+@code {
+    private string _searchString = string.Empty;
+    private bool _isLoading;
+    private IEnumerable<ContactResponse> contact = new List<ContactResponse>();
+
+    IEnumerable<ContactResponse> filteredContacts => string.IsNullOrWhiteSpace(_searchString)
+        ? contact
+        : contact.Where(x =>
+            x.Nome.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+           x.Email.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+        );
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private async Task OpenEditDialogAsync(ContactResponse contextItem)
+    {
+        // var parameters = new DialogParameters<CadastrarProduto>
+        // {
+        //     {x => x.produtoLoja, contextItem}
+        // };
+        //
+        // var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+        // var dialog = await DialogService.ShowAsync<CadastrarProduto>("Atualizar Produto", parameters, options);
+        // var result = await dialog.Result;
+    }
+
+    private async Task UpdateData()
+    {
+        _isLoading = true;
+        contact = await Service.GetAllAsync();
+        _isLoading = false;
+    }
+
+}
