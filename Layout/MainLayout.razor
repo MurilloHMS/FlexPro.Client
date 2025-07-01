@@ -1,5 +1,4 @@
-﻿@using DocumentFormat.OpenXml.Drawing
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 @inject AuthService AuthService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -11,11 +10,12 @@
 
 <AuthorizeView>
     <Authorized>
+        <NotificationProvider/>
         <!-- Layout para usuário logado -->
         <MudLayout>
-            <MudAppBar Elevation="1" Dense="true" Style="@($"background: {Colors.Gray.Darken3}")">
+            <MudAppBar Elevation="1" Dense="true" Color="Color.Primary">
                 <MudIconButton Edge="Edge.Start" OnClick="@(e => DrawerToggle())">
-                    <MudImage Src="assets/icons/logo.png" Width="30"></MudImage>
+                    <MudIcon Icon="@Icons.Material.Filled.Menu" Color="Color.Secondary"/>
                 </MudIconButton>
                 <MudText Typo="Typo.h6" Class="ml-3">Proauto Kimium</MudText>
                 <MudSpacer/>
