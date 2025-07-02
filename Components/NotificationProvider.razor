@@ -10,10 +10,10 @@
         hubConnection = new HubConnectionBuilder()
             .WithUrl("https://flexpro-api.onrender.com/notificationHub", options =>
             {
-                options.AccessTokenProvider = async () =>
-                {
-                    return await localStorage.GetItemAsync("authToken");
-                };
+                // options.AccessTokenProvider = async () =>
+                // {
+                //     return await localStorage.GetItemAsync("authToken");
+                // };
             })
             .WithAutomaticReconnect()
             .Build();
