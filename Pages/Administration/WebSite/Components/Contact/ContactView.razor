@@ -12,7 +12,8 @@
              SortMode="SortMode.Multiple"
              Filterable="true"
              Loading="_isLoading"
-             Virtualize>
+             Virtualize
+             ex>
     <ToolBarContent>
         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
             <MudIconButton OnClick="@(() => UpdateData())" Variant="Variant.Filled" Size="Size.Small"
@@ -23,20 +24,25 @@
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <Columns>
+        <HierarchyColumn T="ContactResponse"></HierarchyColumn>
         <PropertyColumn Property="x => x.DataSolicitadoContato" Title="Data Solicitação" Sortable="true" Filterable="true" Format="dd/MM/yyyy"/>
         <PropertyColumn Property="x => x.Nome" Title="Nome" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.NomeEmpresa" Title="Razão Social" Sortable="true" Filterable="true"/>
-        <PropertyColumn Property="x => x.TipoContato" Title="Diluição" Sortable="true" Filterable="true"/>
-        <TemplateColumn Hidden="false" CellClass="d-flex justify-center">
-            <CellTemplate>
-                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit"
-                               OnClick="@(() => OpenEditDialogAsync(context.Item))"/>
-                <MudSpacer/>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Filled.Delete"/>
-            </CellTemplate>
-        </TemplateColumn>
+        <PropertyColumn Property="x => x.TipoContato" Title="Tipo Contato" Sortable="true" Filterable="true"/>
     </Columns>
+    <ChildRowContent>
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Descrição</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>@context.Item.Mensagem</MudText>
+            </MudCardContent>
+        </MudCard>
+    </ChildRowContent>
     <PagerContent>
         <MudDataGridPager T="ContactResponse"/>
     </PagerContent>
@@ -56,19 +62,7 @@
     protected override async Task OnInitializedAsync()
     {
     }
-
-    private async Task OpenEditDialogAsync(ContactResponse contextItem)
-    {
-        // var parameters = new DialogParameters<CadastrarProduto>
-        // {
-        //     {x => x.produtoLoja, contextItem}
-        // };
-        //
-        // var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
-        // var dialog = await DialogService.ShowAsync<CadastrarProduto>("Atualizar Produto", parameters, options);
-        // var result = await dialog.Result;
-    }
-
+    
     private async Task UpdateData()
     {
         _isLoading = true;
