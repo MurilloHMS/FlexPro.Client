@@ -8,13 +8,7 @@
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://flexpro-api.onrender.com/notificationHub", options =>
-            {
-                // options.AccessTokenProvider = async () =>
-                // {
-                //     return await localStorage.GetItemAsync("authToken");
-                // };
-            })
+            .WithUrl("https://flexpro-api.onrender.com/notificationHub")
             .WithAutomaticReconnect()
             .Build();
 
