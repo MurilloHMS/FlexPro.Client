@@ -7,7 +7,7 @@
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/notificationHub"))
+            .WithUrl("https://flexpro-api.onrender.com/notificationHub")
             .WithAutomaticReconnect()
             .Build();
 
