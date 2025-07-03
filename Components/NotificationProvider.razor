@@ -9,7 +9,7 @@
     {
         hubConnection = new HubConnectionBuilder()
             .WithUrl("https://flexpro-api.onrender.com/notificationHub")
-            .WithAutomaticReconnect()
+            .WithAutomaticReconnect()  
             .Build();
 
         hubConnection.On<string>("ReceiveNotification", message =>
