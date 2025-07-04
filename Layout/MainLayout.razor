@@ -32,11 +32,9 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MudPaper Elevation="0" Style="padding: 10px;">
-                            <MudAvatar Style="@($"background: {Colors.Gray.Lighten4}")" Variant="Variant.Filled">
-                                <MudImage Src="assets/images/logo.png"/>
-                            </MudAvatar>
+                            <MudAvatar Variant="Variant.Filled" Color="Color.Secondary">@userName.</MudAvatar>
                             <br>
-                            <MudText Typo="Typo.overline" Align="Align.Center" Color="Color.Primary">@userName</MudText>
+                            <MudText Typo="Typo.overline" Align="Align.Center" Color="Color.Primary">@(string.IsNullOrWhiteSpace(userName) ? "U" : userName[0].ToString().ToUpper())</MudText>
                         </MudPaper>
                         <MudMenuItem Label="Conta"/>
                         <MudMenuItem Label="Configurações"/>
