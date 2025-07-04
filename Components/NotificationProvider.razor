@@ -8,7 +8,7 @@
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://flexpro-api.onrender.com/notificationHub")
+            .WithUrl("https://api.proautokimium.com/notificationHub")
             .WithAutomaticReconnect()  
             .Build();
 
