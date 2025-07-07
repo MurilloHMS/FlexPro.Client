@@ -32,6 +32,7 @@ builder.Services.AddScoped<ParceiroService>();
 builder.Services.AddScoped<DeviceDetector>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped(typeof(IApiService<>), typeof(ApiService<>));
 
 // Mudblazor
 builder.Services.AddMudServices();
