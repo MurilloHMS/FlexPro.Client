@@ -5,41 +5,53 @@
 
 <MudPaper>
     <MudStepper NonLinear CenterLabels OnPreviewInteraction="OnPreviewInteraction">
-        <MudStep Title="Passo 1" SecondaryText="Envio da planilha com os dados das notas fiscais"
-                 HasError="@(_passo1Error == true)">
-            <MudText>Faça o upload da planilha com os dados da nota fiscal para validar os dados.</MudText>
-            <MudFileUpload T="IBrowserFile" FilesChanged="UploadDadosNfe" Accept=".xlsx" MaximumFileCount="1">
+        <MudStep Title="Passo 1" SecondaryText="Envio da planilha com os dados das notas fiscais" HasError="_hasPasso1Error">
+            <MudText>Faça o upload da planilha com os dados da nota fiscal.</MudText>
+            <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosNfe(files))"
+                           Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File
-                    </MudButton>
+                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
                 </ActivatorContent>
             </MudFileUpload>
+            @if (_isPasso1Concluido)
+            {
+                <MudText Color="Color.Success" Typo="Typo.caption">✔ Arquivo enviado com sucesso.</MudText>
+            }
         </MudStep>
-        <MudStep Title="Passo 2" SecondaryText="Envio da planilha com os dados das Ordens de serviço"
-                 HasError="@(_passo2Error == true)">
-            <MudText>Faça o upload da planilha com os dados das ordens de serviço</MudText>
-            <MudFileUpload T="IBrowserFile" FilesChanged="UploadDadosOs" Accept=".xlsx" MaximumFileCount="1">
+
+        <MudStep Title="Passo 2" SecondaryText="Envio da planilha com os dados das Ordens de serviço" HasError="_hasPasso2Error">
+            <MudText>Faça o upload da planilha com os dados das ordens de serviço.</MudText>
+            <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosOs(files))"
+                           Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File
-                    </MudButton>
+                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
                 </ActivatorContent>
             </MudFileUpload>
+            @if (_isPasso2Concluido)
+            {
+                <MudText Color="Color.Success" Typo="Typo.caption">✔ Arquivo enviado com sucesso.</MudText>
+            }
         </MudStep>
-        <MudStep Title="Passo 3" SecondaryText="Envio da planilha com os dados das peças trocadas"
-                 HasError="@(_passo3Error == true)">
-            <MudText>Faça o upload da planilha com os dados das peças trocadas</MudText>
-            <MudFileUpload T="IBrowserFile" FilesChanged="UploadDadosPecasTrocadas" Accept=".xlsx" MaximumFileCount="1">
+
+        <MudStep Title="Passo 3" SecondaryText="Envio da planilha com os dados das peças trocadas" HasError="_hasPasso3Error">
+            <MudText>Faça o upload da planilha com os dados das peças trocadas.</MudText>
+            <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosPecasTrocadas(files))"
+                           Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File
-                    </MudButton>
+                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
                 </ActivatorContent>
             </MudFileUpload>
+            @if (_isPasso3Concluido)
+            {
+                <MudText Color="Color.Success" Typo="Typo.caption">✔ Arquivo enviado com sucesso.</MudText>
+            }
         </MudStep>
+
         <MudStep Title="Passo 4" SecondaryText="Validação">
-            <MudText>Selecione os clientes aprovados para enviar o e-mail</MudText>
+            <MudText>Selecione os clientes aprovados para envio de e-mail.</MudText>
             <MudDataGrid T="Informativo"
                          MultiSelection="true"
                          Items="_informativos"
@@ -52,334 +64,223 @@
                     <MudText Typo="Typo.h6">Informativo Clientes</MudText>
                     <MudSpacer/>
                     <MudTextField @bind-Value="_searchString" Placeholder="Buscar Cliente" Adornment="Adornment.Start"
-                                  Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"
-                                  Class="mt-0"></MudTextField>
+                                  Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"/>
                 </ToolBarContent>
                 <Columns>
                     <SelectColumn T="Informativo"/>
                     <PropertyColumn Property="x => x.CodigoCliente" Title="Cód Cliente"/>
                     <PropertyColumn Property="x => x.NomeDoCliente" Title="Cliente"/>
                     <PropertyColumn Property="x => x.ProdutoEmDestaque" Title="Produto em Destaque"/>
-                    <PropertyColumn Property="x => x.QuantidadeDeProdutos" Title="Quantidade Produtos"/>
-                    <PropertyColumn Property="x => x.QuantidadeDeLitros" Title="Quantidade de Litros"/>
-                    <PropertyColumn Property="x => x.QuantidadeNotasEmitidas" Title="Quant. Notas Emitidas"/>
-                    <PropertyColumn Property="x => x.QuantidadeDeVisitas" Title="Quant. Visitas"/>
-                    <PropertyColumn Property="x => x.ValorDePeçasTrocadas" Title="Valor de peças Trocadas"/>
-                    <PropertyColumn Property="x => x.MediaDiasAtendimento" Title="Média de dias"/>
+                    <PropertyColumn Property="x => x.QuantidadeDeProdutos" Title="Qtd Produtos"/>
+                    <PropertyColumn Property="x => x.QuantidadeDeLitros" Title="Qtd Litros"/>
+                    <PropertyColumn Property="x => x.QuantidadeNotasEmitidas" Title="Notas Emitidas"/>
+                    <PropertyColumn Property="x => x.QuantidadeDeVisitas" Title="Visitas"/>
+                    <PropertyColumn Property="x => x.ValorDePeçasTrocadas" Title="Valor Peças"/>
+                    <PropertyColumn Property="x => x.MediaDiasAtendimento" Title="Média Dias"/>
                 </Columns>
                 <PagerContent>
-                    <MudDataGridPager T="Informativo"></MudDataGridPager>
+                    <MudDataGridPager T="Informativo"/>
                 </PagerContent>
             </MudDataGrid>
-            <MudButton OnClick="@(() => AtualizarDadosDaTabela())" Variant="Variant.Filled" Color="Color.Primary"
-                       StartIcon="@Icons.Material.Filled.Update">Atualizar Tabela
-            </MudButton>
-            <MudButton OnClick="@(() => EnviarInformativos())" Variant="Variant.Filled" Color="Color.Primary"
-                       StartIcon="@Icons.Material.Filled.Update">Confirmar @_clientesSelecionados.Count() clientes
-                Selecionados
+
+            <MudButton OnClick="AtualizarDadosDaTabela" Variant="Variant.Filled" Color="Color.Primary" Disabled="_isLoading"
+                       StartIcon="@Icons.Material.Filled.Refresh">Atualizar Tabela</MudButton>
+
+            <MudButton OnClick="EnviarInformativos" Variant="Variant.Filled" Color="Color.Primary"
+                       Disabled="_isLoading || !_clientesSelecionados.Any()"
+                       StartIcon="@Icons.Material.Filled.Send">
+                Confirmar @_clientesSelecionados.Count() clientes selecionados
             </MudButton>
         </MudStep>
-        <MudStep Title="Envio dos Emails" SecondaryText="Envie os e-mails para os clientes">
 
+        <MudStep Title="Envio dos Emails" SecondaryText="Envio concluído">
+            <MudText>E-mails enviados com sucesso (caso anterior tenha passado).</MudText>
         </MudStep>
     </MudStepper>
 </MudPaper>
 
 @code {
     [Inject] IDialogService DialogService { get; set; }
-
     [Inject] HttpClient Http { get; set; }
-
     [Inject] ISnackbar Snackbar { get; set; }
 
+    private bool _isPasso1Concluido, _isPasso2Concluido, _isPasso3Concluido, _isValid;
+    private bool _hasPasso1Error, _hasPasso2Error, _hasPasso3Error;
+    private bool _isLoading;
 
-    private bool _passo1 = false;
-    private bool _passo2 = false;
-    private bool _passo3 = false;
-    private bool _isValid = false;
+    private IBrowserFile planilhaDadosNfe, planilhaDadosOs, planilhaDadosPecasTrocadas;
 
-    //erros variables
-    private bool _passo1Error = false;
-    private bool _passo2Error = false;
-    private bool _passo3Error = false;
-
-    private IBrowserFile planilhaDadosNfe;
-    private IBrowserFile planilhaDadosOs;
-    private IBrowserFile planilhaDadosPecasTrocadas;
-
-    private IEnumerable<Informativo> _informativos = new List<Informativo>();
-    private IEnumerable<InformativoNFe> _informativoNFe = new List<InformativoNFe>();
-    private IEnumerable<InformativoOS> _informativoOs = new List<InformativoOS>();
-    private IEnumerable<InformativoPecasTrocadas> _informativoPecasTrocadas = new List<InformativoPecasTrocadas>();
-
+    private List<Informativo> _informativos = new();
+    private List<InformativoNFe> _informativoNFe = new();
+    private List<InformativoOS> _informativoOs = new();
+    private List<InformativoPecasTrocadas> _informativoPecasTrocadas = new();
     private IEnumerable<Informativo> _clientesSelecionados = new List<Informativo>();
     private string _searchString;
 
-    private bool _isLoading = false;
-
-    #region Controladores UploadFile
-
-    private async void UploadDadosNfe(IBrowserFile file)
+    private async Task<List<T>> UploadArquivo<T>(IBrowserFile file, string url, string fileKey, Action onSuccess, Action onError)
     {
-        planilhaDadosNfe = file;
         var content = new MultipartFormDataContent();
-        if (planilhaDadosNfe != null)
+        if (file != null)
         {
-            var fileContent = new StreamContent(planilhaDadosNfe.OpenReadStream());
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-            content.Add(fileContent, "file", planilhaDadosNfe.Name);
+            var streamContent = new StreamContent(file.OpenReadStream());
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            content.Add(streamContent, fileKey, file.Name);
         }
 
-        var response = await Http.PostAsync("api/Informativo/upload/nfe", content);
+        var response = await Http.PostAsync(url, content);
         if (response.IsSuccessStatusCode)
         {
-            _informativoNFe = await response.Content.ReadFromJsonAsync<List<InformativoNFe>>();
-            if (_informativoNFe.Any())
+            var data = await response.Content.ReadFromJsonAsync<List<T>>();
+            if (data != null && data.Any())
             {
-                Snackbar.Add($"Dados Coletados com Sucesso! Proximo passo liberado.", Severity.Success);
-                _passo1 = true;
-            }
-            else
-            {
-                _passo1Error = true;
-                Snackbar.Add($"Ocorreu um erro ao coletar os dados: {response.RequestMessage}", Severity.Error);
+                Snackbar.Add("Dados coletados com sucesso!", Severity.Success);
+                onSuccess();
+                return data;
             }
         }
+
+        onError();
+        Snackbar.Add("Erro ao processar o arquivo.", Severity.Error);
+        return new List<T>();
     }
 
-    private async void UploadDadosOs(IBrowserFile file)
+    private async Task UploadDadosNfe(IBrowserFile file1)
     {
-        planilhaDadosOs = file;
-        var content = new MultipartFormDataContent();
-        if (planilhaDadosOs != null)
-        {
-            var fileContent = new StreamContent(planilhaDadosOs.OpenReadStream());
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-            content.Add(fileContent, "file", planilhaDadosOs.Name);
-        }
-
-        var response = await Http.PostAsync("api/Informativo/upload/os", content);
-        if (response.IsSuccessStatusCode)
-        {
-            _informativoOs = await response.Content.ReadFromJsonAsync<List<InformativoOS>>();
-            if (_informativoOs.Any())
-            {
-                Snackbar.Add($"Dados Coletados com Sucesso! Proximo passo liberado.", Severity.Success);
-                _passo2 = true;
-            }
-            else
-            {
-                _passo2Error = true;
-                Snackbar.Add($"Ocorreu um erro ao coletar os dados: {response.RequestMessage}", Severity.Error);
-            }
-        }
+        planilhaDadosNfe = file1;
+        _informativoNFe = await UploadArquivo<InformativoNFe>(
+            file1, "api/Informativo/upload/nfe", "file",
+            () => _isPasso1Concluido = true,
+            () => _hasPasso1Error = true
+        );
     }
 
-    private async void UploadDadosPecasTrocadas(IBrowserFile file)
+    private async Task UploadDadosOs(IBrowserFile file2)
     {
-        planilhaDadosPecasTrocadas = file;
-        var content = new MultipartFormDataContent();
-        if (planilhaDadosPecasTrocadas != null)
-        {
-            var fileContent = new StreamContent(planilhaDadosPecasTrocadas.OpenReadStream());
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-            content.Add(fileContent, "file", planilhaDadosPecasTrocadas.Name);
-        }
-
-        var response = await Http.PostAsync("api/Informativo/upload/pecasTrocadas", content);
-        if (response.IsSuccessStatusCode)
-        {
-            _informativoPecasTrocadas = await response.Content.ReadFromJsonAsync<List<InformativoPecasTrocadas>>();
-            if (_informativoPecasTrocadas.Any())
-            {
-                Snackbar.Add($"Dados Coletados com Sucesso! Proximo passo liberado.", Severity.Success);
-                _passo3 = true;
-            }
-            else
-            {
-                _passo3Error = true;
-                Snackbar.Add($"Ocorreu um erro ao coletar os dados: {response.RequestMessage}", Severity.Error);
-            }
-        }
+        planilhaDadosOs = file2;
+        _informativoOs = await UploadArquivo<InformativoOS>(
+            file2, "api/Informativo/upload/os", "file",
+            () => _isPasso2Concluido = true,
+            () => _hasPasso2Error = true
+        );
     }
 
-    #endregion
-
-    #region Controles etapa validação
+    private async Task UploadDadosPecasTrocadas(IBrowserFile file3)
+    {
+        planilhaDadosPecasTrocadas = file3;
+        _informativoPecasTrocadas = await UploadArquivo<InformativoPecasTrocadas>(
+            file3, "api/Informativo/upload/pecasTrocadas", "file",
+            () => _isPasso3Concluido = true,
+            () => _hasPasso3Error = true
+        );
+    }
 
     private async Task AtualizarDadosDaTabela()
     {
         try
         {
             _isLoading = true;
-            var request = new DadosRequest()
+
+            var request = new DadosRequest
             {
-                InformativoNFes = (List<InformativoNFe>)_informativoNFe,
-                informativoOs = (List<InformativoOS>)_informativoOs,
-                InformativoPecasTrocadas = (List<InformativoPecasTrocadas>)_informativoPecasTrocadas
+                InformativoNFes = _informativoNFe,
+                informativoOs = _informativoOs,
+                InformativoPecasTrocadas = _informativoPecasTrocadas
             };
 
             var response = await Http.PostAsJsonAsync("api/Informativo/calcular", request);
             if (response.IsSuccessStatusCode)
             {
                 _informativos = await response.Content.ReadFromJsonAsync<List<Informativo>>();
+                _isValid = _informativos.Any();
             }
             else
             {
-                Snackbar.Add($"Error: {await response.Content.ReadAsStringAsync()}", Severity.Error);
+                Snackbar.Add("Erro ao atualizar dados", Severity.Error);
             }
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Snackbar.Add($"Error: {e.Message}", Severity.Error);
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
         }
         finally
         {
             _isLoading = false;
         }
-
-        
     }
 
-    void SelectedItemsChanged(HashSet<Informativo> items)
-    {
-        _clientesSelecionados = items;
-    }
-
-    #endregion
-
-    #region Envios
+    private void SelectedItemsChanged(HashSet<Informativo> items) => _clientesSelecionados = items;
 
     private async Task EnviarInformativos()
     {
+        if (!_clientesSelecionados.Any())
+        {
+            Snackbar.Add("Nenhum cliente selecionado!", Severity.Warning);
+            return;
+        }
+
         try
         {
-            if (!_clientesSelecionados.Any())
-            {
-                Snackbar.Add("Nenhum Cliente selecionado, certifique-se de selecionar pelo menos 1 cliente da lista", Severity.Warning);
-                return;
-            }
-
             _isLoading = true;
             Http.Timeout = TimeSpan.FromMinutes(10);
             var response = await Http.PostAsJsonAsync("api/Email/send/informativos", _clientesSelecionados);
+
             if (response.IsSuccessStatusCode)
-            {
-                Snackbar.Add("Informativos enviados com sucesso", Severity.Success);
-            }
+                Snackbar.Add("E-mails enviados com sucesso!", Severity.Success);
             else
-            {
-                Snackbar.Add($"Ocorreu um erro ao enviar os informativos: {response.RequestMessage}", Severity.Error);
-                _isLoading = false;
-            }
+                Snackbar.Add("Erro ao enviar os informativos", Severity.Error);
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Ocorreu um erro desconhecido: {ex.Message}\n\n stackTrace : {ex.StackTrace}", Severity.Error);
+            Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
             _isLoading = false;
         }
     }
 
-    #endregion
-
-    #region controles dos steps 
-
     private async Task OnPreviewInteraction(StepperInteractionEventArgs arg)
     {
         if (arg.Action == StepAction.Complete)
-        {
-            await ControlStepCompletion(arg);
-        }
+            await ValidarEtapas(arg);
         else if (arg.Action == StepAction.Activate)
-        {
-            await ControlStepNavigation(arg);
-        }
+            await VerificarPreRequisitos(arg);
     }
 
-    private async Task ControlStepCompletion(StepperInteractionEventArgs arg)
+    private async Task ValidarEtapas(StepperInteractionEventArgs arg)
     {
         switch (arg.StepIndex)
         {
-            case 0:
-                if (_passo1 != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Você precisa enviar o arquivo da nota fiscal!");
-                    arg.Cancel = true;
-                }
-
+            case 0 when !_isPasso1Concluido:
+                await DialogService.ShowMessageBox("Erro", "Você precisa enviar o arquivo da nota fiscal!");
+                arg.Cancel = true;
                 break;
-
-            case 1:
-                if (_passo2 != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Você precisa enviar os dados das Ordens de serviço!");
-                    arg.Cancel = true;
-                }
-
+            case 1 when !_isPasso2Concluido:
+                await DialogService.ShowMessageBox("Erro", "Você precisa enviar as Ordens de Serviço!");
+                arg.Cancel = true;
                 break;
-            case 2:
-                if (_passo3 != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Você precisa enviar os dados das peças trocadas!");
-                    arg.Cancel = true;
-                }
-
+            case 2 when !_isPasso3Concluido:
+                await DialogService.ShowMessageBox("Erro", "Você precisa enviar as Peças Trocadas!");
+                arg.Cancel = true;
                 break;
-            case 3:
-                if (_isValid != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Você precisa validar os dados!");
-                    arg.Cancel = true;
-                }
-
+            case 3 when !_isValid:
+                await DialogService.ShowMessageBox("Erro", "Você precisa validar os dados antes de prosseguir.");
+                arg.Cancel = true;
                 break;
         }
     }
 
-    private async Task ControlStepNavigation(StepperInteractionEventArgs arg)
+    private async Task VerificarPreRequisitos(StepperInteractionEventArgs arg)
     {
         switch (arg.StepIndex)
         {
-            case 1:
-                if (_passo1 != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Calma ai apressadinho! complete o passo 1 primeiro!");
-                    arg.Cancel = true;
-                }
-
-                break;
-
-            case 2:
-                if (_passo2 != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Calma ai apressadinho! complete o passo 2 primeiro!");
-                    arg.Cancel = true;
-                }
-
-                break;
-            case 3:
-                if (_passo3 != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Calma ai apressadinho! complete o passo 3 primeiro!");
-                    arg.Cancel = true;
-                }
-
-                break;
-            case 4:
-                if (_isValid != true)
-                {
-                    await DialogService.ShowMessageBox("Error", "Calma ai apressadinho! complete a validação primeiro!");
-                    arg.Cancel = true;
-                }
-
+            case 1 when !_isPasso1Concluido:
+            case 2 when !_isPasso2Concluido:
+            case 3 when !_isPasso3Concluido:
+            case 4 when !_isValid:
+                await DialogService.ShowMessageBox("Erro", "Complete o passo anterior antes de continuar.");
+                arg.Cancel = true;
                 break;
         }
     }
-
-    #endregion
-
-
 }

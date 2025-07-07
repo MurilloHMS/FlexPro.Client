@@ -1,7 +1,7 @@
 @using FlexPro.Client.Domain.Enums
 @using FlexPro.Client.Models.Request
 @using FlexPro.Client.Models.Response
-@inject HttpClient Http
+@inject ParceiroService Service
 @inject ISnackbar Snackbar
 
 @attribute [Authorize]
@@ -53,31 +53,38 @@
 
     private async Task Salvar()
     {
-        try
-        {
-            if (parceiro is not null)
+        try{
+            if (_parceiro?.Id != null)
             {
-                var temp = new ParceiroRequestDTO { CodigoSistema = _parceiro.CodigoSistema, Email = _parceiro.Email, Nome = _parceiro.Nome, RazaoSocial = _parceiro.RazaoSocial != null ? _parceiro.RazaoSocial : _parceiro.Nome, Ativo = _parceiro.Ativo, RecebeEmail = _parceiro.RecebeEmail };
-                var response = await Http.PutAsJsonAsync($"api/parceiro/{_parceiro.Id}", temp);
-                if (response.IsSuccessStatusCode)
+                var response = await Service.UpdateAsync($"api/parceiro/{_parceiro.Id}", _parceiro);
+                if (response.IsSuccess)
                 {
-                    Snackbar.Add("Parceiro Atualizado com Sucesso!", Severity.Success);
+                    Snackbar.Add("Cadastro atualizado com sucesso", Severity.Success);
                 }
                 else
                 {
-                    Snackbar.Add($"Ocorreu um erro ao atualizar o Parceiro! {response.StatusCode} : {await response.Content.ReadAsStringAsync()}", Severity.Error);
+                    Snackbar.Add($"Ocorreu um erro: {response.Message}", Severity.Error);
                 }
             }
             else
             {
-                var response = await Http.PostAsJsonAsync("api/parceiro", _parceiro);
-                if (response.IsSuccessStatusCode)
+                var newParceiro = new ParceiroRequestDTO
                 {
-                    Snackbar.Add("Parceiro Cadastrado com Sucesso!", Severity.Success);
+                    CodigoSistema = _parceiro.CodigoSistema,
+                    Ativo = _parceiro.Ativo,
+                    Email = _parceiro.Email,
+                    Nome = _parceiro.Nome,
+                    RazaoSocial = _parceiro.RazaoSocial,
+                    RecebeEmail = _parceiro.RecebeEmail
+                };
+                var response = await Service.CreateAsync("api/parceiro", newParceiro);
+                if (response.IsSuccess)
+                {
+                    Snackbar.Add("Cadastro realizado com sucesso", Severity.Success);
                 }
                 else
                 {
-                    Snackbar.Add($"Ocorreu um erro ao Cadastrar o parceiro! {response.StatusCode} : {response.Content.ReadAsStringAsync()}", Severity.Error);
+                    Snackbar.Add($"Ocorreu um erro: {response.Message}", Severity.Error);
                 }
             }
         }
