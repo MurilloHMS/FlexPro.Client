@@ -212,25 +212,36 @@
 
     private async Task AtualizarDadosDaTabela()
     {
-        _isLoading = true;
-        var request = new DadosRequest()
+        try
         {
-            InformativoNFes = (List<InformativoNFe>)_informativoNFe,
-            informativoOs = (List<InformativoOS>)_informativoOs,
-            InformativoPecasTrocadas = (List<InformativoPecasTrocadas>)_informativoPecasTrocadas
-        };
+            _isLoading = true;
+            var request = new DadosRequest()
+            {
+                InformativoNFes = (List<InformativoNFe>)_informativoNFe,
+                informativoOs = (List<InformativoOS>)_informativoOs,
+                InformativoPecasTrocadas = (List<InformativoPecasTrocadas>)_informativoPecasTrocadas
+            };
 
-        var response = await Http.PostAsJsonAsync("api/Informativo/calcular", request);
-        if (response.IsSuccessStatusCode)
-        {
-            _informativos = await response.Content.ReadFromJsonAsync<List<Informativo>>();
+            var response = await Http.PostAsJsonAsync("api/Informativo/calcular", request);
+            if (response.IsSuccessStatusCode)
+            {
+                _informativos = await response.Content.ReadFromJsonAsync<List<Informativo>>();
+            }
+            else
+            {
+                Snackbar.Add($"Error: {await response.Content.ReadAsStringAsync()}", Severity.Error);
+            }
         }
-        else
+        catch (Exception e)
         {
-            Snackbar.Add($"Error: {await response.Content.ReadAsStringAsync()}", Severity.Error);
+            Snackbar.Add($"Error: {e.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
         }
 
-        _isLoading = false;
+        
     }
 
     void SelectedItemsChanged(HashSet<Informativo> items)
