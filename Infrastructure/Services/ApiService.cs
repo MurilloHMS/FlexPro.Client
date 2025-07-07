@@ -6,60 +6,60 @@ using FlexPro.Client.Models;
 
 namespace FlexPro.Client.Services;
 
-public abstract class ApiService<T> : IApiService<T> where T : class
+public class ApiService<TRequest, TResponse> 
+    where TRequest : class 
+    where TResponse : class
 {
-    private readonly HttpClient _http;
-    private readonly JsonSerializerOptions _options;
+    protected readonly HttpClient _http;
+    protected readonly JsonSerializerOptions _options;
 
     public ApiService(HttpClient http, JsonSerializerOptions options)
     {
         _http = http;
         _options = options;
     }
-
-    public abstract Task<ApiResponse<T>> Upload(string url, T? dataRequest);
     
-    public async Task<ApiResponse<IEnumerable<T>>> GetAllAsync(string url)
+    public async Task<ApiResponse<IEnumerable<TResponse>>> GetAllAsync(string url)
     {
         try
         {
-            var response = await _http.GetFromJsonAsync<IEnumerable<T>>(url);
+            var response = await _http.GetFromJsonAsync<IEnumerable<TResponse>>(url);
             if (response != null && response.Any())
             {
-                return ApiResponse<IEnumerable<T>>.Success(response);
+                return ApiResponse<IEnumerable<TResponse>>.Success(response);
             }
             else
             {
-                return ApiResponse<IEnumerable<T>>.Fail("Nenhum dado encontrado.");
+                return ApiResponse<IEnumerable<TResponse>>.Fail("Nenhum dado encontrado.");
             }
         }
         catch (Exception e)
         {
-            return ApiResponse<IEnumerable<T>>.Fail(e.Message);
+            return ApiResponse<IEnumerable<TResponse>>.Fail(e.Message);
         }
     }
 
-    public async Task<ApiResponse<T>> GetByIdAsync(string url, int id)
+    public async Task<ApiResponse<TResponse>> GetByIdAsync(string url, int id)
     {
         try
         {
-            var response = await _http.GetFromJsonAsync<T>($"{url}/{id}");
+            var response = await _http.GetFromJsonAsync<TResponse>($"{url}/{id}");
             if (response != null)
             {
-                return ApiResponse<T>.Success(response);
+                return ApiResponse<TResponse>.Success(response);
             }
             else
             {
-                return ApiResponse<T>.Fail("Nenhum dado encontrado.");
+                return ApiResponse<TResponse>.Fail("Nenhum dado encontrado.");
             }
         }
         catch (Exception e)
         {
-             return ApiResponse<T>.Fail(e.Message);   
+             return ApiResponse<TResponse>.Fail(e.Message);   
         }
     }
 
-    public async Task<ApiResponse<string>> CreateAsync(string url,T? dataRequest)
+    public async Task<ApiResponse<string>> CreateAsync(string url,TRequest? dataRequest)
     {
         try
         {
@@ -75,7 +75,7 @@ public abstract class ApiService<T> : IApiService<T> where T : class
         }
     }
 
-    public async Task<ApiResponse<string>> UpdateAsync(string url, T? dataRequest)
+    public async Task<ApiResponse<string>> UpdateAsync(string url, TResponse? dataRequest)
     {
         try
         {
