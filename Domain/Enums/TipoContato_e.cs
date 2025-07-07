@@ -5,29 +5,32 @@ namespace FlexPro.Client.Domain.Enums;
 public enum TipoContato_e
 {
     [Display(Name = "Dúvida sobre produtos")]
-    DuvidaProduto
-    [Display(Name = "Suporte técnico")] SuporteTecnico
+    DuvidaProduto,
+    
+    [Display(Name = "Suporte técnico")]
+    SuporteTecnico,
 
     [Display(Name = "Solicitação de orçamento")]
-    SolicitacaoOrcamento
+    SolicitacaoOrcamento,
 
     [Display(Name = "Representação comercial")]
-    RepresentacaoComercial
+    RepresentacaoComercial,
     
     [Display(Name = "Trabalhe conosco")] 
-    TrabalheConosco
+    TrabalheConosco,
 
     [Display(Name = "Consultoria especializada")]
-    ConsultoriaEspecializada
+    ConsultoriaEspecializada,
 
     [Display(Name = "Agendar visita técnica")]
-    VisitaTecnica
+    VisitaTecnica,
 
     [Display(Name = "Informações sobre certificações")]
-    InformacoesCertificacoes
-
+    InformacoesCertificacoes,
+    
     [Display(Name = "Problemas com pedido ou entrega")]
-    ProblemaPedidoEntrega
-    [Display(Name = "Outros")] 
+    ProblemaPedidoEntrega,
+    
+    [Display(Name = "Outros")]
     Outros
 }
