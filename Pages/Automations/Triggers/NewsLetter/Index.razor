@@ -221,7 +221,7 @@
         try
         {
             _isLoading = true;
-            Http.Timeout = TimeSpan.FromMinutes(10);
+            // Http.Timeout = TimeSpan.FromMinutes(10);
             var response = await Http.PostAsJsonAsync("api/Email/send/informativos", _clientesSelecionados);
 
             if (response.IsSuccessStatusCode)
