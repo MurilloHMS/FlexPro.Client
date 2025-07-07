@@ -1,5 +1,5 @@
 @using FlexPro.Client.Models.Response
-@inject HttpClient Http
+@inject ParceiroService ParceiroService
 @inject ISnackbar SnackBar
 
 <MudDialog>
@@ -27,7 +27,7 @@
     {
         try
         {
-            await Http.DeleteAsync($"api/parceiro/{Parceiro.Id}");
+            await ParceiroService.DeleteAsync($"api/parceiro/", Parceiro.Id);
             SnackBar.Add("Parceiro Deletado com Sucesso", Severity.Success);
         }
         catch (Exception e)
