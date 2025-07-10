@@ -1,6 +1,40 @@
-﻿<h1>@Text</h1>
+﻿<h1 class="@GetHeadingClass()">
+    @if (Style == PKStyle.Four)
+    {
+        <span>@Tagline</span> @Text <em>Style</em>
+    }
+    else
+    {
+        @Text
+        @if (!string.IsNullOrWhiteSpace(Tagline) && HasTagline())
+        {
+            <span>@Tagline</span>
+        }
+    }
+</h1>
 
 @code {
-	[Parameter]
-	public string Text { get; set; }
+	[Parameter]	public string Text { get; set; } = string.Empty;
+	[Parameter] public string? Tagline { get; set; }
+	[Parameter] public PKStyle Style { get; set; } = PKStyle.One;
+
+    private string GetHeadingClass() => Style switch
+    {
+        PKStyle.One => "one",
+        PKStyle.Two => "two",
+        PKStyle.TwoAlt => "two alt-two",
+        PKStyle.Three => "three",
+        PKStyle.Four => "four",
+        PKStyle.Five => "five",
+        PKStyle.Six => "six",
+        PKStyle.Seven => "seven",
+        PKStyle.Eight => "eight",
+        PKStyle.Nine => "nine",
+        PKStyle.Ten => "ten",
+        PKStyle.Eleven => "eleven",
+        PKStyle.Twelve => "twelve",
+        PKStyle.Thirteen => "thirteen",
+        _ => "one"
+    };
+    private bool HasTagline() => Style is PKStyle.Two or PKStyle.TwoAlt or PKStyle.Five or PKStyle.Six or PKStyle.Nine;
 }
