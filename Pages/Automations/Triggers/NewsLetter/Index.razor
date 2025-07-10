@@ -8,10 +8,10 @@
         <MudStep Title="Passo 1" SecondaryText="Envio da planilha com os dados das notas fiscais" HasError="_hasPasso1Error">
             <MudText>Faça o upload da planilha com os dados da nota fiscal.</MudText>
             <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosNfe(files))"
-                           Accept=".xlsx" MaximumFileCount="1">
+            Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
+                    StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
                 </ActivatorContent>
             </MudFileUpload>
             @if (_isPasso1Concluido)
@@ -23,10 +23,10 @@
         <MudStep Title="Passo 2" SecondaryText="Envio da planilha com os dados das Ordens de serviço" HasError="_hasPasso2Error">
             <MudText>Faça o upload da planilha com os dados das ordens de serviço.</MudText>
             <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosOs(files))"
-                           Accept=".xlsx" MaximumFileCount="1">
+            Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
+                    StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
                 </ActivatorContent>
             </MudFileUpload>
             @if (_isPasso2Concluido)
@@ -38,10 +38,10 @@
         <MudStep Title="Passo 3" SecondaryText="Envio da planilha com os dados das peças trocadas" HasError="_hasPasso3Error">
             <MudText>Faça o upload da planilha com os dados das peças trocadas.</MudText>
             <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosPecasTrocadas(files))"
-                           Accept=".xlsx" MaximumFileCount="1">
+            Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
+                    StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
                 </ActivatorContent>
             </MudFileUpload>
             @if (_isPasso3Concluido)
@@ -53,18 +53,23 @@
         <MudStep Title="Passo 4" SecondaryText="Validação">
             <MudText>Selecione os clientes aprovados para envio de e-mail.</MudText>
             <MudDataGrid T="Informativo"
-                         MultiSelection="true"
-                         Items="_informativos"
-                         SortMode="SortMode.Multiple"
-                         Filterable="true"
-                         Hideable="true"
-                         SelectedItemsChanged="@SelectedItemsChanged"
-                         Loading="_isLoading">
+            MultiSelection="true"
+            Items="_informativos"
+            SortMode="SortMode.Multiple"
+            Filterable="true"
+            Hideable="true"
+            SelectedItemsChanged="@SelectedItemsChanged"
+            Loading="_isLoading">
                 <ToolBarContent>
-                    <MudText Typo="Typo.h6">Informativo Clientes</MudText>
+                    <MudSelect T="string" @bind-Value="selectedMonth" Placeholder="Selecione o Mês de Referência">
+                        @foreach (var month in months)
+                        {
+                            <MudSelectItem Value="@month">@month</MudSelectItem>
+                        }
+                    </MudSelect>
                     <MudSpacer/>
                     <MudTextField @bind-Value="_searchString" Placeholder="Buscar Cliente" Adornment="Adornment.Start"
-                                  Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"/>
+                    Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"/>
                 </ToolBarContent>
                 <Columns>
                     <SelectColumn T="Informativo"/>
@@ -84,11 +89,11 @@
             </MudDataGrid>
 
             <MudButton OnClick="AtualizarDadosDaTabela" Variant="Variant.Filled" Color="Color.Primary" Disabled="_isLoading"
-                       StartIcon="@Icons.Material.Filled.Refresh">Atualizar Tabela</MudButton>
+            StartIcon="@Icons.Material.Filled.Refresh">Atualizar Tabela</MudButton>
 
             <MudButton OnClick="EnviarInformativos" Variant="Variant.Filled" Color="Color.Primary"
-                       Disabled="_isLoading || !_clientesSelecionados.Any()"
-                       StartIcon="@Icons.Material.Filled.Send">
+            Disabled="_isLoading || !_clientesSelecionados.Any()"
+            StartIcon="@Icons.Material.Filled.Send">
                 Confirmar @_clientesSelecionados.Count() clientes selecionados
             </MudButton>
         </MudStep>
@@ -116,6 +121,23 @@
     private List<InformativoPecasTrocadas> _informativoPecasTrocadas = new();
     private IEnumerable<Informativo> _clientesSelecionados = new List<Informativo>();
     private string _searchString;
+
+    private string[] months = new[]
+    {
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+	}.ToArray();
+	private string selectedMonth = string.Empty;
 
     private async Task<List<T>> UploadArquivo<T>(IBrowserFile file, string url, string fileKey, Action onSuccess, Action onError)
     {
@@ -182,6 +204,7 @@
 
             var request = new DadosRequest
             {
+                Month = selectedMonth,
                 InformativoNFes = _informativoNFe,
                 informativoOs = _informativoOs,
                 InformativoPecasTrocadas = _informativoPecasTrocadas
