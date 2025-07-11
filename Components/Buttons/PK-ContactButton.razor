@@ -1,0 +1,25 @@
+﻿@inject IDialogService DialogService
+
+<MudButton OnClick="@OpenDialogAsync"
+           Variant="Variant.Filled"
+           EndIcon="@Icons.Material.Filled.Send"
+           Color="Color.Secondary">
+    @ButtonText
+</MudButton>
+
+@code {
+    [Parameter] public string ButtonText { get; set; } = "Entrar em contato";
+    [Parameter] public string DialogTitle { get; set; } = "Entre em Contato";
+
+    private async Task OpenDialogAsync()
+    {
+        var options = new DialogOptions
+            {
+                CloseOnEscapeKey = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            };
+
+        await DialogService.ShowAsync<Contato>(DialogTitle, options);
+    }
+}
