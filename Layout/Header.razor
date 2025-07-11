@@ -19,8 +19,16 @@
 		<ul>
 			<li><a href="">Home</a></li>
 			@*<li><a Href="Produtos/lista">Produtos</a></li> *@
-			@*<li><a href="Consultoria">Consultoria</a></li> *@
+			<li><a href="Consultoria">Consultoria</a></li>
 			<li><a Href="Empresa">Empresa</a></li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#">
+					Parceiros
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="partners/distributors">Distribuidores</a>
+				</div>
+			</li>
 			<li><a @onclick="OpenDialogAsync">Contato</a></li>
 		</ul>
 	</nav>
