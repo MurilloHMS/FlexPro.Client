@@ -1,65 +1,41 @@
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-logo">
-            <img src="assets/images/logo-proauto.png" alt="Proauto Kimium" class="logo"/>
-            <p>Proauto Kimium</p>
-            <p>Consultoria personalizada para o seu negócio</p>
-            <p></p>
-            <br>
-            <p>Desenvolvido por <a href="https://murillohms.vercel.app" target="_blank">MurilloHMS</a></p>
-            <p>&copy; 2025 Proauto Kimium. <a href="institucional">Todos os direitos reservados</a>.</p>
-        </div>
-        <div class="footer-links">
+<footer>
+    <div class="container">
+        <div class="footer-grid">
             <div class="footer-column">
-                <h4>INSTITUCIONAL</h4>
-                <ul>
-                    <li><a href="empresa">Quem somos</a></li>
-                    <li><a href="Clientes">Clientes</a></li>
-                    <li><a href="Institucional">Direitos</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>SERVIÇOS</h4>
-                <ul>
-                    <li><a href="/consultoria">Consultoria</a></li>
-                    <li><a href="/gestao">Gestão</a></li>
-                    <li><a href="/produtos">Produtos</a></li>
-                    <li><a href="/equipamentos">Equipamentos</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>CONTATOS</h4>
-                <p>
-                    <a href="https://wa.me/5511983583564" target="_blank">
-                        <img src="assets/images/WhatsApp.png" alt="whatsapp"/>
-                        11 9 8358-3564
-                    </a>
-                </p>
-                <p>
-                    <a href="https://wa.me/5511957782766" target="_blank">
-                        <img src="assets/images/WhatsApp.png" alt="whatsapp"/>
-                        11 9 5778-2766
-                    </a>
-                </p>
-                <p>
-                    <a href="mailto:sac@proautokimium.com.br">
-                        sac&#64;proautokimium.com.br
-                    </a>
-                </p>
-            </div>
-            <div class="footer-column">
-                <div class="social-icons">
-                    <a href="https://www.instagram.com/proautokimium/" target="_blank"><img
-                            src="assets/images/Instagram.png" alt="Instagram"/></a>
-                    <a href="https://br.linkedin.com/company/proauto-kimium" target="_blank"><img
-                            src="assets/images/LinkedIn.png" alt="LinkedIn"/></a>
-                    <a href="https://wa.me/5511983583564" target="_blank"><img src="assets/images/WhatsApp.png"
-                                                                               alt="Whatsapp"/></a>
-                    <a href="mailto:sac@proautokimium.com.br"><img src="assets/images/Email.png" alt="Email"/></a>
-                    <a href="https://github.com/MurilloHMS" target="_blank"><img src="assets/images/github-logo.png"
-                                                                                 alt="GitHub"></a>
+                <h3>PROAUTO KIMIUM</h3>
+                <p><a style="color: white" href="https://maps.app.goo.gl/X2RLu66cBMNpvMSZ7" target="_blank">Av. João do Prado,300 <br />Cep: 09270-160 | Santo André - SP</a></p>
+                <div class="social-links">
+                    <a href="https://wa.me/5511983583564" target="_blank" class="social-link" aria-label="Whatsapp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:sac@proautokimium.com.br" class="social-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="https://www.instagram.com/proautokimium/" target="_blank" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://br.linkedin.com/company/proauto-kimium" target="_blank" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    @* <a href="https://github.com/MurilloHMS" target="_blank" class="social-link" aria-label="YouTube"><i class="fab fa-github"></i></a> *@
                 </div>
-                <br>
+            </div>
+            <div class="footer-column">
+                <h3>Proauto</h3>
+                <ul class="footer-links">
+                    <li><a href="empresa">Sobre nós</a></li>
+                    <li><a href="#">Nossos Serviços</a></li>
+                    <li><a href="#">Metodologia</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Suporte</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Soluções</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Consultoria</a></li>
+                    <li><a href="#">Produtos</a></li>
+                    <li><a href="#">Equipamentos</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Reconhecimento</h3>
+                <div class="footer-image">
+                    <img class="img-fluid object-fit-sm-cover w-50 p-2" src="assets/images/Selo_eureciclo_horizontal_negativo_semfundo.png" />
+                </div>
+
                 <div id="reputation-ra">
                     <script type="text/javascript" id="ra-embed-reputation"
                             src="https://s3.amazonaws.com/raichu-beta/selos/bundle.js"
@@ -68,9 +44,16 @@
                 </div>
             </div>
         </div>
+        <div class="copyright">
+            <p>
+                &copy;
+                @(DateTime.Today.Year) Proauto Kimium. Todos os direitos reservados. | <a href="privacy-policy">Politica de Privacidade</a>
+                <br /><a style="color: #ccc;" href="https://murillohms.vercel.app" target="_blank">Desenvolvido por: MurilloHMS</a>
+            </p>
+        </div>
     </div>
 </footer>
 
 @code {
-
+    
 }
