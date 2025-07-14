@@ -3,35 +3,37 @@
 @inject NavigationManager NavigationManager
 @inject DeviceDetector DeviceDetector
 
-<MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
-    <b>Parabéns! Você está à um passo de conquistar seu certificado.</b>
-</MudText>
-<MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Primary">Este certificado significa que você participou do treinamento <b>Gestão, Higiêne e Limpeza </b></MudText>
-<br><br>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ky46nuuMiKw?si=xL7ltKKJHbyUytrL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<br><br>
-<MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Primary">Preencha os campos a seguir para ter acesso ao seu certificado.</MudText>
-<MudPaper Class="pa-4">
-    <MudForm @ref="form" @bind-IsValid="@isFormValid">
-        <MudTextField @bind-Value="@nome"
-                      Label="Nome completo"
-                      HelperText="Digite seu nome"
-                      Required/>
+<div class="container">
+    <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
+        <b>Parabéns! Você está à um passo de conquistar seu certificado.</b>
+    </MudText>
+    <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Primary">Este certificado significa que você participou do treinamento <b>Gestão, Higiêne e Limpeza </b></MudText>
+    <br><br>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/l4ESEUUkqUQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <br><br>
+    <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Primary">Preencha os campos a seguir para ter acesso ao seu certificado.</MudText>
+    <MudPaper Class="pa-4">
+        <MudForm @ref="form" @bind-IsValid="@isFormValid">
+            <MudTextField @bind-Value="@nome"
+                          Label="Nome completo"
+                          HelperText="Digite seu nome"
+                          Required/>
         
-        <MudTextField @bind-Value="@email"
-                      Label="Email"
-                      HelperText="Digite seu email"
-                      Required/>
+            <MudTextField @bind-Value="@email"
+                          Label="Email"
+                          HelperText="Digite seu email"
+                          Required/>
         
-        <MudTextField @bind-Value="@contato"
-                      Label="WhatsApp"
-                      HelperText="Digite seu número de WhatsApp"
-                      Required/>
-    </MudForm>
-</MudPaper>
-<MudPaper Class="pt-4 mt-4">
-    <MudButton StartIcon="@Icons.Material.Filled.Download" Color="Color.Primary" Variant="Variant.Filled" Disabled="!isFormValid" OnClick="@(() => GerenateCerticicate())">Gerar Certificado</MudButton>
-</MudPaper>
+            <MudTextField @bind-Value="@contato"
+                          Label="WhatsApp"
+                          HelperText="Digite seu número de WhatsApp"
+                          Required/>
+        </MudForm>
+    </MudPaper>
+    <MudPaper Class="pt-4 mt-4">
+        <MudButton StartIcon="@Icons.Material.Filled.Download" Color="Color.Primary" Variant="Variant.Filled" Disabled="!isFormValid" OnClick="@(() => GerenateCerticicate())">Gerar Certificado</MudButton>
+    </MudPaper>
+</div>
 
 @code {
     [Inject] IJSRuntime JS { get; set; }
