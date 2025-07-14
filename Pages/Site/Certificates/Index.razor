@@ -3,7 +3,6 @@
 @inject NavigationManager NavigationManager
 @inject DeviceDetector DeviceDetector
 
-<MudText Typo="Typo.h3" Align="Align.Center">@NomeInstrutor</MudText>
 <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
     <b>Parabéns! Você está à um passo de conquistar seu certificado.</b>
 </MudText>
@@ -31,10 +30,12 @@
     </MudForm>
 </MudPaper>
 <MudPaper Class="justify-content-center">
-    <MudButton StartIcon="@Icons.Material.Filled.Download" Color="Color.Primary" Variant="Variant.Filled">Gerar Certificado</MudButton>
+    <MudButton StartIcon="@Icons.Material.Filled.Download" Color="Color.Primary" Variant="Variant.Filled" OnClick="@(() => GerenateCerticicate())">Gerar Certificado</MudButton>
 </MudPaper>
 
 @code {
+    [Inject] IJSRuntime JS { get; set; }
+    
     private string? NomeInstrutor;
     private bool isFormValid;
     private MudForm form;
@@ -80,6 +81,15 @@
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+
+    private async Task GerenateCerticicate()
+    {
+        string nomeFormatado = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nome.ToLower());
+        if (!string.IsNullOrWhiteSpace(nome))
+        {
+            await JS.InvokeVoidAsync("generateCertificate", nomeFormatado);
+        }
     }
 
 }
