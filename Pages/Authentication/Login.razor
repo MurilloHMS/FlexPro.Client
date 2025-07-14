@@ -7,11 +7,12 @@
 
 <PageTitle>Log In</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true" Align="Align.Center">Login</MudText>
-
-<MudGrid Justify="Justify.Center">
-    <MudItem md="6">
-        <StatusMessage Message="Credenciais inválidas!"/>
+<div class="container d-flex align-items-center" style="height: 70vh;">
+    <MudGrid Justify="Justify.Center">
+    <MudItem sm="5">
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudText Typo="Typo.h3" GutterBottom="true" Align="Align.Center">Login</MudText>
+            <StatusMessage Message="Credenciais inválidas!"/>
         <EditForm Model="loginModel" method="post" OnValidSubmit="HandleLogin" FormName="login">
             <DataAnnotationsValidator/>
             <MudText GutterBottom="true" Typo="Typo.body1">Use uma conta Proauto para conectar</MudText>
@@ -39,15 +40,17 @@
                     }
                     else
                     {
-                        <MudStaticButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="false"
+                        <MudStaticButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true"
                                          FormAction="FormAction.Submit">Login
                         </MudStaticButton>
                     }
                 </MudItem>
             </MudGrid>
         </EditForm>
+        </MudPaper>
     </MudItem>
 </MudGrid>
+</div>
 
 @code {
     private string? message;
