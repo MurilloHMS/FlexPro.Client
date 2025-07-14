@@ -74,6 +74,25 @@
         };
     </script>
 
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                    registration.onupdatefound = () => {
+                        const newWorker = registration.installing;
+                        newWorker.onstatechange = () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log("Nova versão detectada. Atualizando...");
+                                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                window.location.reload();
+                            }
+                        };
+                    };
+                });
+        }
+    </script>
+
+
 </head>
 
 <body>
@@ -93,6 +112,5 @@
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="js/pdfInterop.js"></script>
-<!-- <script>navigator.serviceWorker.register('service-worker.js', { scope: './' });</script> -->
 </body>
 </html>

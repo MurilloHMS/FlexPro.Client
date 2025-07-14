@@ -16,5 +16,5 @@ window.generateCertificate = async function(nome) {
     doc.setTextColor(0,0,0);
     doc.text(nome, 148,85, {align: 'center'});
     
-    doc.save(`certificado -${nome}.pdf`);
+    doc.save(`certificado - ${nome}.pdf`);
 }
