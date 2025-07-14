@@ -1,4 +1,4 @@
-@page "/Documentos/Certificados"
+@page "/sales/documents/certificates"
 
 @inject NavigationManager NavigationManager
 @inject DeviceDetector DeviceDetector
@@ -56,13 +56,15 @@
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !_initialized)
-        {
-            _initialized = true;
-            var isMobile = await DeviceDetector.IsMobileAsync();
-            if(!isMobile)
-                NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
-        }
+        // TODO : Não esquecer de ativar a verificação novamente após periodo de adaptação
+        
+        // if (firstRender && !_initialized)
+        // {
+        //     _initialized = true;
+        //     var isMobile = await DeviceDetector.IsMobileAsync();
+        //     if(!isMobile)
+        //         NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
+        // }
     }
 
     private void getQuery()
