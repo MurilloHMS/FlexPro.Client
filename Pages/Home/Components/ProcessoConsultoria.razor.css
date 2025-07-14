@@ -1,13 +1,14 @@
 
 .processo-container {
-    background-color: var(--primary-color);
-    color: var(--secondary-text-color);
+    background-color: #f9f9f9;
+    color: var(--primary-color);
     text-align: center;
     padding: 50px;
+    border-radius: 5px;
 
 
     .process-box {
-        border: 1px solid var(--tertiary-color-dark2);
+        border: 2px solid var(--secondary-color);
         border-radius: 36px;
         padding: 30px;
         margin-top: 20px;
