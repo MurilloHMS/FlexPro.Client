@@ -1,0 +1,56 @@
+@page "/support/faq"
+
+<section class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="section-title text-center">
+              <h2 class="theme-after">FAQ - Perguntas Frequentes</h2>
+              <div class="title-border"><span class="lg"></span><span class="md"></span><span class="sm"></span></div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,<br/>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+          </div>
+        </div> <!-- row -->
+        <div class="row">
+          <MudExpansionPanels>
+            @foreach (var item in faqs)
+            {
+              <MudExpansionPanel>
+                <TitleContent>
+                  <div class="d-flex">
+                    <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-3" Color="Color.Primary"/>
+                    
+                    <MudText>@item.Title</MudText>
+                  </div>
+                </TitleContent>
+                <ChildContent>
+                  @item.Body
+                </ChildContent>
+              </MudExpansionPanel>
+            }
+          </MudExpansionPanels>
+        </div>
+      </div> <!-- container -->
+    </section>
+@code {
+  private Faq[] faqs = new[]
+  {
+    new Faq{Title = "Quais são os principais produtos oferecidos pela Proauto Kimium>", Body = "Lorem ipsum dolor sit amet "},
+    new Faq{Title = "Quais são os benefícios dos produtos Proauto Kimium?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "Qual o valor mínimo para compra?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "Qual a quantidade mínima para compra?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "É possível fazer o pagamento a prazo?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "Quais as formas de pagamento?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "Os produtos químicos podem ser retirados por minha transportadora própria?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "Qual o horário de retirada dos produtos?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "Qual o horário de atendimento?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "A quem se destina o Atendimento Técnico Especializado?", Body = "Lorem ipsum dolor sit amet"},
+    new Faq{Title = "Qual a politica de privacidade da Proauto Kimium?", Body = "Lorem ipsum dolor sit amet"}
+  };
+
+  private class Faq
+  {
+    public string Title { get; set; } = String.Empty;
+    public string Body { get; set; } = String.Empty;
+  }
+}
