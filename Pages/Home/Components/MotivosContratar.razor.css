@@ -41,7 +41,11 @@
 }
 
 .motivos:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+}
+
+.motivos h3 {
+    font-weight: 400;
 }
 
 .motivos ul {
@@ -57,6 +61,7 @@
     gap: 10px;
     padding: 10px;
     margin-bottom: 10px;
+    font-weight: 300;
 }
 
 .motivos li span {
