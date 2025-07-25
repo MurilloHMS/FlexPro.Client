@@ -32,9 +32,9 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MudPaper Elevation="0" Style="padding: 10px;">
-                            <MudAvatar Variant="Variant.Filled" Color="Color.Secondary">@userName.</MudAvatar>
+                            <MudAvatar Variant="Variant.Filled" Color="Color.Secondary">@(string.IsNullOrWhiteSpace(userName) ? "U" : userName[0].ToString().ToUpper())</MudAvatar>
                             <br>
-                            <MudText Typo="Typo.overline" Align="Align.Center" Color="Color.Primary">@(string.IsNullOrWhiteSpace(userName) ? "U" : userName[0].ToString().ToUpper())</MudText>
+                            <MudText Typo="Typo.overline" Align="Align.Center" Color="Color.Primary">@userName</MudText>
                         </MudPaper>
                         <MudMenuItem Label="Conta"/>
                         <MudMenuItem Label="Configurações"/>
