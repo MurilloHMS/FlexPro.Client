@@ -58,15 +58,13 @@
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // TODO : Não esquecer de ativar a verificação novamente após periodo de adaptação
-        
-        // if (firstRender && !_initialized)
-        // {
-        //     _initialized = true;
-        //     var isMobile = await DeviceDetector.IsMobileAsync();
-        //     if(!isMobile)
-        //         NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
-        // }
+        if (firstRender && !_initialized)
+        {
+            _initialized = true;
+            var isMobile = await DeviceDetector.IsMobileAsync();
+            if(!isMobile)
+                NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
+        }
     }
 
     private void getQuery()
