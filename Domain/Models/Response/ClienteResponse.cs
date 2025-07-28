@@ -1,7 +1,6 @@
 using FlexPro.Client.Domain.Enums;
-using FlexPro.Client.Models.Request;
 
-namespace FlexPro.Client.Models.Response;
+namespace FlexPro.Client.Domain.Models.Response;
 
 public class ClienteResponse
 {

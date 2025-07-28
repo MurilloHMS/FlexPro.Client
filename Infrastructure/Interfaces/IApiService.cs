@@ -1,4 +1,4 @@
-using FlexPro.Client.Models;
+using FlexPro.Client.Domain.Models;
 
 namespace FlexPro.Client.Infrastructure.Interfaces;
 

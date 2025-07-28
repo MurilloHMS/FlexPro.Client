@@ -1,11 +1,11 @@
-namespace FlexPro.Client.Models;
+namespace FlexPro.Client.Domain.Models;
 
 public class BoaSolucao
 {
-    public string CodigoProduto { get; set; }
-    public string Descricao { get; set; }
+    public string CodigoProduto { get; set; } = string.Empty;
+    public string Descricao { get; set; } = string.Empty;
     public decimal Quantidade { get; set; }
     public decimal Valor { get; set; }
     public decimal ValorTotal { get; set; }
-    public bool? isValid { get; set; }
+    public bool? IsValid { get; set; }
 }

@@ -1,6 +1,6 @@
-namespace FlexPro.Client.Models;
+namespace FlexPro.Client.Domain.Models;
 
 public class SepararPDF
 {
-    public string Nome { get; set; }
+    public string Nome { get; set; } = string.Empty;
 }

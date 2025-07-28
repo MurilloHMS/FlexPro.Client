@@ -44,7 +44,7 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
         var payload = jwt.Split('.')[1];
         var jsonBytes = WebEncoders.Base64UrlDecode(payload);
         var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-        return keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
+        return keyValuePairs?.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
     }
 
     public void MarkUserAsAuthenticated(string token)

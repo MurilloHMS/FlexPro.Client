@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
+using FlexPro.Client.Domain.Models;
+using FlexPro.Client.Domain.Models.Request;
+using FlexPro.Client.Domain.Models.Response;
 using FlexPro.Client.Infrastructure.Interfaces;
-using FlexPro.Client.Models;
-using FlexPro.Client.Models.Request;
-using FlexPro.Client.Models.Response;
 
 namespace FlexPro.Client.Services;
 

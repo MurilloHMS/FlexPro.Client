@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FlexPro.Client.Models;
+namespace FlexPro.Client.Domain.Models;
 
 public class Categoria
 {

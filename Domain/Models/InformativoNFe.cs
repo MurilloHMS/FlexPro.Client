@@ -1,4 +1,4 @@
-﻿namespace FlexPro.Client.Models;
+﻿namespace FlexPro.Client.Domain.Models;
 
 public class InformativoNFe
 {

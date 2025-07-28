@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using FlexPro.Client.Domain.Models
 
 <PageTitle>Home</PageTitle>
 <div class="container">
@@ -94,13 +95,15 @@
     private async Task UpdateFuelSupply()
     {
         var fuelSupply = await Http.GetFromJsonAsync<List<Abastecimento>>("api/abastecimento");
-        if (!fuelSupply.Any())
+        if (fuelSupply != null && fuelSupply.Any())
             return;
 
-        _totalAbastecido = fuelSupply.Sum(a => a.Litros);
-        _mediaKmPorLitro = fuelSupply.Average(a => a.MediaKm);
-        _totalGasto = fuelSupply.Sum(a => a.ValorTotalTransacao);
-        _totalKmPercorrido = fuelSupply.Sum(a => a.DiferencaHodometro);
+        if (fuelSupply != null) {
+            _totalAbastecido = fuelSupply.Sum(a => a.Litros);
+            _mediaKmPorLitro = fuelSupply.Average(a => a.MediaKm);
+            _totalGasto = fuelSupply.Sum(a => a.ValorTotalTransacao);
+            _totalKmPercorrido = fuelSupply.Sum(a => a.DiferencaHodometro);
+        }
     }
 
 }
