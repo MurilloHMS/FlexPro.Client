@@ -30,7 +30,7 @@
         {
             var idDepartamento = GetDepartamentoId(grupo.Key);
             <MudText Typo="Typo.h5" Class="mt-6 mb-2 px-4" Id="@idDepartamento">@grupo.Key</MudText>
-            <MudGrid GutterSize="3" Class="px-4">
+            <MudGrid Class="px-4">
                 @foreach (var produto in grupo.Value)
                 {
                     <MudItem xs="12" sm="6" md="4" lg="2" Class="mud-item-hover">
