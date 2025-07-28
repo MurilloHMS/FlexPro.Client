@@ -37,8 +37,8 @@
 
 @code {
     [Inject] IJSRuntime JS { get; set; }
-    
-    private string? NomeInstrutor;
+
+    private string? NomeInstrutor = string.Empty;
     private bool isFormValid;
     private MudForm form;
     private bool isLoading;

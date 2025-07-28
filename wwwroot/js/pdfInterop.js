@@ -7,7 +7,7 @@ window.generateCertificate = async function(nome) {
     });
 
     const img = new Image();
-    img.src = "assets/Certificate.jpg";
+    img.src = "assets/ProautoKimium.jpg";
     
     await new Promise(resolve => img.onload = resolve);
     
