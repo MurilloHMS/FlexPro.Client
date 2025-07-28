@@ -13,7 +13,7 @@
         </div> <!-- row -->
         <div class="row">
           <MudExpansionPanels>
-            @foreach (var item in faqs)
+            @foreach (var item in _faqs)
             {
               <MudExpansionPanel>
                 <TitleContent>
@@ -33,20 +33,19 @@
       </div> <!-- container -->
     </section>
 @code {
-  private Faq[] faqs = new[]
-  {
-    new Faq{Title = "Quais são os principais produtos oferecidos pela Proauto Kimium?", Body = "Lorem ipsum dolor sit amet "},
-    new Faq{Title = "Quais são os benefícios dos produtos Proauto Kimium?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "Qual o valor mínimo para compra?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "Qual a quantidade mínima para compra?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "É possível fazer o pagamento a prazo?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "Quais as formas de pagamento?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "Os produtos químicos podem ser retirados por minha transportadora própria?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "Qual o horário de retirada dos produtos?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "Qual o horário de atendimento?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "A quem se destina o Atendimento Técnico Especializado?", Body = "Lorem ipsum dolor sit amet"},
-    new Faq{Title = "Qual a politica de privacidade da Proauto Kimium?", Body = "Lorem ipsum dolor sit amet"}
-  };
+  private Faq[] _faqs = [
+    new Faq{Title = "Quais são os principais produtos oferecidos pela Proauto Kimium?", Body = "A Proauto Kimium oferece uma ampla linha de produtos químicos voltados para limpeza e higienização profissional e industrial. Entre os principais, destacam-se: Desengraxantes, Detergentes alcalinos e neutros, Desinfetantes, Removedores, Saneantes, Produtos automotivos, entre outros desenvolvidos sob demanda."},
+    new Faq{Title = "Quais são os benefícios dos produtos Proauto Kimium?", Body = "Os produtos da Proauto Kimium são desenvolvidos com alta performance, segurança e foco na sustentabilidade. Benefícios incluem maior eficiência na limpeza, menor tempo de aplicação, economia de produto por rendimento elevado, fórmulas biodegradáveis e suporte técnico especializado para aplicação correta e segura."},
+    new Faq{Title = "Qual o valor mínimo para compra?", Body = "O valor mínimo para compras pode variar conforme a região e tipo de cliente. Para pedidos fora do estado ou com condições específicas, recomendamos consultar nosso setor comercial."},
+    new Faq{Title = "Qual a quantidade mínima para compra?", Body = "Trabalhamos com pedidos mínimos que geralmente correspondem a volumes comerciais, como bombonas de 5L, 20L ou tambores de 50L/200L, dependendo do produto. Também é possível negociar quantidades sob demanda para clientes com consumo recorrente."},
+    new Faq{Title = "É possível fazer o pagamento a prazo?", Body = "Sim, oferecemos condições de pagamento a prazo para clientes com cadastro aprovado. As condições variam de acordo com a análise de crédito e histórico de compras"},
+    new Faq{Title = "Quais as formas de pagamento?", Body = "Aceitamos pagamentos via boleto bancário, PIX, transferência, e também trabalhamos com faturamento (prazo), conforme aprovação de crédito. Em alguns casos, também é possível utilizar cartões de crédito, sob consulta."},
+    new Faq{Title = "Os produtos químicos podem ser retirados por minha transportadora própria?", Body = "Sim. O cliente pode utilizar sua própria transportadora, desde que esteja em conformidade com as normas para transporte de produtos químicos e saneantes. A coleta deve ser agendada previamente com nossa equipe de logística."},
+    new Faq{Title = "Qual o horário de retirada dos produtos?", Body = "As retiradas podem ser feitas de segunda a sexta-feira, das 09h às 16h, com agendamento prévio. É importante que o veículo esteja devidamente autorizado e com a documentação necessária."},
+    new Faq{Title = "Qual o horário de atendimento?", Body = "Nosso atendimento funciona de segunda a sexta-feira, das 07:30h às 17:30h, por telefone, e-mail ou Whatsapp. Atendimentos técnicos e visitas comerciais também podem ser agendados conforme disponibilidade"},
+    new Faq{Title = "A quem se destina o Atendimento Técnico Especializado?", Body = "O atendimento técnico é direcionado a empresas e profissionais que necessitam de orientação sobre a aplicação correta dos produtos, treinamentos operacionais, suporte em processos de higienização e adequação a normas da vigilância sanitária. É um diferencial exclusivo para clientes Proauto Kimium."},
+    new Faq{Title = "Qual a politica de privacidade da Proauto Kimium?", Body = " A Proauto Kimium respeita sua privacidade e segue as diretrizes da Lei Geral de Proteção de Dados (LGPD). Todas as informações coletadas são usadas exclusivamente para fins comerciais, operacionais e de relacionamento com nossos clientes. Não compartilhamos dados com terceiros sem consentimento. Para mais informações, acesse nossa política de privacidade em nosso site ou solicite pelo e-mail."}
+  ];
 
   private class Faq
   {
