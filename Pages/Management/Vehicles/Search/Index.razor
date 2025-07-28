@@ -1,4 +1,5 @@
 @page "/management/vehicles/search"
+@using FlexPro.Client.Domain.Models
 
 @inject ISnackbar Snackbar
 @inject HttpClient Http
@@ -24,7 +25,7 @@
 <MudDataGrid Items="@RevisoesFiltradas" T="Revisao" Hover="true" Bordered="true" Striped="true" Dense="true"
              SortMode="SortMode.Multiple" Filterable="true" Virtualize>
     <ToolBarContent>
-        <MudText Label="Dados do Veiculo"/>
+        <MudText>Dados do Veiculo</MudText>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>

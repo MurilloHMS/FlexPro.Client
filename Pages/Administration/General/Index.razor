@@ -1,6 +1,16 @@
 @page "/administration/general"
-<h3>Index</h3>
+
+@using FlexPro.Client.Pages.Administration.General.Components.Users
+@attribute [Authorize]
+
+<MudText Typo="Typo.h2" Align="Align.Center">Administração</MudText>
+<br><br>
+<MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
+    <MudTabPanel Text="Usuários">
+        <Users/>
+    </MudTabPanel>
+</MudTabs>
 
 @code {
-    
+
 }

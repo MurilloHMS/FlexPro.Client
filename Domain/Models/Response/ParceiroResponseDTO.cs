@@ -1,4 +1,4 @@
-namespace FlexPro.Client.Models.Response;
+namespace FlexPro.Client.Domain.Models.Response;
 
 public class ParceiroResponseDTO
 {

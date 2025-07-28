@@ -1,5 +1,5 @@
 using System.Text.Json;
-using FlexPro.Client.Models.Response;
+using FlexPro.Client.Domain.Models.Response;
 using Microsoft.JSInterop;
 
 namespace FlexPro.Client.Services;

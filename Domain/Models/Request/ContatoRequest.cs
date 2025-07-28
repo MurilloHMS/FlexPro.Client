@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using FlexPro.Client.Domain.Enums;
 
-namespace FlexPro.Client.Models.Request;
+namespace FlexPro.Client.Domain.Models.Request;
 
 public class ContatoRequest
 {

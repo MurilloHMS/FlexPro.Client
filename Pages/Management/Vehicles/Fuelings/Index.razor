@@ -1,5 +1,6 @@
 @page "/management/vehicles/fuelings"
 @using System.Net.Http.Headers
+@using FlexPro.Client.Domain.Models
 
 @inject IDialogService DialogService
 @inject HttpClient Http
@@ -50,9 +51,8 @@
         <MudStack Row="true" Spacing="3">
             <MudFab OnClick="@(() => ExportarDados())" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Download"
                     Size="Size.Small" Label="Exportar"/>
-            <MudDivider Vertical="true" FlexItem="true"/>
             <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter"
-                     TransformOrigin="Origin.TopCenter" Variant="Variant.Filled" Dense="true">
+                     TransformOrigin="Origin.TopCenter" Variant="Variant.Filled" Dense="true" Size="Size.Small">
                 <ActivatorContent>
                     <MudFab EndIcon="@Icons.Material.Filled.Mouse" Color="Color.Primary" Size="Size.Small"
                             Label="Relatórios"/>
@@ -63,9 +63,8 @@
                     <MudMenuItem OnClick="@(() => DownloadRelatorios("Individual"))">Individual</MudMenuItem>
                 </ChildContent>
             </MudMenu>
-            <MudDivider Vertical="true" FlexItem="true"/>
             <MudMenu FullWidth="true" ActivationEvent="@MouseEvent.MouseOver" AnchorOrigin="Origin.BottomCenter"
-                     TransformOrigin="Origin.TopCenter" Variant="Variant.Filled" Dense="true">
+                     TransformOrigin="Origin.TopCenter" Variant="Variant.Filled" Dense="true" Size="Size.Small">
                 <ActivatorContent>
                     <MudFab Color="Color.Primary" EndIcon="@Icons.Material.Filled.Mail" Size="Size.Small"
                             Label="Enviar"/>
@@ -192,45 +191,7 @@
         visible = false;
         _isValid = true;
     }
-
-    private async Task<IEnumerable<Abastecimento>> ColetarDadosAbastecimento(IBrowserFile arquivo)
-    {
-        List<Abastecimento> abastecimentos = new();
-
-        using (var stream = new MemoryStream())
-        {
-            await arquivo.OpenReadStream().CopyToAsync(stream);
-            stream.Position = 0;
-
-            using (XLWorkbook workbook = new(stream))
-            {
-                var planilha = workbook.Worksheets.FirstOrDefault();
-                var fileData = planilha?.RowsUsed().Skip(1).Select(row => new Abastecimento
-                {
-                    DataDoAbastecimento = row.Cell(1).TryGetValue<string>(out var dataAbastecimento)
-                        ? DateTime.TryParse(dataAbastecimento, out var dataConvertida) ? dataConvertida.ToUniversalTime() : default
-                        : default,
-                    Uf = row.Cell(2).TryGetValue<string>(out var uf) ? uf : default,
-                    Placa = row.Cell(3).TryGetValue<string>(out var placa) ? placa : default,
-                    NomeDoMotorista = row.Cell(5).TryGetValue<string>(out var nomeDoMotorista) ? nomeDoMotorista : default,
-                    HodometroAtual = row.Cell(6).TryGetValue<double>(out var hodometroAtual) ? hodometroAtual : default,
-                    HodometroAnterior = row.Cell(7).TryGetValue<double>(out var hodometroAnterior) ? hodometroAnterior : default,
-                    DiferencaHodometro = row.Cell(8).TryGetValue<double>(out var diferencaHodometro) ? diferencaHodometro : default,
-                    MediaKm = row.Cell(9).TryGetValue<double>(out var mediaKm) ? mediaKm : default,
-                    Combustivel = row.Cell(10).TryGetValue<string>(out var combustivel) ? combustivel : default,
-                    Litros = row.Cell(11).TryGetValue<double>(out var litros) ? litros : default,
-                    ValorTotalTransacao = row.Cell(12).TryGetValue<decimal>(out var valorTotalTransacao) ? valorTotalTransacao : default,
-                    Preco = row.Cell(13).TryGetValue<decimal>(out var preco) ? preco : default
-                }).ToList();
-
-                fileData?.RemoveAll(a => a.Preco == 0);
-                abastecimentos.AddRange(fileData ?? new List<Abastecimento>());
-            }
-        }
-
-        return abastecimentos;
-    }
-
+    
     private async Task ExportarDados()
     {
         dataLoaded = true;

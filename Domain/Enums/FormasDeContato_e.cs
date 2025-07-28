@@ -1,4 +1,4 @@
-namespace FlexPro.Client.Models.Request;
+namespace FlexPro.Client.Domain.Enums;
 
 public enum FormasDeContato_e
 {

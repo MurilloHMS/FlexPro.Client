@@ -1,4 +1,5 @@
 @page "/BoaSolucao"
+@using FlexPro.Client.Domain.Models
 @using Anchor = MudBlazor.Anchor
 @using Color = MudBlazor.Color
 
@@ -138,7 +139,7 @@
                             <PropertyColumn Property="x => x.Quantidade" Title="Quantidade"/>
                             <PropertyColumn Property="x => x.Valor" Title="Valor Unitário"/>
                             <PropertyColumn Property="x => x.ValorTotal" Title="Valor Total"/>
-                            <PropertyColumn Property="x => x.isValid" Title="É valido?"/>
+                            <PropertyColumn Property="x => x.IsValid" Title="É valido?"/>
                         </Columns>
                     </MudDataGrid>
                 </MudPaper>
@@ -256,7 +257,7 @@
 
                         var isValid = produto.QuantidadeProducao == item.Quantidade;
 
-                        item.isValid = isValid;
+                        item.IsValid = isValid;
 
                         if (produto.MateriaPrima == "Proauto" && produto.Tipo == "Obra Prima")
                         {

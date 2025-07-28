@@ -1,6 +1,6 @@
 using FlexPro.Client.Domain.Enums;
 
-namespace FlexPro.Client.Models;
+namespace FlexPro.Client.Domain.Models;
 
 public class Embalagem
 {

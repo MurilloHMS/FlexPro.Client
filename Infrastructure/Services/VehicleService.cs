@@ -1,8 +1,8 @@
 
 using System.Net;
 using System.Net.Http.Json;
+using FlexPro.Client.Domain.Models;
 using FlexPro.Client.Infrastructure.Interfaces;
-using FlexPro.Client.Models;
 using MudBlazor;
 
 namespace FlexPro.Client.Services;
@@ -46,7 +46,7 @@ public class VehicleService : IVehicleService
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadFromJsonAsync<List<Veiculo>>();
-                return ApiResponse<List<Veiculo>>.Success(data, "Veículos obtidos com sucesso.");
+                return ApiResponse<List<Veiculo>>.Success(data!, "Veículos obtidos com sucesso.");
             }
             else
             {

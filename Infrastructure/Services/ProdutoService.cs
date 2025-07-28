@@ -1,9 +1,9 @@
 using System.Text.Json;
 using FlexPro.Client.Domain.Enums;
-using FlexPro.Client.Models;
-using FlexPro.Client.Models.Response;
+using FlexPro.Client.Domain.Models;
+using FlexPro.Client.Domain.Models.Response;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class ProdutoService
 {
@@ -19,7 +19,7 @@ public class ProdutoService
     public async Task<IEnumerable<ProdutoLojaResponse>> GetProdutoLoja()
     {
         var stream = await _http.GetStreamAsync("api/produto/produtoloja");
-        return await JsonSerializer.DeserializeAsync<List<ProdutoLojaResponse>>(stream, _options); 
+        return await JsonSerializer.DeserializeAsync<List<ProdutoLojaResponse>>(stream, _options) ?? new List<ProdutoLojaResponse>();; 
     }
 
     public async Task<IEnumerable<ProdutoLojaResponse>> GetProdutoLojaTeste()
@@ -172,6 +172,6 @@ public class ProdutoService
     public async Task<ProdutoLojaResponse> GetByIdAsync(int id)
     {
         var stream = await _http.GetStreamAsync($"api/produto/produtoloja/{id}");
-        return await JsonSerializer.DeserializeAsync<ProdutoLojaResponse>(stream, _options);
+        return await JsonSerializer.DeserializeAsync<ProdutoLojaResponse>(stream, _options) ?? new ProdutoLojaResponse();
     }
 }

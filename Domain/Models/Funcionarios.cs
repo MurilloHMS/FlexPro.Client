@@ -1,9 +1,9 @@
-﻿namespace FlexPro.Client.Models;
+﻿namespace FlexPro.Client.Domain.Models;
 
 public class Funcionarios
 {
     public int Id { get; set; }
-    public string Nome { get; set; }
+    public string Nome { get; set; } = string.Empty;
     public string? Departamento { get; set; }
     public string? Hash { get; set; }
     public string? Gerente { get; set; }

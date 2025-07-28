@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using FlexPro.Client.Models;
+using FlexPro.Client.Domain.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace FlexPro.Client.Services;

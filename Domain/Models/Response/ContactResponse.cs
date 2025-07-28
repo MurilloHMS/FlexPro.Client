@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using FlexPro.Client.Domain.Enums;
 
-namespace FlexPro.Client.Models.Response;
+namespace FlexPro.Client.Domain.Models.Response;
 
 public class ContactResponse
 {
