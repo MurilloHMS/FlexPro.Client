@@ -8,5 +8,4 @@ public class UserService
     {
         _http = http;
     }
-    
 }

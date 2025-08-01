@@ -1,4 +1,3 @@
-@using FlexPro.Client.Infrastructure.Services
 @inject NavigationManager Navigation
 @inject ISnackbar Snackbar
 @inject LocalStorageService localStorage;
@@ -6,30 +5,23 @@
 @code {
     private HubConnection? hubConnection;
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
+    protected override async Task OnInitializedAsync() {
+        try {
             hubConnection = new HubConnectionBuilder()
                 .WithUrl("https://api.proautokimium.com/notificationHub")
-                .WithAutomaticReconnect()  
+                .WithAutomaticReconnect()
                 .Build();
 
-            hubConnection.On<string>("ReceiveNotification", message =>
-            {
-                InvokeAsync(() => Snackbar.Add(message, Severity.Info));
-            });
+            hubConnection.On<string>("ReceiveNotification", message => { InvokeAsync(() => Snackbar.Add(message, Severity.Info)); });
 
             await hubConnection.StartAsync();
         }
-        catch (HttpRequestException e)
-        {
+        catch (HttpRequestException e) {
             Snackbar.Add("Não foi possível conectar ao websocket", Severity.Error);
         }
     }
 
-    public async ValueTask DisposeAsync()
-    {
+    public async ValueTask DisposeAsync() {
         if (hubConnection is not null)
             await hubConnection.DisposeAsync();
     }

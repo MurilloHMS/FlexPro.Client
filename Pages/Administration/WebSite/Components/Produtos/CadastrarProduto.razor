@@ -1,4 +1,3 @@
-@using FlexPro.Client.Domain.Enums
 @using FlexPro.Client.Domain.Models
 @using FlexPro.Client.Domain.Models.Response
 @inject HttpClient Http
@@ -12,29 +11,29 @@
             <MudItem xs="12" sm="7">
                 <MudPaper Class="pa-4">
                     <MudForm @ref="form" @bind-IsValid="isFormValid">
-                        <MudTextField Label="Código do Sistema" @bind-Value="_produto.CodigoSistema" Required="true" />
-                        <MudTextField Label="Nome" @bind-Value="_produto.Nome" Required="true" />
-                        <MudTextField Label="Descrição" @bind-Value="_produto.Descricao" />
-                        <MudTextField Label="Cor" @bind-Value="_produto.Cor" />
-                        <MudTextField Label="Diluição" @bind-Value="_produto.Diluicao" />
+                        <MudTextField Label="Código do Sistema" @bind-Value="_produto.CodigoSistema" Required="true"/>
+                        <MudTextField Label="Nome" @bind-Value="_produto.Nome" Required="true"/>
+                        <MudTextField Label="Descrição" @bind-Value="_produto.Descricao"/>
+                        <MudTextField Label="Cor" @bind-Value="_produto.Cor"/>
+                        <MudTextField Label="Diluição" @bind-Value="_produto.Diluicao"/>
 
                         <MudText Typo="Typo.subtitle2" Class="mt-4">Imagem</MudText>
-                        <InputFile OnChange="OnImageSelected" />
-                        @if (_produto.Imagem is not null)
-                        {
-                            <img src="@($"data:image/png;base64,{Convert.ToBase64String(_produto.Imagem)}")" alt="Preview" style="max-height:150px; margin-top: 10px;" />
+                        <InputFile OnChange="OnImageSelected"/>
+                        @if (_produto.Imagem is not null) {
+                            <img src="@($"data:image/png;base64,{Convert.ToBase64String(_produto.Imagem)}")"
+                                 alt="Preview" style="max-height:150px; margin-top: 10px;"/>
                         }
 
-                        <MudSelect T="Departamento" Label="Departamentos" @bind-SelectedValues="_produto.Departamentos" MultiSelection="true" >
-                            @foreach (var d in _departamentos)
-                            {
+                        <MudSelect T="Departamento" Label="Departamentos" @bind-SelectedValues="_produto.Departamentos"
+                                   MultiSelection="true">
+                            @foreach (var d in _departamentos) {
                                 <MudSelectItem Value="d">@d.Nome</MudSelectItem>
                             }
                         </MudSelect>
 
-                        <MudSelect T="Embalagem" Label="Embalagens" @bind-SelectedValues="_produto.Embalagems" MultiSelection="true">
-                            @foreach (var e in _embalagens)
-                            {
+                        <MudSelect T="Embalagem" Label="Embalagens" @bind-SelectedValues="_produto.Embalagems"
+                                   MultiSelection="true">
+                            @foreach (var e in _embalagens) {
                                 <MudSelectItem Value="e">@e.TipoEmbalagem</MudSelectItem>
                             }
                         </MudSelect>
@@ -78,53 +77,46 @@
 
     [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public ProdutoLojaResponse produtoLoja { get; set; } 
+    [Parameter] public ProdutoLojaResponse produtoLoja { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         if (produtoLoja is not null)
             _produto = produtoLoja;
         else
             _produto = new ProdutoLojaResponse { Departamentos = new List<Departamento>(), Embalagems = new List<Embalagem>() };
 
-        _departamentos = new();//await Http.GetFromJsonAsync<List<Departamento>>("api/departamentos");
-        _embalagens = new() ; //await Http.GetFromJsonAsync<List<Embalagem>>("api/embalagens");
+        _departamentos = new List<Departamento>(); //await Http.GetFromJsonAsync<List<Departamento>>("api/departamentos");
+        _embalagens = new List<Embalagem>(); //await Http.GetFromJsonAsync<List<Embalagem>>("api/embalagens");
     }
 
-    private void CloseDialog() => MudDialog.Cancel();
+    private void CloseDialog() {
+        MudDialog.Cancel();
+    }
 
-    private async Task Salvar()
-    {
-        try
-        {
+    private async Task Salvar() {
+        try {
             HttpResponseMessage response;
             if (_produto.Id > 0)
                 response = await Http.PutAsJsonAsync($"api/produto/produtoloja/{_produto.Id}", _produto);
             else
                 response = await Http.PostAsJsonAsync("api/produto/produtoloja", _produto);
 
-            if (response.IsSuccessStatusCode)
-            {
+            if (response.IsSuccessStatusCode) {
                 Snackbar.Add("Produto salvo com sucesso!", Severity.Success);
                 MudDialog.Close(DialogResult.Ok(_produto));
-            }
-            else
-            {
+            } else {
                 var error = await response.Content.ReadAsStringAsync();
                 Snackbar.Add($"Erro ao salvar: {response.StatusCode} - {error}", Severity.Error);
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
         }
     }
 
-    private async Task OnImageSelected(InputFileChangeEventArgs e)
-    {
+    private async Task OnImageSelected(InputFileChangeEventArgs e) {
         var file = e.File;
-        if (file != null)
-        {
+        if (file != null) {
             using var stream = file.OpenReadStream(5 * 1024 * 1024); // 5MB máx
             using var ms = new MemoryStream();
             await stream.CopyToAsync(ms);

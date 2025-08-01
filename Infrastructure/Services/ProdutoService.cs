@@ -19,14 +19,16 @@ public class ProdutoService
     public async Task<IEnumerable<ProdutoLojaResponse>> GetProdutoLoja()
     {
         var stream = await _http.GetStreamAsync("api/produto/produtoloja");
-        return await JsonSerializer.DeserializeAsync<List<ProdutoLojaResponse>>(stream, _options) ?? new List<ProdutoLojaResponse>();; 
+        return await JsonSerializer.DeserializeAsync<List<ProdutoLojaResponse>>(stream, _options) ??
+               new List<ProdutoLojaResponse>();
+        ;
     }
 
     public async Task<IEnumerable<ProdutoLojaResponse>> GetProdutoLojaTeste()
     {
         var produtoLoja = new List<ProdutoLojaResponse>
         {
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 1,
                 CodigoSistema = "21",
@@ -36,15 +38,15 @@ public class ProdutoService
                 Diluicao = "10% a 20%",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 1, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 5000 }
+                    new() { Id = 1, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 1, Nome = "Cozinha" },
-                    new Departamento { Id = 2, Nome = "Restaurantes" }
+                    new() { Id = 1, Nome = "Cozinha" },
+                    new() { Id = 2, Nome = "Restaurantes" }
                 }
             },
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 2,
                 CodigoSistema = "22",
@@ -54,14 +56,14 @@ public class ProdutoService
                 Diluicao = "1% a 3%",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 2, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
+                    new() { Id = 2, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 3, Nome = "Institucional" }
+                    new() { Id = 3, Nome = "Institucional" }
                 }
             },
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 3,
                 CodigoSistema = "23",
@@ -71,14 +73,14 @@ public class ProdutoService
                 Diluicao = "5% a 10%",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 3, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
+                    new() { Id = 3, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 4, Nome = "Lavanderias" }
+                    new() { Id = 4, Nome = "Lavanderias" }
                 }
             },
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 4,
                 CodigoSistema = "24",
@@ -88,14 +90,14 @@ public class ProdutoService
                 Diluicao = "Pronto uso",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 4, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 2000 }
+                    new() { Id = 4, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 2000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 3, Nome = "Institucional" }
+                    new() { Id = 3, Nome = "Institucional" }
                 }
             },
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 5,
                 CodigoSistema = "25",
@@ -105,15 +107,15 @@ public class ProdutoService
                 Diluicao = "5% a 15%",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 5, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
+                    new() { Id = 5, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 5, Nome = "Indústrias" },
-                    new Departamento { Id = 6, Nome = "Automotivo" }
+                    new() { Id = 5, Nome = "Indústrias" },
+                    new() { Id = 6, Nome = "Automotivo" }
                 }
             },
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 6,
                 CodigoSistema = "26",
@@ -123,14 +125,14 @@ public class ProdutoService
                 Diluicao = "Pronto uso",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 6, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 1000 }
+                    new() { Id = 6, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 1000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 3, Nome = "Institucional" }
+                    new() { Id = 3, Nome = "Institucional" }
                 }
             },
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 7,
                 CodigoSistema = "27",
@@ -140,14 +142,14 @@ public class ProdutoService
                 Diluicao = "Pronto uso",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 7, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.CX, Tamanho = 2000 }
+                    new() { Id = 7, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.CX, Tamanho = 2000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 1, Nome = "Cozinha" }
+                    new() { Id = 1, Nome = "Cozinha" }
                 }
             },
-            new ProdutoLojaResponse
+            new()
             {
                 Id = 8,
                 CodigoSistema = "28",
@@ -157,12 +159,12 @@ public class ProdutoService
                 Diluicao = "5% a 10%",
                 Embalagems = new List<Embalagem>
                 {
-                    new Embalagem { Id = 8, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 1000 }
+                    new() { Id = 8, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 1000 }
                 },
                 Departamentos = new List<Departamento>
                 {
-                    new Departamento { Id = 3, Nome = "Institucional" },
-                    new Departamento { Id = 2, Nome = "Restaurantes" }
+                    new() { Id = 3, Nome = "Institucional" },
+                    new() { Id = 2, Nome = "Restaurantes" }
                 }
             }
         };
@@ -172,6 +174,7 @@ public class ProdutoService
     public async Task<ProdutoLojaResponse> GetByIdAsync(int id)
     {
         var stream = await _http.GetStreamAsync($"api/produto/produtoloja/{id}");
-        return await JsonSerializer.DeserializeAsync<ProdutoLojaResponse>(stream, _options) ?? new ProdutoLojaResponse();
+        return await JsonSerializer.DeserializeAsync<ProdutoLojaResponse>(stream, _options) ??
+               new ProdutoLojaResponse();
     }
 }

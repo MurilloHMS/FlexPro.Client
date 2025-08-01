@@ -1,6 +1,5 @@
 @inject IDialogService DialogService
 @inject CartService CartService
-@using FlexPro.Client.Infrastructure.Services
 @implements IDisposable
 
 
@@ -45,10 +44,10 @@
 			<li class="carrinho-container">
 				<MudBadge Content="@ItensCarrinho" Overlap="true" Color="Color.Error" Visible="@(ItensCarrinho > 0)">
 					<MudIconButton Icon="@Icons.Material.Outlined.ShoppingCart" Color="Color.Primary" Size="Size.Small"
-					               OnClick="OpenCart"/>
+								   OnClick="OpenCart"/>
 				</MudBadge>
 				<MudIconButton Icon="@Icons.Material.Filled.Login" Href="Account/login" Color="Color.Primary"
-				               Size="Size.Small"/>
+							   Size="Size.Small"/>
 			</li>
 		</ul>
 	</div>
@@ -61,37 +60,30 @@
 	private bool _isOpen;
 	private bool _openCart;
 
-	protected override async Task OnInitializedAsync()
-	{
+	protected override async Task OnInitializedAsync() {
 		await CartService.InitializeAsync();
 		ItensCarrinho = CartService.GetCartCount();
 		CartService.CartCountChanged += UpdateCount;
 	}
 
-	private Task OpenDialogAsync()
-	{
+	private Task OpenDialogAsync() {
 		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
 		return DialogService.ShowAsync<Contato>("Entre em Contato", options);
 	}
 
-	private void ToggleMenu()
-	{
+	private void ToggleMenu() {
 		_isOpen = !_isOpen;
 	}
 
-	private void UpdateCount(int count)
-	{
+	private void UpdateCount(int count) {
 		ItensCarrinho = count;
 	}
 
-	private void OpenCart()
-	{
+	private void OpenCart() {
 		_openCart = true;
 	}
 
-	public void Dispose()
-	{
+	public void Dispose() {
 		CartService.CartCountChanged -= UpdateCount;
 	}
-
 }

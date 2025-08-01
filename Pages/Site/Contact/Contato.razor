@@ -1,4 +1,3 @@
-@using FlexPro.Client.Domain.Enums
 @using FlexPro.Client.Domain.Models.Request
 @inject HttpClient Http
 
@@ -36,16 +35,14 @@
                                    Variant="Variant.Text"
                                    Clearable
                                    Required>
-                            @foreach (var tipo in Enum.GetValues<TipoContato_e>())
-                            {
+                            @foreach (var tipo in Enum.GetValues<TipoContato_e>()) {
                                 <MudSelectItem T="TipoContato_e" Value="tipo">@GetDisplayName(tipo)</MudSelectItem>
                             }
                         </MudSelect>
 
-                        @if (_contato.TipoContato == TipoContato_e.Outros)
-                        {
-                            <MudTextField @bind-Value="_contato.outro"
-                                          For="@(() => _contato.outro)"
+                        @if (_contato.TipoContato == TipoContato_e.Outros) {
+                            <MudTextField @bind-Value="_contato.Outro"
+                                          For="@(() => _contato.Outro)"
                                           Label="Digite o motivo"/>
                         }
 
@@ -56,8 +53,7 @@
                                       Required/>
                     </MudForm>
 
-                    @if (!string.IsNullOrEmpty(message))
-                    {
+                    @if (!string.IsNullOrEmpty(message)) {
                         <MudAlert Severity="@severity">@message</MudAlert>
                     }
                 </MudPaper>
@@ -96,12 +92,9 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancelar</MudButton>
-        @if (isLoading)
-        {
+        @if (isLoading) {
             <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
-        }
-        else
-        {
+        } else {
             <MudButton Color="Color.Tertiary" OnClick="Submit" Disabled="!isFormValid">Entrar em contato</MudButton>
         }
     </DialogActions>
@@ -118,18 +111,15 @@
     private string? message;
     private Severity severity;
 
-    private void Cancel()
-    {
+    private void Cancel() {
         MudDialog.Cancel();
     }
 
-    private async Task Submit()
-    {
+    private async Task Submit() {
         message = string.Empty;
         await form.Validate();
 
-        if (!form.IsValid)
-        {
+        if (!form.IsValid) {
             message = "Existem campos obrigatórios não preenchidos.";
             severity = Severity.Warning;
             return;
@@ -144,11 +134,9 @@
         isLoading = false;
     }
 
-    private string GetDisplayName(TipoContato_e tipo)
-    {
+    private string GetDisplayName(TipoContato_e tipo) {
         var field = tipo.GetType().GetField(tipo.ToString());
         var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
         return attr?.Name ?? tipo.ToString();
     }
-
 }

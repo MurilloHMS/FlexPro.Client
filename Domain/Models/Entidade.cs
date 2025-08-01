@@ -6,5 +6,5 @@ public class Entidade
     public string Nome { get; set; }
     public string? CodigoSistema { get; set; }
     public string? Email { get; set; }
-    public bool Ativo { get; set; } =  true;
+    public bool Ativo { get; set; } = true;
 }

@@ -1,8 +1,6 @@
 @page "/management/people/partners"
-@using System.Net
 @using System.Net.Http.Headers
 @using FlexPro.Client.Domain.Models.Response
-@using FlexPro.Client.Infrastructure.Services
 
 @inject IDialogService DialogService;
 @inject ParceiroService service;
@@ -14,7 +12,7 @@
 
 <MudText Typo="Typo.h2">Parceiros</MudText>
 <br><br><br>
-<MudDataGrid Items="@parceirosFiltrados" T="ParceiroResponseDTO" Hover="true" Bordered="true" Striped="true"
+<MudDataGrid Items="@parceirosFiltrados" T="ParceiroResponseDto" Hover="true" Bordered="true" Striped="true"
              Dense="true" SortMode="SortMode.Multiple" Filterable="true" Loading="_isLoading" Virtualize>
     <ToolBarContent>
         <MudButtonGroup OverrideStyles="false">
@@ -23,7 +21,7 @@
             </MudButton>
             <MudIconButton @onclick="@(() => LoadData())" Variant="Variant.Filled" Size="Size.Small"
                            Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
-            
+
             <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept=".xlsx">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled"
@@ -34,13 +32,15 @@
                     </MudButton>
                 </ActivatorContent>
             </MudFileUpload>
-            <MudButton OnClick="@(() => ImportarDados())" Variant="Variant.Filled" Disabled="@(fileSelected == default)" Size="Size.Small">Importar Parceiros</MudButton>
+            <MudButton OnClick="@(() => ImportarDados())" Variant="Variant.Filled" Disabled="@(fileSelected == default)"
+                       Size="Size.Small">Importar Parceiros
+            </MudButton>
         </MudButtonGroup>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString" Placeholder="Buscar parceiro" Adornment="Adornment.Start"
                       Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" 
-                      IconSize="Size.Medium" 
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
                       Class="mt-0"/>
     </ToolBarContent>
     <Columns>
@@ -59,63 +59,56 @@
         </TemplateColumn>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="ParceiroResponseDTO"/>
+        <MudDataGridPager T="ParceiroResponseDto"/>
     </PagerContent>
 </MudDataGrid>
 
 
 @code {
-    private IEnumerable<ParceiroResponseDTO> _parceiros = new List<ParceiroResponseDTO>();
+    private IEnumerable<ParceiroResponseDto> _parceiros = new List<ParceiroResponseDto>();
     private string _searchString = "";
     private bool _isLoading;
     private bool _isValid = true;
-    private IBrowserFile fileSelected = default;
+    private IBrowserFile fileSelected;
 
-    private IEnumerable<ParceiroResponseDTO> parceirosFiltrados => 
+    private IEnumerable<ParceiroResponseDto> parceirosFiltrados =>
         string.IsNullOrWhiteSpace(_searchString)
-        ? _parceiros
-        : _parceiros.Where(x => 
-            x.RazaoSocial.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
-        );
+            ? _parceiros
+            : _parceiros.Where(x =>
+                x.RazaoSocial.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+            );
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         //await LoadData();
     }
 
-    private async Task LoadData()
-    {
-        try
-        {
+    private async Task LoadData() {
+        try {
             _isLoading = true;
             var request = await service.GetAllAsync("api/parceiro");
             _parceiros = request.Data;
-        }catch (HttpRequestException ex)
-        {
+        }
+        catch (HttpRequestException ex) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             _parceiros = default;
-        }finally
-        {
+        }
+        finally {
             _isLoading = false;
         }
     }
 
-    private async Task OpenDialogAsync()
-    {
+    private async Task OpenDialogAsync() {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarParceiro>("Cadastro de Parceiros", options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
 
-    private async Task OpendDeleteDialogAsync(ParceiroResponseDTO parceiro)
-    {
-        var parametros = new DialogParameters<DialogParceiro>
-        {
+    private async Task OpendDeleteDialogAsync(ParceiroResponseDto parceiro) {
+        var parametros = new DialogParameters<DialogParceiro> {
             { x => x.ContentText, "Tem certeza que você quer deletar este registro? Este processo não pode ser revertido!" },
             { x => x.ButtonText, "Deletar" },
             { x => x.Color, Color.Error },
@@ -127,16 +120,13 @@
         var dialog = await DialogService.ShowAsync<DialogParceiro>("Deletar", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
 
-    private async Task OpenEditDialogAsync(ParceiroResponseDTO parceiro)
-    {
-        var parametros = new DialogParameters<CadastrarParceiro>
-        {
+    private async Task OpenEditDialogAsync(ParceiroResponseDto parceiro) {
+        var parametros = new DialogParameters<CadastrarParceiro> {
             { x => x.parceiro, parceiro }
         };
 
@@ -144,53 +134,41 @@
         var dialog = await DialogService.ShowAsync<CadastrarParceiro>("Atualizar Parceiro", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
 
-    private void UploadFiles(IBrowserFile file)
-    {
+    private void UploadFiles(IBrowserFile file) {
         fileSelected = file;
     }
 
-    private async Task ImportarDados()
-    {
-
-        try
-        {
+    private async Task ImportarDados() {
+        try {
             _isLoading = true;
-            if (fileSelected.Size > 0)
-            {
-                Snackbar.Add("Iniciando cadastro dos parceiros...", Severity.Normal);
+            if (fileSelected.Size > 0) {
+                Snackbar.Add("Iniciando cadastro dos parceiros...");
                 var content = new MultipartFormDataContent();
                 var fileContent = new StreamContent(fileSelected.OpenReadStream());
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
 
                 content.Add(fileContent, "file", fileSelected.Name);
-                var response = await service.UploadAsync("api/parceiro/upload",content);
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
+                var response = await service.UploadAsync("api/parceiro/upload", content);
+                if (response.StatusCode == HttpStatusCode.OK) {
                     Snackbar.Add($"Parceiros cadastrados com sucesso: {response.Message}", Severity.Success);
                     await LoadData();
-                }
-                else
-                {
+                } else {
                     Snackbar.Add($"Ocorreu um erro ao processar o arquivo:{Environment.NewLine} StatusCode: {response.StatusCode} {Environment.NewLine} Message: {response.Message}");
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro desconhecido: {e.Message} {Environment.NewLine} stacktrace: {e.StackTrace}", Severity.Error);
         }
-        finally
-        {
+        finally {
             _isLoading = false;
             fileSelected = default;
         }
-       
     }
 }

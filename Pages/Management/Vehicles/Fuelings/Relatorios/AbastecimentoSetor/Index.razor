@@ -16,10 +16,8 @@
 
     public DateTime DataConvertida;
 
-    protected override async Task OnParametersSetAsync()
-    {
+    protected override async Task OnParametersSetAsync() {
         var request = await Http.GetStringAsync($"api/abastecimento/calcular/setor/{Data}");
         resultado = request;
     }
-
 }

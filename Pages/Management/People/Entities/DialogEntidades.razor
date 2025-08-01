@@ -23,24 +23,19 @@
 
     [Parameter] public Entidade Entidade { get; set; }
 
-    private async Task Submit()
-    {
-        try
-        {
+    private async Task Submit() {
+        try {
             await Http.DeleteAsync($"api/PrestadorDeServico/{Entidade.ID}");
             Snackbar.Add("Entidade Deletada", Severity.Success);
             MudDialog?.Close(DialogResult.Ok(true));
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add("Ocorreu um erro ao deletar a Entidade", Severity.Error);
             throw;
         }
     }
 
-    private void Cancel()
-    {
+    private void Cancel() {
         MudDialog.Cancel();
     }
-
 }

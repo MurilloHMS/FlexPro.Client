@@ -6,47 +6,50 @@
 
 <MudPaper>
     <MudStepper NonLinear CenterLabels OnPreviewInteraction="OnPreviewInteraction">
-        <MudStep Title="Passo 1" SecondaryText="Envio da planilha com os dados das notas fiscais" HasError="_hasPasso1Error">
+        <MudStep Title="Passo 1" SecondaryText="Envio da planilha com os dados das notas fiscais"
+                 HasError="_hasPasso1Error">
             <MudText>Faça o upload da planilha com os dados da nota fiscal.</MudText>
             <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosNfe(files))"
-            Accept=".xlsx" MaximumFileCount="1">
+                           Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                    StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
+                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File
+                    </MudButton>
                 </ActivatorContent>
             </MudFileUpload>
-            @if (_isPasso1Concluido)
-            {
+            @if (_isPasso1Concluido) {
                 <MudText Color="Color.Success" Typo="Typo.caption">✔ Arquivo enviado com sucesso.</MudText>
             }
         </MudStep>
 
-        <MudStep Title="Passo 2" SecondaryText="Envio da planilha com os dados das Ordens de serviço" HasError="_hasPasso2Error">
+        <MudStep Title="Passo 2" SecondaryText="Envio da planilha com os dados das Ordens de serviço"
+                 HasError="_hasPasso2Error">
             <MudText>Faça o upload da planilha com os dados das ordens de serviço.</MudText>
             <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosOs(files))"
-            Accept=".xlsx" MaximumFileCount="1">
+                           Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                    StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
+                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File
+                    </MudButton>
                 </ActivatorContent>
             </MudFileUpload>
-            @if (_isPasso2Concluido)
-            {
+            @if (_isPasso2Concluido) {
                 <MudText Color="Color.Success" Typo="Typo.caption">✔ Arquivo enviado com sucesso.</MudText>
             }
         </MudStep>
 
-        <MudStep Title="Passo 3" SecondaryText="Envio da planilha com os dados das peças trocadas" HasError="_hasPasso3Error">
+        <MudStep Title="Passo 3" SecondaryText="Envio da planilha com os dados das peças trocadas"
+                 HasError="_hasPasso3Error">
             <MudText>Faça o upload da planilha com os dados das peças trocadas.</MudText>
             <MudFileUpload T="IBrowserFile" FilesChanged="@(async files => await UploadDadosPecasTrocadas(files))"
-            Accept=".xlsx" MaximumFileCount="1">
+                           Accept=".xlsx" MaximumFileCount="1">
                 <ActivatorContent>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary"
-                    StartIcon="@Icons.Material.Filled.CloudUpload">Upload File</MudButton>
+                               StartIcon="@Icons.Material.Filled.CloudUpload">Upload File
+                    </MudButton>
                 </ActivatorContent>
             </MudFileUpload>
-            @if (_isPasso3Concluido)
-            {
+            @if (_isPasso3Concluido) {
                 <MudText Color="Color.Success" Typo="Typo.caption">✔ Arquivo enviado com sucesso.</MudText>
             }
         </MudStep>
@@ -54,23 +57,23 @@
         <MudStep Title="Passo 4" SecondaryText="Validação">
             <MudText>Selecione os clientes aprovados para envio de e-mail.</MudText>
             <MudDataGrid T="Informativo"
-            MultiSelection="true"
-            Items="_informativos"
-            SortMode="SortMode.Multiple"
-            Filterable="true"
-            Hideable="true"
-            SelectedItemsChanged="@SelectedItemsChanged"
-            Loading="_isLoading">
+                         MultiSelection="true"
+                         Items="_informativos"
+                         SortMode="SortMode.Multiple"
+                         Filterable="true"
+                         Hideable="true"
+                         SelectedItemsChanged="@SelectedItemsChanged"
+                         Loading="_isLoading">
                 <ToolBarContent>
                     <MudSelect T="string" @bind-Value="selectedMonth" Placeholder="Selecione o Mês de Referência">
-                        @foreach (var month in months)
-                        {
+                        @foreach (var month in months) {
                             <MudSelectItem Value="@month">@month</MudSelectItem>
                         }
                     </MudSelect>
                     <MudSpacer/>
                     <MudTextField @bind-Value="_searchString" Placeholder="Buscar Cliente" Adornment="Adornment.Start"
-                    Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"/>
+                                  Immediate="true" AdornmentIcon="@Icons.Material.Filled.Search"
+                                  IconSize="Size.Medium"/>
                 </ToolBarContent>
                 <Columns>
                     <SelectColumn T="Informativo"/>
@@ -89,12 +92,14 @@
                 </PagerContent>
             </MudDataGrid>
 
-            <MudButton OnClick="AtualizarDadosDaTabela" Variant="Variant.Filled" Color="Color.Primary" Disabled="_isLoading"
-            StartIcon="@Icons.Material.Filled.Refresh">Atualizar Tabela</MudButton>
+            <MudButton OnClick="AtualizarDadosDaTabela" Variant="Variant.Filled" Color="Color.Primary"
+                       Disabled="_isLoading"
+                       StartIcon="@Icons.Material.Filled.Refresh">Atualizar Tabela
+            </MudButton>
 
             <MudButton OnClick="EnviarInformativos" Variant="Variant.Filled" Color="Color.Primary"
-            Disabled="_isLoading || !_clientesSelecionados.Any()"
-            StartIcon="@Icons.Material.Filled.Send">
+                       Disabled="_isLoading || !_clientesSelecionados.Any()"
+                       StartIcon="@Icons.Material.Filled.Send">
                 Confirmar @_clientesSelecionados.Count() clientes selecionados
             </MudButton>
         </MudStep>
@@ -123,8 +128,7 @@
     private IEnumerable<Informativo> _clientesSelecionados = new List<Informativo>();
     private string _searchString;
 
-    private string[] months = new[]
-    {
+    private readonly string[] months = new[] {
         "Janeiro",
         "Fevereiro",
         "Março",
@@ -137,25 +141,22 @@
         "Outubro",
         "Novembro",
         "Dezembro"
-	}.ToArray();
-	private string selectedMonth = string.Empty;
+    };
 
-    private async Task<List<T>> UploadArquivo<T>(IBrowserFile file, string url, string fileKey, Action onSuccess, Action onError)
-    {
+    private string selectedMonth = string.Empty;
+
+    private async Task<List<T>> UploadArquivo<T>(IBrowserFile file, string url, string fileKey, Action onSuccess, Action onError) {
         var content = new MultipartFormDataContent();
-        if (file != null)
-        {
+        if (file != null) {
             var streamContent = new StreamContent(file.OpenReadStream());
             streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             content.Add(streamContent, fileKey, file.Name);
         }
 
         var response = await Http.PostAsync(url, content);
-        if (response.IsSuccessStatusCode)
-        {
+        if (response.IsSuccessStatusCode) {
             var data = await response.Content.ReadFromJsonAsync<List<T>>();
-            if (data != null && data.Any())
-            {
+            if (data != null && data.Any()) {
                 Snackbar.Add("Dados coletados com sucesso!", Severity.Success);
                 onSuccess();
                 return data;
@@ -167,8 +168,7 @@
         return new List<T>();
     }
 
-    private async Task UploadDadosNfe(IBrowserFile file1)
-    {
+    private async Task UploadDadosNfe(IBrowserFile file1) {
         planilhaDadosNfe = file1;
         _informativoNFe = await UploadArquivo<InformativoNFe>(
             file1, "api/Informativo/upload/nfe", "file",
@@ -177,8 +177,7 @@
         );
     }
 
-    private async Task UploadDadosOs(IBrowserFile file2)
-    {
+    private async Task UploadDadosOs(IBrowserFile file2) {
         planilhaDadosOs = file2;
         _informativoOs = await UploadArquivo<InformativoOS>(
             file2, "api/Informativo/upload/os", "file",
@@ -187,8 +186,7 @@
         );
     }
 
-    private async Task UploadDadosPecasTrocadas(IBrowserFile file3)
-    {
+    private async Task UploadDadosPecasTrocadas(IBrowserFile file3) {
         planilhaDadosPecasTrocadas = file3;
         _informativoPecasTrocadas = await UploadArquivo<InformativoPecasTrocadas>(
             file3, "api/Informativo/upload/pecasTrocadas", "file",
@@ -197,14 +195,11 @@
         );
     }
 
-    private async Task AtualizarDadosDaTabela()
-    {
-        try
-        {
+    private async Task AtualizarDadosDaTabela() {
+        try {
             _isLoading = true;
 
-            var request = new DadosRequest
-            {
+            var request = new DadosRequest {
                 Month = selectedMonth,
                 InformativoNFes = _informativoNFe,
                 informativoOs = _informativoOs,
@@ -212,38 +207,32 @@
             };
 
             var response = await Http.PostAsJsonAsync("api/Informativo/calcular", request);
-            if (response.IsSuccessStatusCode)
-            {
+            if (response.IsSuccessStatusCode) {
                 _informativos = await response.Content.ReadFromJsonAsync<List<Informativo>>();
                 _isValid = _informativos.Any();
-            }
-            else
-            {
+            } else {
                 Snackbar.Add("Erro ao atualizar dados", Severity.Error);
             }
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
         }
-        finally
-        {
+        finally {
             _isLoading = false;
         }
     }
 
-    private void SelectedItemsChanged(HashSet<Informativo> items) => _clientesSelecionados = items;
+    private void SelectedItemsChanged(HashSet<Informativo> items) {
+        _clientesSelecionados = items;
+    }
 
-    private async Task EnviarInformativos()
-    {
-        if (!_clientesSelecionados.Any())
-        {
+    private async Task EnviarInformativos() {
+        if (!_clientesSelecionados.Any()) {
             Snackbar.Add("Nenhum cliente selecionado!", Severity.Warning);
             return;
         }
 
-        try
-        {
+        try {
             _isLoading = true;
             // Http.Timeout = TimeSpan.FromMinutes(10);
             var response = await Http.PostAsJsonAsync("api/Email/send/informativos", _clientesSelecionados);
@@ -253,28 +242,23 @@
             else
                 Snackbar.Add("Erro ao enviar os informativos", Severity.Error);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             Snackbar.Add($"Erro inesperado: {ex.Message}", Severity.Error);
         }
-        finally
-        {
+        finally {
             _isLoading = false;
         }
     }
 
-    private async Task OnPreviewInteraction(StepperInteractionEventArgs arg)
-    {
+    private async Task OnPreviewInteraction(StepperInteractionEventArgs arg) {
         if (arg.Action == StepAction.Complete)
             await ValidarEtapas(arg);
         else if (arg.Action == StepAction.Activate)
             await VerificarPreRequisitos(arg);
     }
 
-    private async Task ValidarEtapas(StepperInteractionEventArgs arg)
-    {
-        switch (arg.StepIndex)
-        {
+    private async Task ValidarEtapas(StepperInteractionEventArgs arg) {
+        switch (arg.StepIndex) {
             case 0 when !_isPasso1Concluido:
                 await DialogService.ShowMessageBox("Erro", "Você precisa enviar o arquivo da nota fiscal!");
                 arg.Cancel = true;
@@ -294,10 +278,8 @@
         }
     }
 
-    private async Task VerificarPreRequisitos(StepperInteractionEventArgs arg)
-    {
-        switch (arg.StepIndex)
-        {
+    private async Task VerificarPreRequisitos(StepperInteractionEventArgs arg) {
+        switch (arg.StepIndex) {
             case 1 when !_isPasso1Concluido:
             case 2 when !_isPasso2Concluido:
             case 3 when !_isPasso3Concluido:

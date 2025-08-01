@@ -6,18 +6,16 @@ public enum TipoContato_e
 {
     [Display(Name = "Dúvida sobre produtos")]
     DuvidaProduto,
-    
-    [Display(Name = "Suporte técnico")]
-    SuporteTecnico,
+
+    [Display(Name = "Suporte técnico")] SuporteTecnico,
 
     [Display(Name = "Solicitação de orçamento")]
     SolicitacaoOrcamento,
 
     [Display(Name = "Representação comercial")]
     RepresentacaoComercial,
-    
-    [Display(Name = "Trabalhe conosco")] 
-    TrabalheConosco,
+
+    [Display(Name = "Trabalhe conosco")] TrabalheConosco,
 
     [Display(Name = "Consultoria especializada")]
     ConsultoriaEspecializada,
@@ -27,10 +25,9 @@ public enum TipoContato_e
 
     [Display(Name = "Informações sobre certificações")]
     InformacoesCertificacoes,
-    
+
     [Display(Name = "Problemas com pedido ou entrega")]
     ProblemaPedidoEntrega,
-    
-    [Display(Name = "Outros")]
-    Outros
+
+    [Display(Name = "Outros")] Outros
 }

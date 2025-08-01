@@ -1,5 +1,4 @@
 @using FlexPro.Client.Domain.Models.Response
-@using FlexPro.Client.Infrastructure.Services
 @inject ParceiroService ParceiroService
 @inject ISnackbar SnackBar
 
@@ -22,27 +21,21 @@
 
     [Parameter] public Color Color { get; set; }
 
-    [Parameter] public ParceiroResponseDTO Parceiro { get; set; }
+    [Parameter] public ParceiroResponseDto Parceiro { get; set; }
 
-    public async Task Submit()
-    {
-        try
-        {
-            await ParceiroService.DeleteAsync($"api/parceiro/", Parceiro.Id);
+    public async Task Submit() {
+        try {
+            await ParceiroService.DeleteAsync("api/parceiro/", Parceiro.Id);
             SnackBar.Add("Parceiro Deletado com Sucesso", Severity.Success);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             SnackBar.Add($"Ocorreu um erro ao deletar o parceiro \n Erro; {e.Message}");
         }
 
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    private void Cancel()
-    {
+    private void Cancel() {
         MudDialog.Cancel();
     }
-
-
 }

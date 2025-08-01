@@ -1,5 +1,4 @@
-﻿@using FlexPro.Client.Infrastructure.Services
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 @inject AuthService AuthService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -33,14 +32,17 @@
                     </ActivatorContent>
                     <ChildContent>
                         <MudPaper Elevation="0" Style="padding: 10px;">
-                            <MudAvatar Variant="Variant.Filled" Color="Color.Secondary">@(string.IsNullOrWhiteSpace(userName) ? "U" : userName[0].ToString().ToUpper())</MudAvatar>
+                            <MudAvatar Variant="Variant.Filled"
+                                       Color="Color.Secondary">@(string.IsNullOrWhiteSpace(userName) ? "U" : userName[0].ToString().ToUpper())</MudAvatar>
                             <br>
                             <MudText Typo="Typo.overline" Align="Align.Center" Color="Color.Primary">@userName</MudText>
                         </MudPaper>
                         <MudMenuItem Label="Conta"/>
                         <MudMenuItem Label="Configurações"/>
                         <MudPaper Elevation="0" Style="padding: 10px;">
-                            <MudButton FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Logout" Variant="Variant.Filled" Href="account/logout">Logout</MudButton>
+                            <MudButton FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Logout"
+                                       Variant="Variant.Filled" Href="account/logout">Logout
+                            </MudButton>
                         </MudPaper>
                     </ChildContent>
                 </MudMenu>
@@ -70,7 +72,7 @@
     </NotAuthorized>
 </AuthorizeView>
 
-<MudScrollToTop >
+<MudScrollToTop>
     <MudFab Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.KeyboardArrowUp"/>
 </MudScrollToTop>
 
@@ -83,34 +85,28 @@
 @code {
     private bool _isDarkMode;
     private bool _drawerOpen;
-    
+
     private string userName;
 
-    private readonly MudTheme _theme = new()
-    {
-        PaletteLight = new PaletteLight
-        {
+    private readonly MudTheme _theme = new() {
+        PaletteLight = new PaletteLight {
             Primary = "#232e61",
             Secondary = "#57c1ab"
         }
     };
 
-    private void DrawerToggle()
-    {
+    private void DrawerToggle() {
         _drawerOpen = !_drawerOpen;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        if (user.Identity?.IsAuthenticated == true)
-        {
+        if (user.Identity?.IsAuthenticated == true) {
             userName = user.FindFirst(ClaimTypes.Name)?.Value
                        ?? user.FindFirst("unique_name")?.Value
                        ?? "Sem nome";
         }
     }
-
 }

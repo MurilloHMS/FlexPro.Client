@@ -30,10 +30,8 @@
                 <MudText Typo="Typo.h6">
                     Arraste e solte os arquivos aqui ou clique para selecionar.
                 </MudText>
-                @if (_fileNames != null && _fileNames.Any())
-                {
-                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++)
-                    {
+                @if (_fileNames != null && _fileNames.Any()) {
+                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++) {
                         <MudChip T="string"
                                  Color="Color.Dark"
                                  Text="@_fileNames[i].Name"
@@ -82,39 +80,32 @@
     private readonly List<IBrowserFile> _fileNames = new();
     private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
 
-    private async Task ClearAsync()
-    {
+    private async Task ClearAsync() {
         await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
         _fileNames.Clear();
         ClearDragClass();
     }
 
-    private Task OpenFilePickerAsync()
-    {
+    private Task OpenFilePickerAsync() {
         return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
     }
 
-    private void OnInputFileChanged(InputFileChangeEventArgs e)
-    {
+    private void OnInputFileChanged(InputFileChangeEventArgs e) {
         ClearDragClass();
         var files = e.GetMultipleFiles(1000);
-        foreach (var file in files)
-        {
-            if (Path.GetExtension(file.Name).Contains("xml"))
-            {
+        foreach (var file in files) {
+            if (Path.GetExtension(file.Name).Contains("xml")) {
                 _fileNames.Add(file);
             }
         }
     }
 
-    private async Task Upload()
-    {
+    private async Task Upload() {
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         Snackbar.Add("Iniciando Processamento dos arquivos...");
 
         var content = new MultipartFormDataContent();
-        foreach (var file in _fileNames)
-        {
+        foreach (var file in _fileNames) {
             var fileContent = new StreamContent(file.OpenReadStream());
             fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
             content.Add(fileContent, "files", file.Name);
@@ -122,33 +113,26 @@
 
         var response = await Http.PostAsync("api/ICMS/calcular", content);
 
-        if (response.IsSuccessStatusCode)
-        {
+        if (response.IsSuccessStatusCode) {
             var fileBytes = await response.Content.ReadAsByteArrayAsync();
             var fileName = $"ICMS-{DateTime.Now:dd-MM-yyyy}.xlsx";
             await DownloadFile(fileBytes, fileName);
             Snackbar.Add("Arquivo Excel gerado com sucesso!", Severity.Success);
-        }
-        else
-        {
+        } else {
             Snackbar.Add("Erro ao processar os arquivos.", Severity.Error);
         }
     }
 
-    private void SetDragClass()
-    {
+    private void SetDragClass() {
         _dragClass = $"{DefaultDragClass} mud-border-primary";
     }
 
-    private void ClearDragClass()
-    {
+    private void ClearDragClass() {
         _dragClass = DefaultDragClass;
     }
 
-    private async Task DownloadFile(byte[] fileBytes, string fileName)
-    {
+    private async Task DownloadFile(byte[] fileBytes, string fileName) {
         var base64File = Convert.ToBase64String(fileBytes);
         await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
-
 }

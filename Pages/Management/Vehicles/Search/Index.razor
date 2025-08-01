@@ -11,8 +11,7 @@
     veículo
 </MudText>
 <MudSelect Label="Veiculo" @bind-Value="_veiculo.Id" Placeholder="Selecione um Veículo">
-    @foreach (var veiculo in _veiculos)
-    {
+    @foreach (var veiculo in _veiculos) {
         <MudSelectItem Value="veiculo.Id">@veiculo.Marca @veiculo.Nome - @veiculo.Placa</MudSelectItem>
     }
 </MudSelect>
@@ -59,31 +58,24 @@
                 r.Tipo.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
             );
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
+    protected override async Task OnInitializedAsync() {
+        try {
             var vehicles = await Http.GetFromJsonAsync<List<Veiculo>>("api/Veiculo");
             _veiculos = vehicles;
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados do veiculo. {Environment.NewLine}Error: {e.Message}", Severity.Error);
             throw;
         }
     }
 
-    private async Task BuscarRevisoes()
-    {
-        try
-        {
+    private async Task BuscarRevisoes() {
+        try {
             _revisoes = await Http.GetFromJsonAsync<List<Revisao>>($"api/Revisao/Veiculo/{_veiculo.Id}");
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados da revisao. {Environment.NewLine}Error: {e.Message}", Severity.Error);
             throw;
         }
     }
-
 }

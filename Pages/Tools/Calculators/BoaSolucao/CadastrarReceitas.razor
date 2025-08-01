@@ -38,44 +38,33 @@
 
     [Parameter] public Receita Receita { get; set; }
 
-    protected override void OnInitialized()
-    {
+    protected override void OnInitialized() {
         if (Receita is not null)
             _receita = Receita;
     }
 
-    private void CloseDialog()
-    {
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private async Task SalvarReceitas()
-    {
-        try
-        {
-            if (Receita is not null)
-            {
+    private async Task SalvarReceitas() {
+        try {
+            if (Receita is not null) {
                 var response = await Http.PutAsJsonAsync($"api/receita/{_receita.Id}", _receita);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Receita Atualizada com Sucesso!", Severity.Success);
                 }
-            }
-            else
-            {
+            } else {
                 var response = await Http.PostAsJsonAsync("api/receita", _receita);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Receita Cadastrada com Sucesso!", Severity.Success);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao cadastrar a receita: {e.Message}", Severity.Error);
         }
 
         MudDialog?.Close(DialogResult.Ok(_receita));
     }
-
 }

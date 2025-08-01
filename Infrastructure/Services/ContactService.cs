@@ -19,10 +19,7 @@ public class ContactService : IContactService
     public async Task<IEnumerable<ContactResponse>> GetAllAsync()
     {
         var response = await _http.GetAsync("api/contato");
-        if (response.IsSuccessStatusCode)
-        {
-            return response.Content.ReadFromJsonAsync<List<ContactResponse>>().Result;
-        }
+        if (response.IsSuccessStatusCode) return response.Content.ReadFromJsonAsync<List<ContactResponse>>().Result;
         return Enumerable.Empty<ContactResponse>();
     }
 
@@ -34,15 +31,12 @@ public class ContactService : IContactService
             request.EnsureSuccessStatusCode();
 
             if (request.IsSuccessStatusCode)
-            {
                 return ApiResponse<string>.Success(request.Content.ReadAsStringAsync().Result);
-            }
-            else
-            {
-                return ApiResponse<string>.Fail($"Erro {(int)request.StatusCode}: {request.Content.ReadAsStringAsync().Result}");
-            }
 
-        }catch (HttpRequestException ex)
+            return ApiResponse<string>.Fail(
+                $"Erro {(int)request.StatusCode}: {request.Content.ReadAsStringAsync().Result}");
+        }
+        catch (HttpRequestException ex)
         {
             return ApiResponse<string>.Fail($"Erro de conexão: {ex.Message}", HttpStatusCode.ServiceUnavailable);
         }

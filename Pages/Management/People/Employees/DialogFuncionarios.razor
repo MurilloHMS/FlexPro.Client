@@ -22,15 +22,12 @@
 
     [Parameter] public Funcionarios Funcionarios { get; set; }
 
-    private async Task Submit()
-    {
-        try
-        {
+    private async Task Submit() {
+        try {
             await Http.DeleteAsync($"api/funcionario/{Funcionarios.Id}");
             Snackbar.Add("Funcionario Deletado", Severity.Success);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add("Ocorreu um erro ao deletar o Funcionário", Severity.Error);
             throw;
         }
@@ -38,9 +35,7 @@
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    private void Cancel()
-    {
+    private void Cancel() {
         MudDialog.Cancel();
     }
-
 }

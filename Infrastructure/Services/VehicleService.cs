@@ -36,7 +36,7 @@ public class VehicleService : IVehicleService
     {
         try
         {
-            var response = await _client.GetAsync($"api/veiculo");
+            var response = await _client.GetAsync("api/veiculo");
 
             var statusCode = response.StatusCode;
             var rawMessage = await response.Content.ReadAsStringAsync();
@@ -46,10 +46,8 @@ public class VehicleService : IVehicleService
                 var data = await response.Content.ReadFromJsonAsync<List<Veiculo>>();
                 return ApiResponse<List<Veiculo>>.Success(data!, "Veículos obtidos com sucesso.");
             }
-            else
-            {
-                return ApiResponse<List<Veiculo>>.Fail($"Erro {statusCode}: {rawMessage}", statusCode);
-            }
+
+            return ApiResponse<List<Veiculo>>.Fail($"Erro {statusCode}: {rawMessage}", statusCode);
         }
         catch (HttpRequestException ex)
         {
@@ -57,7 +55,8 @@ public class VehicleService : IVehicleService
         }
         catch (Exception ex)
         {
-            return ApiResponse<List<Veiculo>>.Fail($"Erro inesperado: {ex.Message}", HttpStatusCode.InternalServerError);
+            return ApiResponse<List<Veiculo>>.Fail($"Erro inesperado: {ex.Message}",
+                HttpStatusCode.InternalServerError);
         }
     }
 }

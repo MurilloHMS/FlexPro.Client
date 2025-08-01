@@ -6,7 +6,7 @@ public interface IApiService<TRequest, TResponse> where TRequest : class where T
 {
     Task<ApiResponse<IEnumerable<TResponse>>> GetAllAsync(string url);
     Task<ApiResponse<TResponse>> GetByIdAsync(string url, int id);
-    
+
     Task<ApiResponse<string>> DeleteAsync(string url, int id);
     Task<ApiResponse<string>> UpdateAsync(string url, TRequest? dataRequest);
 }

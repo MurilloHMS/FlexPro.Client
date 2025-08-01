@@ -13,8 +13,7 @@
                     <MudTextField Label="Nome" @bind-Value="veiculo.Nome" Required="true"/>
                     <MudTextField Label="Placa" @bind-Value="veiculo.Placa" Required="true"/>
                     <MudSelect Label="Marca" @bind-Value="veiculo.Marca">
-                        @foreach (var marca in marcas)
-                        {
+                        @foreach (var marca in marcas) {
                             <MudSelectItem Value="marca">@marca</MudSelectItem>
                         }
                     </MudSelect>
@@ -41,49 +40,37 @@
 
     [Parameter] public Veiculo _veiculo { get; set; }
 
-    private  string[] marcas => VehicleService.GetVehicleBrands();
+    private string[] marcas => VehicleService.GetVehicleBrands();
 
-    protected override void OnInitialized()
-    {
-        if (_veiculo is not null)
-        {
+    protected override void OnInitialized() {
+        if (_veiculo is not null) {
             veiculo = _veiculo;
         }
     }
-    
-    private void CloseDialog()
-    {
+
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private async Task SalvarVeiculo()
-    {
-        try
-        {
-            if (_veiculo is not null)
-            {
+    private async Task SalvarVeiculo() {
+        try {
+            if (_veiculo is not null) {
                 var response = await Http.PutAsJsonAsync($"api/veiculo/{veiculo.Id}", veiculo);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Veiculo Atualizado com Sucesso!", Severity.Success);
                 }
-            }
-            else
-            {
+            } else {
                 var response = await Http.PostAsJsonAsync("api/veiculo", veiculo);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Veiculo Cadastrado com Sucesso!", Severity.Success);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao cadastrar o veiculo: {e.Message}", Severity.Error);
             throw;
         }
 
         MudDialog?.Close(DialogResult.Ok(veiculo));
     }
-
 }

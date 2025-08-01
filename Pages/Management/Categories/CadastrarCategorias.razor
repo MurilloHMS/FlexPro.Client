@@ -29,47 +29,35 @@
 
     [Parameter] public Categoria _categoria { get; set; }
 
-    protected override void OnInitialized()
-    {
-        if (_categoria is not null)
-        {
+    protected override void OnInitialized() {
+        if (_categoria is not null) {
             Categoria = _categoria;
         }
     }
 
-    private void CloseDialog()
-    {
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private async Task SalvarCategorias()
-    {
-        try
-        {
-            if (_categoria is not null)
-            {
+    private async Task SalvarCategorias() {
+        try {
+            if (_categoria is not null) {
                 var response = await Http.PutAsJsonAsync($"api/categoria/{Categoria.Id}", Categoria);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Categoria cadastrada com Sucesso!", Severity.Success);
                 }
-            }
-            else
-            {
+            } else {
                 var response = await Http.PostAsJsonAsync("api/categoria", Categoria);
-                if (response.IsSuccessStatusCode)
-                {
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Categoria cadastrada com Sucesso!", Severity.Success);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao cadastrar a categoria: {e.Message}", Severity.Error);
             throw;
         }
 
         MudDialog?.Close(DialogResult.Ok(Categoria));
     }
-
 }

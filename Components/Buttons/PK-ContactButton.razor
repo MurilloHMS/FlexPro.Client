@@ -11,14 +11,12 @@
     [Parameter] public string ButtonText { get; set; } = "Entrar em contato";
     [Parameter] public string DialogTitle { get; set; } = "Entre em Contato";
 
-    private async Task OpenDialogAsync()
-    {
-        var options = new DialogOptions
-            {
-                CloseOnEscapeKey = true,
-                MaxWidth = MaxWidth.Medium,
-                FullWidth = true
-            };
+    private async Task OpenDialogAsync() {
+        var options = new DialogOptions {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        };
 
         await DialogService.ShowAsync<Contato>(DialogTitle, options);
     }

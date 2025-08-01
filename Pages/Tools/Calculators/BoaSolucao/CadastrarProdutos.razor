@@ -15,20 +15,17 @@
                     <MudTextField Label="Quantidade Fórmula" @bind-Value="_produto.QuantidadeFormula" T="decimal"
                                   Required/>
                     <MudSelect Label="Estoque" @bind-Value="_produto.MateriaPrima" Required>
-                        @foreach (var item in _materiaPrima)
-                        {
+                        @foreach (var item in _materiaPrima) {
                             <MudSelectItem Value="item">@item</MudSelectItem>
                         }
                     </MudSelect>
                     <MudSelect Label="Tipo de Produto" @bind-Value="_produto.Tipo" Required>
-                        @foreach (var item in _tipoDeProduto)
-                        {
+                        @foreach (var item in _tipoDeProduto) {
                             <MudSelectItem Value="item">@item</MudSelectItem>
                         }
                     </MudSelect>
                     <MudSelect Label="Receita" @bind-Value="_produto.IdReceita" Required>
-                        @foreach (var item in _receitas)
-                        {
+                        @foreach (var item in _receitas) {
                             <MudSelectItem Value="item.Id">@item.Nome</MudSelectItem>
                         }
                     </MudSelect>
@@ -48,13 +45,11 @@
     private MudForm form;
     private bool _isFormValid;
 
-    private readonly string[] _materiaPrima =
-    {
+    private readonly string[] _materiaPrima = {
         "Boa Solução", "Mão de Obra", "Proauto"
     };
 
-    private readonly string[] _tipoDeProduto =
-    {
+    private readonly string[] _tipoDeProduto = {
         "Mão de Obra", "Embalagem", "Caixa", "Produto", "Obra Prima"
     };
 
@@ -62,61 +57,46 @@
 
     [Parameter] public Produto Produto { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         if (Produto is not null)
             _produto = Produto;
 
         await LoadData();
     }
 
-    private async Task LoadData()
-    {
-        try
-        {
+    private async Task LoadData() {
+        try {
             _receitas = await Http.GetFromJsonAsync<List<Receita>>("api/receita");
         }
-        catch (HttpRequestException ex)
-        {
+        catch (HttpRequestException ex) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             _receitas = default;
         }
     }
 
-    private void CloseDialog()
-    {
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private async Task SalvarProduto()
-    {
-        try
-        {
-            if (Produto is not null)
-            {
+    private async Task SalvarProduto() {
+        try {
+            if (Produto is not null) {
                 var produtoResponse = await Http.PutAsJsonAsync($"api/produto/{_produto.Id}", _produto);
-                if (produtoResponse.IsSuccessStatusCode)
-                {
+                if (produtoResponse.IsSuccessStatusCode) {
                     Snackbar.Add("Produto Atualizado com Sucesso!", Severity.Success);
                 }
-            }
-            else
-            {
+            } else {
                 var receita = await Http.GetFromJsonAsync<Receita>($"api/receita/{_produto.IdReceita}");
-                _produto.Receita = receita;
                 var produtoResponse = await Http.PostAsJsonAsync("api/produto", _produto);
-                if (produtoResponse.IsSuccessStatusCode)
-                {
+                if (produtoResponse.IsSuccessStatusCode) {
                     Snackbar.Add("Produto Cadastrado com Sucesso!", Severity.Success);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao cadastrar o produto: {e.Message}", Severity.Error);
         }
 
         MudDialog?.Close(DialogResult.Ok(_produto));
     }
-
 }

@@ -1,7 +1,5 @@
-@using FlexPro.Client.Domain.Enums
 @using FlexPro.Client.Domain.Models.Request
 @using FlexPro.Client.Domain.Models.Response
-@using FlexPro.Client.Infrastructure.Services
 @inject ParceiroService Service
 @inject ISnackbar Snackbar
 
@@ -29,48 +27,37 @@
 </MudDialog>
 
 @code {
-    private ParceiroResponseDTO _parceiro = new();
+    private ParceiroResponseDto _parceiro = new();
     private MudForm form;
     private bool isFormValid;
 
     [CascadingParameter] private IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public ParceiroResponseDTO parceiro { get; set; }
+    [Parameter] public ParceiroResponseDto parceiro { get; set; }
 
     [Parameter] public string Tipo { get; set; }
 
-    protected override void OnInitialized()
-    {
-        if (parceiro is not null)
-        {
+    protected override void OnInitialized() {
+        if (parceiro is not null) {
             _parceiro = parceiro;
         }
     }
 
-    private void CloseDialog()
-    {
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private async Task Salvar()
-    {
-        try{
-            if (_parceiro?.Id != null)
-            {
+    private async Task Salvar() {
+        try {
+            if (_parceiro?.Id != null) {
                 var response = await Service.UpdateAsync($"api/parceiro/{_parceiro.Id}", _parceiro);
-                if (response.IsSuccess)
-                {
+                if (response.IsSuccess) {
                     Snackbar.Add("Cadastro atualizado com sucesso", Severity.Success);
-                }
-                else
-                {
+                } else {
                     Snackbar.Add($"Ocorreu um erro: {response.Message}", Severity.Error);
                 }
-            }
-            else
-            {
-                var newParceiro = new ParceiroRequestDTO
-                {
+            } else {
+                var newParceiro = new ParceiroRequestDTO {
                     CodigoSistema = _parceiro.CodigoSistema,
                     Ativo = _parceiro.Ativo,
                     Email = _parceiro.Email,
@@ -79,30 +66,23 @@
                     RecebeEmail = _parceiro.RecebeEmail
                 };
                 var response = await Service.CreateAsync("api/parceiro", newParceiro);
-                if (response.IsSuccess)
-                {
+                if (response.IsSuccess) {
                     Snackbar.Add("Cadastro realizado com sucesso", Severity.Success);
-                }
-                else
-                {
+                } else {
                     Snackbar.Add($"Ocorreu um erro: {response.Message}", Severity.Error);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro desconhecido: {e.Message}", Severity.Error);
         }
 
         MudDialog?.Close(DialogResult.Ok(_parceiro));
     }
 
-    private string GetDisplayName(StatusContato_e tipo)
-    {
+    private string GetDisplayName(StatusContato_e tipo) {
         var field = tipo.GetType().GetField(tipo.ToString());
         var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
         return attr?.Name ?? tipo.ToString();
     }
-
-
 }

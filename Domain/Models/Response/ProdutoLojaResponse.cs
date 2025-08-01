@@ -8,7 +8,7 @@ public class ProdutoLojaResponse
     public string Descricao { get; set; } = string.Empty;
     public string Cor { get; set; } = string.Empty;
     public string Diluicao { get; set; } = string.Empty;
-    public byte[]? Imagem { get; set; } 
+    public byte[]? Imagem { get; set; }
     public IEnumerable<Embalagem>? Embalagems { get; set; }
     public IEnumerable<Departamento>? Departamentos { get; set; }
 }
