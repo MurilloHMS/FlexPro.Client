@@ -2,9 +2,7 @@ name: Deploy via ftp
 on:
   push:
     tags:
-      - '*'  
-    branches:
-    - 'main'
+      - '*'
 jobs:
   deploy:
     name: Deploy
