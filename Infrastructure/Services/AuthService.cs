@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using FlexPro.Client.Domain.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class AuthService
 {

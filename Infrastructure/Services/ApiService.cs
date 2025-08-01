@@ -2,9 +2,8 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using FlexPro.Client.Domain.Models;
-using FlexPro.Client.Infrastructure.Interfaces;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class ApiService<TRequest, TResponse> 
     where TRequest : class 

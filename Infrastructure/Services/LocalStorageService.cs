@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class LocalStorageService
 {

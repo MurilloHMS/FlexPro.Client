@@ -1,11 +1,9 @@
-
 using System.Net;
 using System.Net.Http.Json;
 using FlexPro.Client.Domain.Models;
 using FlexPro.Client.Infrastructure.Interfaces;
-using MudBlazor;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class VehicleService : IVehicleService
 {

@@ -1,7 +1,7 @@
 using System.Text.Json;
 using FlexPro.Client.Domain.Models.Response;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class ClienteService
 {

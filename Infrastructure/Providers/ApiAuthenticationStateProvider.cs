@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
 using System.Text.Json;
-using FlexPro.Client.Services;
+using FlexPro.Client.Infrastructure.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace FlexPro.Client.Providers;
+namespace FlexPro.Client.Infrastructure.Providers;
 
 public class ApiAuthenticationStateProvider : AuthenticationStateProvider
 {

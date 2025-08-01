@@ -1,4 +1,4 @@
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class UserService
 {

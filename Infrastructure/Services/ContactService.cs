@@ -5,7 +5,7 @@ using FlexPro.Client.Domain.Models.Request;
 using FlexPro.Client.Domain.Models.Response;
 using FlexPro.Client.Infrastructure.Interfaces;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class ContactService : IContactService
 {
