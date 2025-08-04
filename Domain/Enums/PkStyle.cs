@@ -1,6 +1,6 @@
 ﻿namespace FlexPro.Client.Domain.Enums;
 
-public enum PKStyle
+public enum PkStyle
 {
     One,
     Two,
