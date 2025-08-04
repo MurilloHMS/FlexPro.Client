@@ -28,19 +28,19 @@
                                       HelperText="Digite o nome da empresa em que trabalha"
                                       Required/>
 
-                        <MudSelect T="TipoContato_e"
+                        <MudSelect T="TipoContatoE"
                                    Label="Selecione o motivo"
                                    @bind-Value="_contato.TipoContato"
                                    For="@(() => _contato.TipoContato)"
                                    Variant="Variant.Text"
                                    Clearable
                                    Required>
-                            @foreach (var tipo in Enum.GetValues<TipoContato_e>()) {
-                                <MudSelectItem T="TipoContato_e" Value="tipo">@GetDisplayName(tipo)</MudSelectItem>
+                            @foreach (var tipo in Enum.GetValues<TipoContatoE>()) {
+                                <MudSelectItem T="TipoContatoE" Value="tipo">@GetDisplayName(tipo)</MudSelectItem>
                             }
                         </MudSelect>
 
-                        @if (_contato.TipoContato == TipoContato_e.Outros) {
+                        @if (_contato.TipoContato == TipoContatoE.Outros) {
                             <MudTextField @bind-Value="_contato.Outro"
                                           For="@(() => _contato.Outro)"
                                           Label="Digite o motivo"/>
@@ -125,7 +125,7 @@
             return;
         }
 
-        _contato.StatusContato = StatusContato_e.NaoContatado;
+        _contato.StatusContato = StatusContatoE.NaoContatado;
         _contato.DataSolicitadoContato = DateTime.UtcNow;
         isLoading = true;
         var response = await Http.PostAsJsonAsync("api/contato", _contato);
@@ -134,7 +134,7 @@
         isLoading = false;
     }
 
-    private string GetDisplayName(TipoContato_e tipo) {
+    private string GetDisplayName(TipoContatoE tipo) {
         var field = tipo.GetType().GetField(tipo.ToString());
         var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
         return attr?.Name ?? tipo.ToString();

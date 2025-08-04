@@ -38,7 +38,7 @@ public class ProdutoService
                 Diluicao = "10% a 20%",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 1, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 5000 }
+                    new() { Id = 1, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Fr, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
@@ -56,7 +56,7 @@ public class ProdutoService
                 Diluicao = "1% a 3%",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 2, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
+                    new() { Id = 2, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Gal, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
@@ -73,7 +73,7 @@ public class ProdutoService
                 Diluicao = "5% a 10%",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 3, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
+                    new() { Id = 3, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Gal, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
@@ -90,7 +90,7 @@ public class ProdutoService
                 Diluicao = "Pronto uso",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 4, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 2000 }
+                    new() { Id = 4, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Fr, Tamanho = 2000 }
                 },
                 Departamentos = new List<Departamento>
                 {
@@ -107,7 +107,7 @@ public class ProdutoService
                 Diluicao = "5% a 15%",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 5, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.GAL, Tamanho = 5000 }
+                    new() { Id = 5, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Gal, Tamanho = 5000 }
                 },
                 Departamentos = new List<Departamento>
                 {
@@ -125,7 +125,7 @@ public class ProdutoService
                 Diluicao = "Pronto uso",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 6, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 1000 }
+                    new() { Id = 6, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Fr, Tamanho = 1000 }
                 },
                 Departamentos = new List<Departamento>
                 {
@@ -142,7 +142,7 @@ public class ProdutoService
                 Diluicao = "Pronto uso",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 7, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.CX, Tamanho = 2000 }
+                    new() { Id = 7, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Cx, Tamanho = 2000 }
                 },
                 Departamentos = new List<Departamento>
                 {
@@ -159,7 +159,7 @@ public class ProdutoService
                 Diluicao = "5% a 10%",
                 Embalagems = new List<Embalagem>
                 {
-                    new() { Id = 8, Quantidade = 1, TipoEmbalagem = TipoEmbalagem_e.FR, Tamanho = 1000 }
+                    new() { Id = 8, Quantidade = 1, TipoEmbalagem = TipoEmbalagemE.Fr, Tamanho = 1000 }
                 },
                 Departamentos = new List<Departamento>
                 {

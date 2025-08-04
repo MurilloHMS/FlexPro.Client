@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FlexPro.Client.Domain.Enums;
 
-public enum TipoContato_e
+public enum TipoContatoE
 {
     [Display(Name = "Dúvida sobre produtos")]
     DuvidaProduto,

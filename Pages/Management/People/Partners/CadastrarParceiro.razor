@@ -80,7 +80,7 @@
         MudDialog?.Close(DialogResult.Ok(_parceiro));
     }
 
-    private string GetDisplayName(StatusContato_e tipo) {
+    private string GetDisplayName(StatusContatoE tipo) {
         var field = tipo.GetType().GetField(tipo.ToString());
         var attr = field?.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().FirstOrDefault();
         return attr?.Name ?? tipo.ToString();

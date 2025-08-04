@@ -1,6 +1,6 @@
 namespace FlexPro.Client.Domain.Enums;
 
-public enum FormasDeContato_e
+public enum FormasDeContatoE
 {
     TelefoneFixo,
     TelefoneCelular,
