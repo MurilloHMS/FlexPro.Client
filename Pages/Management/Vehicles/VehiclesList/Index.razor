@@ -103,7 +103,7 @@
 
     private async Task OpenEditDialogAsync(Veiculo veiculo) {
         var parametros = new DialogParameters<CadastrarVeiculo> {
-            { x => x._veiculo, veiculo }
+            { x => x.Veiculo, veiculo }
         };
 
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
