@@ -6,6 +6,6 @@ namespace FlexPro.Client.Infrastructure.Interfaces;
 
 public interface IContactService
 {
-    Task<IEnumerable<ContactResponse>> GetAllAsync();
+    Task<IEnumerable<ContactResponse>?> GetAllAsync();
     Task<ApiResponse<string>> SaveAsync(ContatoRequest contact);
 }
