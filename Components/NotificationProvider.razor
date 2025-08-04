@@ -1,28 +1,26 @@
-@inject NavigationManager Navigation
 @inject ISnackbar Snackbar
-@inject LocalStorageService localStorage;
 
 @code {
-    private HubConnection? hubConnection;
+    private HubConnection? _hubConnection;
 
     protected override async Task OnInitializedAsync() {
         try {
-            hubConnection = new HubConnectionBuilder()
+            _hubConnection = new HubConnectionBuilder()
                 .WithUrl("https://api.proautokimium.com/notificationHub")
                 .WithAutomaticReconnect()
                 .Build();
 
-            hubConnection.On<string>("ReceiveNotification", message => { InvokeAsync(() => Snackbar.Add(message, Severity.Info)); });
+            _hubConnection.On<string>("ReceiveNotification", message => { InvokeAsync(() => Snackbar.Add(message, Severity.Info)); });
 
-            await hubConnection.StartAsync();
+            await _hubConnection.StartAsync();
         }
-        catch (HttpRequestException e) {
-            Snackbar.Add("Não foi possível conectar ao websocket", Severity.Error);
+        catch (HttpRequestException e ) {
+            Snackbar.Add($"Não foi possível conectar ao websocket {Environment.NewLine} statusCode: {e.StatusCode}", Severity.Error);
         }
     }
 
     public async ValueTask DisposeAsync() {
-        if (hubConnection is not null)
-            await hubConnection.DisposeAsync();
+        if (_hubConnection is not null)
+            await _hubConnection.DisposeAsync();
     }
 }
