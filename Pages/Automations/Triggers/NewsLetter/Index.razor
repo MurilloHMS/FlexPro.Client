@@ -123,7 +123,7 @@
 
     private List<Informativo> _informativos = new();
     private List<InformativoNFe> _informativoNFe = new();
-    private List<InformativoOS> _informativoOs = new();
+    private List<InformativoOs> _informativoOs = new();
     private List<InformativoPecasTrocadas> _informativoPecasTrocadas = new();
     private IEnumerable<Informativo> _clientesSelecionados = new List<Informativo>();
     private string _searchString;
@@ -179,7 +179,7 @@
 
     private async Task UploadDadosOs(IBrowserFile file2) {
         planilhaDadosOs = file2;
-        _informativoOs = await UploadArquivo<InformativoOS>(
+        _informativoOs = await UploadArquivo<InformativoOs>(
             file2, "api/Informativo/upload/os", "file",
             () => _isPasso2Concluido = true,
             () => _hasPasso2Error = true
@@ -202,7 +202,7 @@
             var request = new DadosRequest {
                 Month = selectedMonth,
                 InformativoNFes = _informativoNFe,
-                informativoOs = _informativoOs,
+                InformativoOs = _informativoOs,
                 InformativoPecasTrocadas = _informativoPecasTrocadas
             };
 

@@ -94,7 +94,7 @@
 
     private async Task OpenEditDialogAsync(Categoria categoria) {
         var parametros = new DialogParameters<CadastrarCategorias> {
-            { x => x._categoria, categoria }
+            { x => x.Categoria, categoria }
         };
 
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };

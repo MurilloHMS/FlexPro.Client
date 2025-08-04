@@ -16,7 +16,7 @@
                     </MudSelect>
                     <MudSelect Label="Local | Fornecedor" @bind-Value="revisao.LocalId" Required="true">
                         @foreach (var fornecedor in _entidades) {
-                            <MudSelectItem Value="fornecedor.ID">@fornecedor.Nome</MudSelectItem>
+                            <MudSelectItem Value="fornecedor.Id">@fornecedor.Nome</MudSelectItem>
                         }
                     </MudSelect>
                     <MudTextField Label="Motorista" @bind-Value="revisao.Motorista" Required="true"/>
