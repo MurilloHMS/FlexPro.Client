@@ -1,11 +1,11 @@
 @page "/sales/documents/certificates"
-@using FlexPro.Client.Infrastructure.Services
 
 @inject NavigationManager NavigationManager
 @inject DeviceDetector DeviceDetector
+@inject IJSRuntime Js
 
 <div class="container">
-    <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary">
+    <MudText Typo="Typo.h4" Align="Align.Center" Color="Color.Primary" class="mt-10">
         <b>Parabéns! Você está à um passo de conquistar seu certificado.</b>
     </MudText>
     <MudText Typo="Typo.subtitle1" Align="Align.Center" Color="Color.Primary">Este certificado significa que você participou do treinamento <b>Gestão, Higiêne e Limpeza </b></MudText>
@@ -15,29 +15,17 @@
     <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Primary">Preencha os campos a seguir para ter acesso ao seu certificado.</MudText>
     <MudPaper Class="pa-4">
         <MudForm @ref="form" @bind-IsValid="@isFormValid">
-            <MudTextField @bind-Value="@nome"
-                          Label="Nome completo"
-                          HelperText="Digite seu nome"
-                          Required/>
-        
-            <MudTextField @bind-Value="@email"
-                          Label="Email"
-                          HelperText="Digite seu email"
-                          Required/>
-        
-            <MudTextField @bind-Value="@contato"
-                          Label="WhatsApp"
-                          HelperText="Digite seu número de WhatsApp"
-                          Required/>
+            <MudTextField @bind-Value="@nome" Label="Nome completo" HelperText="Digite seu nome" Required/>
+            <MudTextField @bind-Value="@email" Label="Email" HelperText="Digite seu email" Required/>
+            <MudTextField @bind-Value="@contato" Label="WhatsApp" HelperText="Digite seu número de WhatsApp" Required/>
         </MudForm>
     </MudPaper>
-    <MudPaper Class="pt-4 mt-4">
+    <MudPaper Class="pa-4 mt-4 d-flex justify-content-center">
         <MudButton StartIcon="@Icons.Material.Filled.Download" Color="Color.Primary" Variant="Variant.Filled" Disabled="!isFormValid" OnClick="@(() => GerenateCerticicate())">Gerar Certificado</MudButton>
     </MudPaper>
 </div>
 
 @code {
-    [Inject] IJSRuntime JS { get; set; }
 
     private string? NomeInstrutor = string.Empty;
     private bool isFormValid;
@@ -51,24 +39,25 @@
     private string email;
     private string contato;
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         NavigationManager.LocationChanged += OnLocationChanged;
-        getQuery();
+        GetQuery();
+        return Task.CompletedTask;
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && !_initialized)
-        {
-            _initialized = true;
-            var isMobile = await DeviceDetector.IsMobileAsync();
-            if(!isMobile)
-                NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
-        }
+        // if (firstRender && !_initialized)
+        // {
+        //     _initialized = true;
+        //     var isMobile = await DeviceDetector.IsMobileAsync();
+        //     if(!isMobile)
+        //         NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
+        // }
     }
 
-    private void getQuery()
+    private void GetQuery()
     {
         var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
         var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
@@ -78,7 +67,7 @@
     
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        getQuery();
+        GetQuery();
     }
 
     public void Dispose()
@@ -91,7 +80,7 @@
         string nomeFormatado = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nome.ToLower());
         if (!string.IsNullOrWhiteSpace(nome))
         {
-            await JS.InvokeVoidAsync("generateCertificate", nomeFormatado);
+            await Js.InvokeVoidAsync("generateCertificate", nomeFormatado);
         }
     }
 
