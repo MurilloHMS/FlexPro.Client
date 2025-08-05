@@ -4,6 +4,6 @@ namespace FlexPro.Client.Infrastructure.Interfaces;
 
 public interface IVehicleService
 {
-    string[] GetVehicleBrands();
+    IReadOnlyList<string> GetVehicleBrands();
     Task<ApiResponse<List<Veiculo>>> GetVehicleAsync();
 }

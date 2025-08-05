@@ -1,4 +1,4 @@
-.hero{
+.hero {
     position: relative;
     min-height: 70vh;
     display: flex;
@@ -9,10 +9,10 @@
     padding: 60px 20px;
     background: var(--neutral-light);
     color: var(--primary-text-color);
-   overflow: hidden;
+    overflow: hidden;
     margin: 20px;
     border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .hero::before {
@@ -40,7 +40,7 @@
     z-index: 0;
 }
 
-.hero-logo{
+.hero-logo {
     position: absolute;
     top: 30px;
     left: 50%;
@@ -54,14 +54,14 @@
     height: auto;
 }
 
-.hero-content{
+.hero-content {
     max-width: 800px;
     padding: 20px;
     z-index: 1;
     animation: fadeInUp 1.5s ease-out;
 }
 
-.hero-content h1{
+.hero-content h1 {
     font-size: 4.5rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -145,15 +145,27 @@
 }
 
 @keyframes zoom {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes pulseCTA {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @media (max-width: 1024px) {

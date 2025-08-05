@@ -2,7 +2,7 @@ using System.Text.Json;
 using FlexPro.Client.Domain.Models.Response;
 using Microsoft.JSInterop;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class CartService
 {

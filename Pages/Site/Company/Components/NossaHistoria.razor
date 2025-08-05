@@ -7,33 +7,38 @@
                     <div class="sec-title">
                         <div class="title">Sobre</div>
                         <h2>Consultoria Personalizada</h2>
-                    </div> 
-                    <div class="text">Mais do que distribuir produtos químicos, <b>entregamos consultoria, economia e performance.</b>
-                        Com um time técnico especializado, diagnosticamos gargalos operacionais, reduzimos desperdícios e indicamos as melhores soluções para cada realidade
+                    </div>
+                    <div class="text">Mais do que distribuir produtos químicos, <b>entregamos consultoria, economia e
+                            performance.</b>
+                        Com um time técnico especializado, diagnosticamos gargalos operacionais, reduzimos desperdícios
+                        e indicamos as melhores soluções para cada realidade
                         <br>
-                        Na <b>Proauto Kimium</b>, acreditamos que <b>cada produto precisa ter um propósito e cada cliente, uma solução personalizada.</b>
-                        Nosso compromisso é com o resultado, com a sustentabilidade e, acima de tudo, com a confiança construída ao longo de cada atendimento.</div>
-                    <div class="email">Email: <span class="theme_color"><a href="mailto:sac@proautokimium.com.br">sac@proautokimium.com.br</a></span></div>
-                    <a @onclick="OpenDialogAsync"  class="theme-btn btn-style-three cursor-pointer">Solicitar contato</a>
+                        Na <b>Proauto Kimium</b>, acreditamos que <b>cada produto precisa ter um propósito e cada
+                            cliente, uma solução personalizada.</b>
+                        Nosso compromisso é com o resultado, com a sustentabilidade e, acima de tudo, com a confiança
+                        construída ao longo de cada atendimento.
+                    </div>
+                    <div class="email">Email: <span class="theme_color"><a href="mailto:sac@proautokimium.com.br">sac@proautokimium.com.br</a></span>
+                    </div>
+                    <a @onclick="OpenDialogAsync" class="theme-btn btn-style-three cursor-pointer">Solicitar contato</a>
                 </div>
             </div>
-                
+
             <div class="image-column col-md-6 col-sm-12 col-xs-12">
                 <div class="inner-column " data-wow-delay="0ms" data-wow-duration="1500ms">
                     <div class="image">
-                        <img src="assets/images/planejamento.png" alt="planejamento" loading="lazy">           
+                        <img src="assets/images/planejamento.png" alt="planejamento" loading="lazy">
                     </div>
                 </div>
             </div>
-                
+
         </div>
     </div>
 </section>
 
 @code
 {
-    private Task OpenDialogAsync()
-    {
+    private Task OpenDialogAsync() {
         var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         return DialogService.ShowAsync<Contato>("Entre em Contato", options);
     }

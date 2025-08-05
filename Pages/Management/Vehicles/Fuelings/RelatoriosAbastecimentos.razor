@@ -32,20 +32,15 @@
 
     [Parameter] public bool isDownload { get; set; }
 
-    private void CloseDialog()
-    {
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private void EmitirRelatório()
-    {
-        try
-        {
-            if (_date != null)
-            {
+    private void EmitirRelatório() {
+        try {
+            if (_date != null) {
                 var dataFinalFormatada = _date.Value.ToString("yyyy-MM-dd");
-                switch (tipo)
-                {
+                switch (tipo) {
                     case "Geral":
                         Navigation.NavigateTo($"Relatorios/Abastecimento/Geral/{dataFinalFormatada}");
                         break;
@@ -56,19 +51,15 @@
                         Navigation.NavigateTo($"Relatorios/Abastecimento/Individual/{dataFinalFormatada}");
                         break;
                 }
-            }
-            else
-            {
+            } else {
                 Snackbar.Add("Por favor, selecione um intervalo de datas válido.", Severity.Warning);
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao Emitir o Relatório {tipo}: {e.Message}", Severity.Error);
             throw;
         }
 
         MudDialog?.Close();
     }
-
 }

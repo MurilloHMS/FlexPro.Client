@@ -19,8 +19,7 @@
             <MudSelect @bind-Value="_receita.Id" Label="Selecione uma receita"
                        HelperText="Receita do produto para emissão da nota fiscal"
                        AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary">
-                @foreach (var item in _receitas)
-                {
+                @foreach (var item in _receitas) {
                     <MudSelectItem Value="@item.Id">@item.Nome</MudSelectItem>
                 }
             </MudSelect>
@@ -202,37 +201,31 @@
     private readonly List<IBrowserFile> _fileNames = new();
     private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
 
-    private async Task ClearAsync()
-    {
+    private async Task ClearAsync() {
         await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
         _fileNames.Clear();
         textToDescription = string.Empty;
         _boaSolucao = new List<BoaSolucao>();
     }
 
-    private async Task Close()
-    {
+    private async Task Close() {
         await ClearAsync();
         _open = false;
     }
 
-    private Task OpenFilePickerAsync()
-    {
+    private Task OpenFilePickerAsync() {
         return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
     }
 
-    private void OnInputFileChanged(InputFileChangeEventArgs e)
-    {
+    private void OnInputFileChanged(InputFileChangeEventArgs e) {
         var files = e.GetMultipleFiles();
-        foreach (var file in files)
-        {
+        foreach (var file in files) {
             _fileNames.Clear();
             _fileNames.Add(file);
         }
     }
 
-    private async Task Upload()
-    {
+    private async Task Upload() {
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         Snackbar.Add("Carregando arquivo para analise.");
 
@@ -240,35 +233,26 @@
         var produtosAmarelos = 0m;
         var produtosCinza = 0m;
 
-        if (_fileNames.Any())
-        {
+        if (_fileNames.Any()) {
             var file = _fileNames.First();
             _boaSolucao = await ColetarDadosBoaSolucao(file);
 
-            if (_produtos.Any())
-            {
-                foreach (var item in _boaSolucao)
-                {
+            if (_produtos.Any()) {
+                foreach (var item in _boaSolucao) {
                     var produtoExiste = _produtos.Any(p => p.CodigoSistema == item.CodigoProduto);
 
-                    if (produtoExiste)
-                    {
+                    if (produtoExiste) {
                         var produto = _produtos.FirstOrDefault(p => p.CodigoSistema == item.CodigoProduto);
 
                         var isValid = produto.QuantidadeProducao == item.Quantidade;
 
                         item.IsValid = isValid;
 
-                        if (produto.MateriaPrima == "Proauto" && produto.Tipo == "Obra Prima")
-                        {
+                        if (produto.MateriaPrima == "Proauto" && produto.Tipo == "Obra Prima") {
                             produtosBranco += item.ValorTotal;
-                        }
-                        else if (produto.MateriaPrima == "Boa Solução" && produto.Tipo != "Produto")
-                        {
+                        } else if (produto.MateriaPrima == "Boa Solução" && produto.Tipo != "Produto") {
                             produtosAmarelos += item.ValorTotal;
-                        }
-                        else if (produto.MateriaPrima == "Mão de Obra" && produto.Tipo == "Mão de Obra")
-                        {
+                        } else if (produto.MateriaPrima == "Mão de Obra" && produto.Tipo == "Mão de Obra") {
                             produtosCinza += item.ValorTotal;
                         }
                     }
@@ -289,26 +273,21 @@
         }
     }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         await LoadData();
     }
 
-    private async Task LoadData()
-    {
-        try
-        {
+    private async Task LoadData() {
+        try {
             _receitas = await Http.GetFromJsonAsync<List<Receita>>("api/receita");
         }
-        catch (HttpRequestException ex)
-        {
+        catch (HttpRequestException ex) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             _receitas = default;
         }
     }
 
-    private Func<Produto, string> _cellStyleFunc => x =>
-    {
+    private Func<Produto, string> _cellStyleFunc => x => {
         var style = "";
 
         if (x.MateriaPrima == "Proauto")
@@ -326,13 +305,11 @@
         return style;
     };
 
-    private void OpenDrawer()
-    {
+    private void OpenDrawer() {
         _open = true;
     }
 
-    private async Task OpenReceiptDialogAsync()
-    {
+    private async Task OpenReceiptDialogAsync() {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarReceitas>("Cadastrar Receita", options);
         var result = await dialog.Result;
@@ -341,11 +318,9 @@
             await LoadData();
     }
 
-    private async Task OpenEditReceiptDialogAsync(Receita receita)
-    {
+    private async Task OpenEditReceiptDialogAsync(Receita receita) {
         var buscaReceita = await Http.GetFromJsonAsync<Receita>($"api/receita/{receita.Id}");
-        var parametros = new DialogParameters<CadastrarReceitas>
-        {
+        var parametros = new DialogParameters<CadastrarReceitas> {
             { x => x.Receita, buscaReceita }
         };
 
@@ -353,16 +328,13 @@
         var dialog = await DialogService.ShowAsync<CadastrarReceitas>("Editar Receita", parametros, options);
     }
 
-    private async Task OpenProductDialogAsync()
-    {
+    private async Task OpenProductDialogAsync() {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarProdutos>("Cadastrar Produtos", options);
     }
 
-    private async Task OpenEditProductDialogAsync(Produto produto)
-    {
-        var parametros = new DialogParameters<CadastrarProdutos>
-        {
+    private async Task OpenEditProductDialogAsync(Produto produto) {
+        var parametros = new DialogParameters<CadastrarProdutos> {
             { x => x.Produto, produto }
         };
 
@@ -370,22 +342,18 @@
         var dialog = await DialogService.ShowAsync<CadastrarProdutos>("Editar Produto", parametros, options);
     }
 
-    private async Task Atualizar()
-    {
-        try
-        {
+    private async Task Atualizar() {
+        try {
             _produtos = await Http.GetFromJsonAsync<List<Produto>>($"api/produto/receitas/{_receita.Id}");
             var receitaAtiva = await Http.GetFromJsonAsync<Receita>($"api/receita/{_receita.Id}");
             await CalcularDados(receitaAtiva);
         }
-        catch (Exception)
-        {
+        catch (Exception) {
             Snackbar.Add("Ocorreu um erro ao coletar os dados da receita.", Severity.Error);
         }
     }
 
-    private async Task CalcularDados(Receita receita)
-    {
+    private async Task CalcularDados(Receita receita) {
         QuantidadeEmbalagens = QuantidadeLitrosProduzidos / receita.Embalagem;
         QuantidadeCaixas = receita.Caixas > 0 ? QuantidadeEmbalagens / receita.Caixas : 0;
         ValorMaoDeObra = receita.ValorMaoDeObra;
@@ -393,67 +361,46 @@
         PesoLiquido = QuantidadeLitrosProduzidos * 1.03;
         PesoBruto = QuantidadeLitrosProduzidos * 1.05;
 
-        foreach (var produto in _produtos)
-        {
-            if (produto.Tipo == "Caixa")
-            {
+        foreach (var produto in _produtos) {
+            if (produto.Tipo == "Caixa") {
                 produto.QuantidadeProducao = (decimal)QuantidadeCaixas;
-            }
-            else if (produto.Tipo == "Embalagem")
-            {
+            } else if (produto.Tipo == "Embalagem") {
                 produto.QuantidadeProducao = (decimal)QuantidadeEmbalagens;
-            }
-            else if (produto.Tipo == "Produto")
-            {
-                if (receita.Caixas > 0 && receita.Caixas != null)
-                {
+            } else if (produto.Tipo == "Produto") {
+                if (receita.Caixas > 0 && receita.Caixas != null) {
                     produto.QuantidadeProducao = (decimal)QuantidadeCaixas;
-                }
-                else
-                {
+                } else {
                     produto.QuantidadeProducao = (decimal)QuantidadeEmbalagens;
                 }
-            }
-            else if (produto.Tipo == "Mão de Obra")
-            {
+            } else if (produto.Tipo == "Mão de Obra") {
                 produto.QuantidadeProducao = 1m;
-            }
-            else
-            {
+            } else {
                 produto.QuantidadeProducao = produto.QuantidadeFormula * (decimal)QuantidadeLitrosProduzidos;
             }
         }
     }
 
-    private async Task CalcularValor()
-    {
+    private async Task CalcularValor() {
         decimal calculo;
-        if (QuantidadeCaixas > 0 && QuantidadeCaixas != null)
-        {
+        if (QuantidadeCaixas > 0 && QuantidadeCaixas != null) {
             calculo = ValorParaCalcular / (decimal)QuantidadeCaixas;
-        }
-        else
-        {
+        } else {
             calculo = ValorParaCalcular / (decimal)QuantidadeEmbalagens;
         }
 
         ResultadoDoCalculo = calculo != 0 && calculo != null ? calculo : 0m;
     }
 
-    public async Task<IEnumerable<BoaSolucao>> ColetarDadosBoaSolucao(IBrowserFile arquivo)
-    {
+    public async Task<IEnumerable<BoaSolucao>> ColetarDadosBoaSolucao(IBrowserFile arquivo) {
         List<BoaSolucao> boaSolucao = new();
 
-        using (var stream = new MemoryStream())
-        {
+        using (var stream = new MemoryStream()) {
             await arquivo.OpenReadStream().CopyToAsync(stream);
             stream.Position = 0;
 
-            using (XLWorkbook workbook = new(stream))
-            {
+            using (XLWorkbook workbook = new(stream)) {
                 var planilha = workbook.Worksheets.First();
-                var fileData = planilha?.RowsUsed().Skip(3).Select(row => new BoaSolucao
-                {
+                var fileData = planilha?.RowsUsed().Skip(3).Select(row => new BoaSolucao {
                     CodigoProduto = row.Cell(1).TryGetValue<string>(out var codigoDoProduto) ? codigoDoProduto : default,
                     Descricao = row.Cell(2).TryGetValue<string>(out var descricao) ? descricao : default,
                     Quantidade = row.Cell(3).TryGetValue<decimal>(out var quantidade) ? quantidade : default,
@@ -467,5 +414,4 @@
 
         return boaSolucao;
     }
-
 }

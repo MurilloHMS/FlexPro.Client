@@ -23,11 +23,9 @@
     </ActivatorContent>
 </MudFileUpload>
 
-@if (_files != null)
-{
+@if (_files != null) {
     <MudList T="string">
-        @foreach (var file in _files)
-        {
+        @foreach (var file in _files) {
             <MudListItem Icon="@Icons.Material.Filled.AttachFile">
                 @file.Name <code>@file.Size bytes</code>
             </MudListItem>
@@ -127,44 +125,36 @@
                 a.Combustivel.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
             );
 
-    private void uploadFile(IBrowserFile file)
-    {
+    private void uploadFile(IBrowserFile file) {
         _files.Add(file);
         _isValid = false;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
+    protected override async Task OnInitializedAsync() {
+        try {
             dataLoaded = true;
             visible = true;
             var listaDeAbastecimentos = await Http.GetFromJsonAsync<List<Abastecimento>>("api/abastecimento");
             _abastecimentos = listaDeAbastecimentos;
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados de abastecimento {e.Message}");
         }
-        finally
-        {
+        finally {
             dataLoaded = false;
             visible = false;
         }
     }
 
 
-    private async Task ImportarDados()
-    {
+    private async Task ImportarDados() {
         dataLoaded = true;
         visible = true;
-        if (_files.Any())
-        {
+        if (_files.Any()) {
             Snackbar.Add("Iniciando processamento dos dados...", Severity.Info);
             var content = new MultipartFormDataContent();
             var file = _files.First();
-            if (file != null)
-            {
+            if (file != null) {
                 var fileContent = new StreamContent(file.OpenReadStream());
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
 
@@ -172,18 +162,13 @@
             }
 
             var response = await Http.PostAsync("api/abastecimento/upload", content);
-            if (response.IsSuccessStatusCode)
-            {
+            if (response.IsSuccessStatusCode) {
                 _abastecimentos = await response.Content.ReadFromJsonAsync<List<Abastecimento>>();
                 Snackbar.Add("Dados processados com sucesso!", Severity.Success);
-            }
-            else
-            {
+            } else {
                 Snackbar.Add($"Ocorreu um erro, Status code: {response.StatusCode} error: {response.RequestMessage}");
             }
-        }
-        else
-        {
+        } else {
             Snackbar.Add("Erro: Nenuma informação encontrada", Severity.Error);
         }
 
@@ -191,25 +176,21 @@
         visible = false;
         _isValid = true;
     }
-    
-    private async Task ExportarDados()
-    {
+
+    private async Task ExportarDados() {
         dataLoaded = true;
-        if (!AbastecimentosFiltrados.Any())
-        {
+        if (!AbastecimentosFiltrados.Any()) {
             Snackbar.Add("Dados Abastecimentos não encontrados", Severity.Error);
             return;
         }
 
         var outputFolder = Path.Combine(Path.GetTempPath(), "Abastecimento");
-        if (!Directory.Exists(outputFolder))
-        {
+        if (!Directory.Exists(outputFolder)) {
             Directory.CreateDirectory(outputFolder);
         }
 
         var fileName = Path.Combine(outputFolder, $"Abastecimentos-{DateTime.Now:dd-mm-yyyy}.xlsx");
-        using (var workbook = new XLWorkbook())
-        {
+        using (var workbook = new XLWorkbook()) {
             var Worksheet = workbook.Worksheets.Add("Abastecimentos");
 
             Worksheet.Cell(1, 1).Value = "ID";
@@ -228,8 +209,7 @@
 
             var novaLinha = 2;
 
-            foreach (var linha in AbastecimentosFiltrados)
-            {
+            foreach (var linha in AbastecimentosFiltrados) {
                 Worksheet.Cell(novaLinha, 1).Value = linha.Id;
                 Worksheet.Cell(novaLinha, 2).Value = linha.DataDoAbastecimento;
                 Worksheet.Cell(novaLinha, 3).Value = linha.Uf;
@@ -256,27 +236,22 @@
         await DownloadFile(fileBytes, Path.GetFileName(fileName));
     }
 
-    private async Task DownloadFile(byte[] fileBytes, string fileName)
-    {
+    private async Task DownloadFile(byte[] fileBytes, string fileName) {
         var fileStream = new BlazorDownloadFileStream(fileBytes);
         var base64File = Convert.ToBase64String(fileBytes);
         await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
 
-    public class BlazorDownloadFileStream
-    {
+    public class BlazorDownloadFileStream {
         public byte[] FileBytes { get; }
 
-        public BlazorDownloadFileStream(byte[] fileBytes)
-        {
+        public BlazorDownloadFileStream(byte[] fileBytes) {
             FileBytes = fileBytes;
         }
     }
 
-    private async Task DownloadRelatorios(string tipo)
-    {
-        var parametros = new DialogParameters<RelatoriosAbastecimentos>
-        {
+    private async Task DownloadRelatorios(string tipo) {
+        var parametros = new DialogParameters<RelatoriosAbastecimentos> {
             { x => x.tipo, tipo },
             { x => x.isDownload, true }
         };
@@ -284,16 +259,13 @@
         var dialog = await DialogService.ShowAsync<RelatoriosAbastecimentos>($"Download do Relatório {tipo}", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             Snackbar.Add($"Iniciando Download Relatório {tipo}", Severity.Success);
         }
     }
 
-    private async Task EnviarRelatorios(string tipo)
-    {
-        var parametros = new DialogParameters<RelatoriosAbastecimentos>
-        {
+    private async Task EnviarRelatorios(string tipo) {
+        var parametros = new DialogParameters<RelatoriosAbastecimentos> {
             { x => x.tipo, tipo },
             { x => x.isDownload, false }
         };
@@ -301,10 +273,8 @@
         var dialog = await DialogService.ShowAsync<RelatoriosAbastecimentos>($"Envio do Relatório {tipo}", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             Snackbar.Add($"Iniciando Envio dos relatórios {tipo}", Severity.Success);
         }
     }
-
 }

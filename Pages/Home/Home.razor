@@ -1,20 +1,18 @@
 ﻿@page "/"
-@using FlexPro.Client.Domain.Models
 
 <PageTitle>Home</PageTitle>
 <div class="container">
     <AuthorizeView>
         <NotAuthorized>
             <Hero/>
-            @* <Consultoria/> *@
             <ProcessoConsultoria/>
             <ServicosOfertados/>
             <MotivosContratar/>
-            @* <CasesDeSucesso/> *@
+            <CasesDeSucesso/>
             <Duvidas/>
         </NotAuthorized>
         <Authorized>
-            @* TODO: Separate this to new component *@ 
+            @* TODO: Separate this to new component *@
             <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
                 <MudTabPanel Text="Abastecimento">
                     <MudPaper Elevation="2">
@@ -92,8 +90,7 @@
     private decimal _totalGasto;
     private double _totalKmPercorrido;
 
-    private async Task UpdateFuelSupply()
-    {
+    private async Task UpdateFuelSupply() {
         var fuelSupply = await Http.GetFromJsonAsync<List<Abastecimento>>("api/abastecimento");
         if (fuelSupply != null && fuelSupply.Any())
             return;
@@ -105,5 +102,4 @@
             _totalKmPercorrido = fuelSupply.Sum(a => a.DiferencaHodometro);
         }
     }
-
 }

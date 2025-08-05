@@ -4,22 +4,22 @@ using System.Text.Json;
 using FlexPro.Client.Domain.Models;
 using FlexPro.Client.Domain.Models.Request;
 using FlexPro.Client.Domain.Models.Response;
-using FlexPro.Client.Infrastructure.Interfaces;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
-public class ParceiroService : ApiService<ParceiroRequestDTO, ParceiroResponseDTO>
+public class ParceiroService : ApiService<ParceiroRequestDTO, ParceiroResponseDto>
 {
+    public ParceiroService(HttpClient http, JsonSerializerOptions options) : base(http, options)
+    {
+    }
 
-    public ParceiroService(HttpClient http, JsonSerializerOptions options) : base(http, options) { }
-
-    public async Task<ApiResponse<ParceiroResponseDTO>> CreateAsync(ParceiroRequestDTO parceiroRequest)
+    public async Task<ApiResponse<ParceiroResponseDto>> CreateAsync(ParceiroRequestDTO parceiroRequest)
     {
         if (parceiroRequest is null)
-            return new ApiResponse<ParceiroResponseDTO>("Parceiro request is null", HttpStatusCode.NotFound);
+            return new ApiResponse<ParceiroResponseDto>("Parceiro request is null", HttpStatusCode.NotFound);
 
         var response = await _http.PostAsJsonAsync("api/parceiro", parceiroRequest);
-        return new ApiResponse<ParceiroResponseDTO>(await response.Content.ReadAsStringAsync(), response.StatusCode);
+        return new ApiResponse<ParceiroResponseDto>(await response.Content.ReadAsStringAsync(), response.StatusCode);
     }
 
     public async Task<ApiResponse<string>> UploadAsync(string url, MultipartFormDataContent content)
@@ -33,6 +33,5 @@ public class ParceiroService : ApiService<ParceiroRequestDTO, ParceiroResponseDT
         {
             return ApiResponse<string>.Fail(e.Message);
         }
-        
     }
 }

@@ -1,44 +1,33 @@
-
 using System.Net;
 using System.Net.Http.Json;
 using FlexPro.Client.Domain.Models;
 using FlexPro.Client.Infrastructure.Interfaces;
-using MudBlazor;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
-public class VehicleService : IVehicleService
+public class VehicleService(HttpClient http) : IVehicleService
 {
-    private readonly HttpClient _client;
 
-    public VehicleService(HttpClient client)
-    {
-        _client = client;
-    }
+    private static readonly string[] VehicleBrands =
+    [
+        "ACURA", "ALFA ROMEO", "AUDI", "BMW", "BUICK", "CADILLAC", "CHEVROLET", "CHERY", "CITROËN", "DODGE", "FERRARI",
+        "FIAT", "FORD", "GMC", "HONDA",
+        "HYUNDAI", "INFINITI", "JAGUAR", "JEEP", "KIA", "LAMBORGHINI", "LAND ROVER", "LEXUS", "LINCOLN", "MITSUBISHI",
+        "MERCEDES-BENZ",
+        "MINI", "MITSUBISHI", "NISSAN", "PEUGEOT", "PORSCHE", "RAM", "RENAULT", "SANTA FÉ", "SEAT", "SUBARU", "SUZUKI",
+        "TESLA", "TOYOTA", "VOLKSWAGEN",
+        "VOLVO", "ZAZ", "TROLLER", "JAC MOTORS", "FOTON", "GREAT WALL", "TATA", "BYD", "DIESEL", "MERCURY", "SPYKER",
+        "SMART", "DAEWOO", "FIAT CHRYSLER",
+        "HONDA", "LIFAN", "CHERY", "CROSSFOX", "RENAULT", "FORD"
+    ];
 
-    public string[] GetVehicleBrands()
-    {
-        string[] marcas =
-        {
-            "ACURA", "ALFA ROMEO", "AUDI", "BMW", "BUICK", "CADILLAC", "CHEVROLET",
-            "CHERY", "CITROËN", "DODGE", "FERRARI", "FIAT", "FORD", "GMC", "HONDA",
-            "HYUNDAI", "INFINITI", "JAGUAR", "JEEP", "KIA", "LAMBORGHINI",
-            "LAND ROVER", "LEXUS", "LINCOLN", "MITSUBISHI", "MERCEDES-BENZ",
-            "MINI", "MITSUBISHI", "NISSAN", "PEUGEOT", "PORSCHE", "RAM", "RENAULT",
-            "SANTA FÉ", "SEAT", "SUBARU", "SUZUKI", "TESLA", "TOYOTA", "VOLKSWAGEN",
-            "VOLVO", "ZAZ", "TROLLER", "JAC MOTORS", "FOTON", "GREAT WALL", "TATA",
-            "BYD", "DIESEL", "MERCURY", "SPYKER", "SMART", "DAEWOO", "FIAT CHRYSLER",
-            "HONDA", "LIFAN", "CHERY", "CROSSFOX", "RENAULT", "FORD"
-        };
-
-        return marcas;
-    }
+    public IReadOnlyList<string> GetVehicleBrands() => VehicleBrands;
 
     public async Task<ApiResponse<List<Veiculo>>> GetVehicleAsync()
     {
         try
         {
-            var response = await _client.GetAsync($"api/veiculo");
+            var response = await http.GetAsync("api/veiculo");
 
             var statusCode = response.StatusCode;
             var rawMessage = await response.Content.ReadAsStringAsync();
@@ -48,10 +37,8 @@ public class VehicleService : IVehicleService
                 var data = await response.Content.ReadFromJsonAsync<List<Veiculo>>();
                 return ApiResponse<List<Veiculo>>.Success(data!, "Veículos obtidos com sucesso.");
             }
-            else
-            {
-                return ApiResponse<List<Veiculo>>.Fail($"Erro {statusCode}: {rawMessage}", statusCode);
-            }
+
+            return ApiResponse<List<Veiculo>>.Fail($"Erro {statusCode}: {rawMessage}", statusCode);
         }
         catch (HttpRequestException ex)
         {
@@ -59,7 +46,8 @@ public class VehicleService : IVehicleService
         }
         catch (Exception ex)
         {
-            return ApiResponse<List<Veiculo>>.Fail($"Erro inesperado: {ex.Message}", HttpStatusCode.InternalServerError);
+            return ApiResponse<List<Veiculo>>.Fail($"Erro inesperado: {ex.Message}",
+                HttpStatusCode.InternalServerError);
         }
     }
 }

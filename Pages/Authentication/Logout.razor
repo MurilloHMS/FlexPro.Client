@@ -1,23 +1,20 @@
 ﻿@page "/Account/Logout"
+@using FlexPro.Client.Infrastructure.Providers
 
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AuthService AuthService
 
 @code {
-
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         await LogOut();
     }
 
-    private async Task LogOut()
-    {
+    private async Task LogOut() {
         await AuthService.Logout();
         (AuthenticationStateProvider as ApiAuthenticationStateProvider)?.MarkUserAsLoggedOut();
 
         // Redirect to login page
         NavigationManager.NavigateTo("Account/Login");
     }
-
 }

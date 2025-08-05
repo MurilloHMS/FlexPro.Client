@@ -40,7 +40,6 @@
 </MudDataGrid>
 
 @code {
-
     private IEnumerable<Entidade> entidades = new List<Entidade>();
     private string _searchString = "";
 
@@ -51,28 +50,22 @@
                 c.Nome.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
             );
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         await LoadData();
     }
 
-    private async Task LoadData()
-    {
-        try
-        {
+    private async Task LoadData() {
+        try {
             entidades = await Http.GetFromJsonAsync<IList<Entidade>>("api/PrestadorDeServico");
         }
-        catch (HttpRequestException ex)
-        {
+        catch (HttpRequestException ex) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             entidades = default;
         }
     }
 
-    private async Task ApagarEntidades(Entidade entidade)
-    {
-        var parametros = new DialogParameters<DialogEntidades>
-        {
+    private async Task ApagarEntidades(Entidade entidade) {
+        var parametros = new DialogParameters<DialogEntidades> {
             { x => x.ContentText, "Tem certeza que você quer deletar este registro?, este processo não pode ser revertido!" },
             { x => x.ButtonText, "Deletar" },
             { x => x.Color, Color.Error },
@@ -84,28 +77,23 @@
         var dialog = await DialogService.ShowAsync<DialogEntidades>("Deletar", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
 
-    private async Task OpenDialogAsync()
-    {
+    private async Task OpenDialogAsync() {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarEntidades>("Cadastro de Prestadores e Fornecedores", options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
 
-    private async Task OpenEditDialogAsync(Entidade entidade)
-    {
-        var parametros = new DialogParameters<CadastrarEntidades>
-        {
+    private async Task OpenEditDialogAsync(Entidade entidade) {
+        var parametros = new DialogParameters<CadastrarEntidades> {
             { x => x._entidade, entidade }
         };
 
@@ -113,10 +101,8 @@
         var dialog = await DialogService.ShowAsync<CadastrarEntidades>("Editar Prestadores e Fornecedores", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
-
 }

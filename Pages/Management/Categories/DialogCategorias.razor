@@ -23,15 +23,12 @@
 
     [Parameter] public Categoria Categoria { get; set; }
 
-    private async Task Submit()
-    {
-        try
-        {
+    private async Task Submit() {
+        try {
             await Http.DeleteAsync($"api/categoria/{Categoria.Id}");
             Snackbar.Add("Categoria Deletada", Severity.Success);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add("Ocorreu um erro ao deletar a categoria", Severity.Error);
             throw;
         }
@@ -39,9 +36,7 @@
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    private void Cancel()
-    {
+    private void Cancel() {
         MudDialog.Cancel();
     }
-
 }

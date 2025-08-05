@@ -30,8 +30,7 @@
                 <MudText Typo="Typo.h6">
                     Arraste e solte o arquivo aqui ou clique para selecionar um arquivo
                 </MudText>
-                @foreach (var file in _fileNames)
-                {
+                @foreach (var file in _fileNames) {
                     <MudChip T="string"
                              Color="Color.Dark"
                              Text="@file.Name"
@@ -62,11 +61,9 @@
     </MudToolBar>
 </MudStack>
 
-@if (paginasSeparadas is not null && paginasSeparadas.Any())
-{
+@if (paginasSeparadas is not null && paginasSeparadas.Any()) {
     <MudStack>
-        @foreach (var pagina in paginasSeparadas)
-        {
+        @foreach (var pagina in paginasSeparadas) {
             <MudTextField Label="Nome do arquivo" @bind-Value="pagina.Nome"/>
         }
     </MudStack>
@@ -85,7 +82,6 @@
 </script>
 
 @code {
-
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
     private readonly List<IBrowserFile> _fileNames = new();
@@ -95,37 +91,31 @@
     private List<SepararPDF> paginasSeparadas = new();
 
 
-    private async Task LimparAsync()
-    {
+    private async Task LimparAsync() {
         await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
         _fileNames.Clear();
         ClearDragClass();
     }
 
-    private Task OpenFilePickerAsync()
-    {
+    private Task OpenFilePickerAsync() {
         return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
     }
 
-    private void OnInputFileChanged(InputFileChangeEventArgs e)
-    {
+    private void OnInputFileChanged(InputFileChangeEventArgs e) {
         ClearDragClass();
         var files = e.GetMultipleFiles();
-        foreach (var file in files)
-        {
+        foreach (var file in files) {
             _fileNames.Add(file);
         }
     }
 
-    private async Task Upload()
-    {
+    private async Task Upload() {
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         Snackbar.Add("Iniciando Processamento dos arquivos...");
 
         var content = new MultipartFormDataContent();
         var file = _fileNames.FirstOrDefault();
-        if (file != null)
-        {
+        if (file != null) {
             var fileContent = new StreamContent(file.OpenReadStream());
             fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
 
@@ -133,51 +123,39 @@
         }
 
         var response = await Http.PostAsync("api/SepararPdf/upload", content);
-        if (response.IsSuccessStatusCode)
-        {
+        if (response.IsSuccessStatusCode) {
             paginasSeparadas = await response.Content.ReadFromJsonAsync<List<SepararPDF>>();
-        }
-        else
-        {
+        } else {
             Snackbar.Add("Erro ao processar os arquivos.", Severity.Error);
         }
     }
 
 
-    private void SetDragClass()
-    {
+    private void SetDragClass() {
         _dragClass = $"{DefaultDragClass} mud-border-primary";
     }
 
-    private void ClearDragClass()
-    {
+    private void ClearDragClass() {
         _dragClass = DefaultDragClass;
     }
 
 
-    private async Task SalvarDados()
-    {
-        if (paginasSeparadas is not null && paginasSeparadas.Any())
-        {
+    private async Task SalvarDados() {
+        if (paginasSeparadas is not null && paginasSeparadas.Any()) {
             var response = await Http.PostAsJsonAsync("api/SepararPdf/save", paginasSeparadas);
-            if (response.IsSuccessStatusCode)
-            {
+            if (response.IsSuccessStatusCode) {
                 var fileBytes = await response.Content.ReadAsByteArrayAsync();
                 var fileName = "Pdf_Separados.zip";
                 await DownloadFile(fileBytes, fileName);
                 Snackbar.Add("arquivo gerado com sucesso!", Severity.Success);
-            }
-            else
-            {
+            } else {
                 Snackbar.Add("Erro ao processar os arquivos.", Severity.Error);
             }
         }
     }
 
-    private async Task DownloadFile(byte[] fileBytes, string fileName)
-    {
+    private async Task DownloadFile(byte[] fileBytes, string fileName) {
         var base64File = Convert.ToBase64String(fileBytes);
         await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
-
 }

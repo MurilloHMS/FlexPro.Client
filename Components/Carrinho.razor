@@ -23,11 +23,9 @@
     private bool _isOpen;
 
     [Parameter]
-    public bool IsOpen
-    {
+    public bool IsOpen {
         get => _isOpen;
-        set
-        {
+        set {
             if (_isOpen == value) return;
             _isOpen = value;
             IsOpenChanged.InvokeAsync(value);
@@ -36,10 +34,8 @@
 
     [Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
 
-    private void FecharCarrinho()
-    {
+    private void FecharCarrinho() {
         IsOpen = false;
         IsOpenChanged.InvokeAsync(false);
     }
-
 }

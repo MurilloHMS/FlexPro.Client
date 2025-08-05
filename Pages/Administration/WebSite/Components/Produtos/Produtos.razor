@@ -1,5 +1,4 @@
 @using FlexPro.Client.Domain.Models.Response
-@using FlexPro.Client.Infrastructure.Services
 @inject ProdutoService ProdutoService
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
@@ -62,40 +61,32 @@
             x.Diluicao.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
         );
 
-    protected override async Task OnInitializedAsync()
-    {
-        
+    protected override async Task OnInitializedAsync() {
     }
-    
-    private async Task OpenDialogAsync()
-    {
+
+    private async Task OpenDialogAsync() {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarProduto>("Cadastro de Produtos", options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await UpdateData();
         }
     }
 
-    private async Task OpenEditDialogAsync(ProdutoLojaResponse contextItem)
-    {
-        var parameters = new DialogParameters<CadastrarProduto>
-        {
-            {x => x.produtoLoja, contextItem}
+    private async Task OpenEditDialogAsync(ProdutoLojaResponse contextItem) {
+        var parameters = new DialogParameters<CadastrarProduto> {
+            { x => x.produtoLoja, contextItem }
         };
 
-        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true};
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarProduto>("Atualizar Produto", parameters, options);
         var result = await dialog.Result;
     }
 
-    private async Task UpdateData()
-    {
+    private async Task UpdateData() {
         _isLoading = true;
         produtos = await ProdutoService.GetProdutoLoja();
         _isLoading = false;
     }
-
 }

@@ -31,10 +31,8 @@
                 <MudText Typo="Typo.h6">
                     Arraste e solte os arquivos aqui ou clique para selecionar.
                 </MudText>
-                @if (_fileNames != null && _fileNames.Any())
-                {
-                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++)
-                    {
+                @if (_fileNames != null && _fileNames.Any()) {
+                    @for (var i = 0; i < 20 && i < _fileNames.Count; i++) {
                         <MudChip T="string"
                                  Color="Color.Dark"
                                  Text="@_fileNames[i].Name"
@@ -77,15 +75,13 @@
     }
 </script>
 
-@if (resultadoDosCalculos is not null)
-{
+@if (resultadoDosCalculos is not null) {
     <MudTextField T="string" Label="Resultado" Variant="Variant.Outlined" Text="@resultadoDosCalculos"
                   AutoGrow></MudTextField>
     <MudButton OnClick="Imprimir" Color="Color.Primary" Variant="Variant.Filled">Imprimir</MudButton>
 }
 
-@if (!dataLoaded)
-{
+@if (!dataLoaded) {
     <MudOverlay Visible="visible" DarkBackground>
         <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
     </MudOverlay>
@@ -101,54 +97,43 @@
     private bool dataLoaded;
     private bool visible;
 
-    private async Task Imprimir()
-    {
-        if (!string.IsNullOrEmpty(resultadoDosCalculos))
-        {
+    private async Task Imprimir() {
+        if (!string.IsNullOrEmpty(resultadoDosCalculos)) {
             await JSRuntime.InvokeVoidAsync("printContent", resultadoDosCalculos);
         }
     }
 
-    private async Task ClearAsync()
-    {
+    private async Task ClearAsync() {
         await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
         _fileNames.Clear();
         resultadoDosCalculos = default;
     }
 
-    private Task OpenFilePickerAsync()
-    {
+    private Task OpenFilePickerAsync() {
         return _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
     }
 
-    private void SetDragClass()
-    {
+    private void SetDragClass() {
         _dragClass = $"{DefaultDragClass} mud-border-primary";
     }
 
-    private void ClearDragClass()
-    {
+    private void ClearDragClass() {
         _dragClass = DefaultDragClass;
     }
 
-    private void OnInputFileChanged(InputFileChangeEventArgs e)
-    {
+    private void OnInputFileChanged(InputFileChangeEventArgs e) {
         ClearDragClass();
         var files = e.GetMultipleFiles(1000);
-        foreach (var file in files)
-        {
-            if (Path.GetExtension(file.Name).Contains("xml"))
-            {
+        foreach (var file in files) {
+            if (Path.GetExtension(file.Name).Contains("xml")) {
                 _fileNames.Add(file);
             }
         }
     }
 
-    private async void Upload()
-    {
+    private async void Upload() {
         Snackbar.Add("Iniciando Processamento dos arquivos...");
-        try
-        {
+        try {
             dataLoaded = false;
             visible = true;
             StateHasChanged();
@@ -156,8 +141,7 @@
             StringBuilder resultado = new();
             var content = new MultipartFormDataContent();
 
-            foreach (var file in _fileNames)
-            {
+            foreach (var file in _fileNames) {
                 var fileContent = new StreamContent(file.OpenReadStream());
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
                 content.Add(fileContent, "files", file.Name);
@@ -165,24 +149,20 @@
 
             var response = await Http.PostAsync("api/calculotransportadoras/calcular", content);
 
-            if (response.IsSuccessStatusCode)
-            {
+            if (response.IsSuccessStatusCode) {
                 resultadoDosCalculos = response.Content.ReadAsStreamAsync().ToString();
                 Snackbar.Add("Dados Processados Com Sucesso!", Severity.Success);
                 dataLoaded = true;
                 visible = false;
                 StateHasChanged();
-            }
-            else
-            {
+            } else {
                 resultadoDosCalculos = response.Content.ReadAsStreamAsync().ToString();
                 Snackbar.Add($"Ocorreu um erro ao processar os dados! {response.RequestMessage}", Severity.Error);
                 dataLoaded = true;
                 visible = false;
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             dataLoaded = true;
             visible = false;
             Snackbar.Add($"Erro ao processar o Arquivo: {e.Message}", Severity.Error);
@@ -190,5 +170,4 @@
             throw;
         }
     }
-
 }

@@ -30,11 +30,8 @@
 @* </section> *@
 
 @code {
-
-	private Task OpenDialogAsync()
-	{
+	private Task OpenDialogAsync() {
 		var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
 		return DialogService.ShowAsync<Contato>("Entre em Contato", options);
 	}
-
 }

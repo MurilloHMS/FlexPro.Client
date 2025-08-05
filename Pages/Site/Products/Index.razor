@@ -1,6 +1,5 @@
 @page "/Produtos/lista"
 @using FlexPro.Client.Domain.Models.Response
-@using FlexPro.Client.Infrastructure.Services
 @inject IJSRuntime JS
 @inject ProdutoService ProdutoService
 
@@ -9,8 +8,7 @@
     <aside class="menu-lateral">
         <MudPaper Elevation="0" Class="pa-4">
             <MudList T="string" Dense="true">
-                @foreach (var departamento in ProdutosPorDepartamento.Keys)
-                {
+                @foreach (var departamento in ProdutosPorDepartamento.Keys) {
                     <MudListItem OnClick="() => ScrollToDepartamento(departamento)">
                         <AvatarContent>
                             <MudAvatar Size="Size.Small" Class="mr-2" Color="Color.Primary" Variant="Variant.Filled">
@@ -26,13 +24,11 @@
 
     <!-- Grid de produtos -->
     <section class="grid-produtos flex-grow-1">
-        @foreach (var grupo in ProdutosPorDepartamento)
-        {
+        @foreach (var grupo in ProdutosPorDepartamento) {
             var idDepartamento = GetDepartamentoId(grupo.Key);
             <MudText Typo="Typo.h5" Class="mt-6 mb-2 px-4" Id="@idDepartamento">@grupo.Key</MudText>
             <MudGrid Class="px-4">
-                @foreach (var produto in grupo.Value)
-                {
+                @foreach (var produto in grupo.Value) {
                     <MudItem xs="12" sm="6" md="4" lg="2" Class="mud-item-hover">
                         <MudLink Href="@($"/produtos/{produto.Id}")" Style="text-decoration: none;">
                             <MudCard Class="mud-hover">
@@ -56,21 +52,16 @@
 </div>
 
 @code {
-
     Dictionary<string, List<ProdutoLojaResponse>> ProdutosPorDepartamento = new();
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         var produtos = await ProdutoService.GetProdutoLoja();
 
         // Agrupar produtos por departamento
         var produtosPorDep = new Dictionary<string, List<ProdutoLojaResponse>>();
-        foreach (var produto in produtos)
-        {
-            foreach (var dep in produto.Departamentos)
-            {
-                if (!produtosPorDep.ContainsKey(dep.Nome))
-                {
+        foreach (var produto in produtos) {
+            foreach (var dep in produto.Departamentos) {
+                if (!produtosPorDep.ContainsKey(dep.Nome)) {
                     produtosPorDep[dep.Nome] = new List<ProdutoLojaResponse>();
                 }
 
@@ -87,15 +78,12 @@
             );
     }
 
-    private async Task ScrollToDepartamento(string departamento)
-    {
+    private async Task ScrollToDepartamento(string departamento) {
         var id = GetDepartamentoId(departamento);
         await JS.InvokeVoidAsync("scrollToSection", id);
     }
 
-    private string GetDepartamentoId(string departamento)
-    {
+    private string GetDepartamentoId(string departamento) {
         return "departamento-" + departamento.Replace(" ", "-").ToLower();
     }
-
 }

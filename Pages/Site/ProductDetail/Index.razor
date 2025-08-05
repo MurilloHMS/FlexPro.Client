@@ -1,6 +1,5 @@
 @page "/produtos/{Id:int}"
 @using FlexPro.Client.Domain.Models.Response
-@using FlexPro.Client.Infrastructure.Services
 @inject NavigationManager NavigationManager
 @inject CartService CartService
 @inject ProdutoService ProdutoService
@@ -33,14 +32,11 @@
 
     private ProdutoLojaResponse Produto { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         Produto = await ProdutoService.GetByIdAsync(Id);
     }
 
-    private async Task AddCart()
-    {
+    private async Task AddCart() {
         await CartService.AddToCartAsync(Produto);
     }
-
 }

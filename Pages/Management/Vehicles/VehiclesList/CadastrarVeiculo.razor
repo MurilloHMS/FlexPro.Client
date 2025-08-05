@@ -9,81 +9,67 @@
     <DialogContent>
         <MudGrid>
             <MudItem xs="12" sm="12">
-                <MudForm @ref="form" @bind-IsValid="isFormValid">
-                    <MudTextField Label="Nome" @bind-Value="veiculo.Nome" Required="true"/>
-                    <MudTextField Label="Placa" @bind-Value="veiculo.Placa" Required="true"/>
-                    <MudSelect Label="Marca" @bind-Value="veiculo.Marca">
-                        @foreach (var marca in marcas)
-                        {
+                <MudForm @ref="form" @bind-IsValid="_isFormValid">
+                    <MudTextField Label="Nome" @bind-Value="_veiculo.Nome" Required="true"/>
+                    <MudTextField Label="Placa" @bind-Value="_veiculo.Placa" Required="true"/>
+                    <MudSelect Label="Marca" @bind-Value="_veiculo.Marca">
+                        @foreach (var marca in Marcas) {
                             <MudSelectItem Value="marca">@marca</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudTextField Label="Consumo Urbano (Álcool)" @bind-Value="veiculo.ConsumoUrbanoAlcool"/>
-                    <MudTextField Label="Consumo Rodoviário (Álcool)" @bind-Value="veiculo.ConsumoRodoviarioAlcool"/>
-                    <MudTextField Label="Consumo Urbano (Gasolina)" @bind-Value="veiculo.ConsumoUrbanoGasolina"/>
-                    <MudTextField Label="Consumo Rodoviário (Gasolina)"
-                                  @bind-Value="veiculo.ConsumoRodoviarioGasolina"/>
+                    <MudTextField Label="Consumo Urbano (Álcool)" @bind-Value="_veiculo.ConsumoUrbanoAlcool"/>
+                    <MudTextField Label="Consumo Rodoviário (Álcool)" @bind-Value="_veiculo.ConsumoRodoviarioAlcool"/>
+                    <MudTextField Label="Consumo Urbano (Gasolina)" @bind-Value="_veiculo.ConsumoUrbanoGasolina"/>
+                    <MudTextField Label="Consumo Rodoviário (Gasolina)" @bind-Value="_veiculo.ConsumoRodoviarioGasolina"/>
                 </MudForm>
             </MudItem>
         </MudGrid>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="CloseDialog" Color="Color.Secondary">Cancelar</MudButton>
-        <MudButton OnClick="SalvarVeiculo" Color="Color.Primary" Disabled="!isFormValid">Salvar</MudButton>
+        <MudButton OnClick="SalvarVeiculo" Color="Color.Primary" Disabled="!_isFormValid">Salvar</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    private Veiculo veiculo = new();
+    private Veiculo _veiculo = new();
     private MudForm form;
-    private bool isFormValid;
-    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
+    private bool _isFormValid;
+    [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public Veiculo _veiculo { get; set; }
+    [Parameter] public Veiculo? Veiculo { get; set; }
 
-    private  string[] marcas => VehicleService.GetVehicleBrands();
+    private IReadOnlyList<string> Marcas => VehicleService.GetVehicleBrands();
 
-    protected override void OnInitialized()
-    {
-        if (_veiculo is not null)
-        {
-            veiculo = _veiculo;
+    protected override void OnInitialized() {
+        if (Veiculo is not null) {
+            _veiculo = Veiculo;
         }
     }
-    
-    private void CloseDialog()
-    {
+
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private async Task SalvarVeiculo()
-    {
-        try
-        {
-            if (_veiculo is not null)
-            {
-                var response = await Http.PutAsJsonAsync($"api/veiculo/{veiculo.Id}", veiculo);
-                if (response.IsSuccessStatusCode)
-                {
+    private async Task SalvarVeiculo() {
+        try {
+            if (Veiculo is not null) {
+                var response = await Http.PutAsJsonAsync($"api/veiculo/{_veiculo.Id}", _veiculo);
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Veiculo Atualizado com Sucesso!", Severity.Success);
                 }
-            }
-            else
-            {
-                var response = await Http.PostAsJsonAsync("api/veiculo", veiculo);
-                if (response.IsSuccessStatusCode)
-                {
+            } else {
+                var response = await Http.PostAsJsonAsync("api/veiculo", _veiculo);
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Veiculo Cadastrado com Sucesso!", Severity.Success);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao cadastrar o veiculo: {e.Message}", Severity.Error);
             throw;
         }
 
-        MudDialog?.Close(DialogResult.Ok(veiculo));
+        MudDialog?.Close(DialogResult.Ok(_veiculo));
     }
-
 }

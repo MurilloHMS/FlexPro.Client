@@ -1,10 +1,9 @@
 @using FlexPro.Client.Domain.Models.Response
-
 @inject IContactService Service
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
 
-<MudDataGrid Items="@filteredContacts"
+<MudDataGrid Items="@FilteredContacts"
              T="ContactResponse"
              Hover="true"
              Bordered="true"
@@ -26,7 +25,8 @@
     </ToolBarContent>
     <Columns>
         <HierarchyColumn T="ContactResponse"></HierarchyColumn>
-        <PropertyColumn Property="x => x.DataSolicitadoContato" Title="Data Solicitação" Sortable="true" Filterable="true" Format="dd/MM/yyyy"/>
+        <PropertyColumn Property="x => x.DataSolicitadoContato" Title="Data Solicitação" Sortable="true"
+                        Filterable="true" Format="dd/MM/yyyy"/>
         <PropertyColumn Property="x => x.Nome" Title="Nome" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" Filterable="true"/>
         <PropertyColumn Property="x => x.NomeEmpresa" Title="Razão Social" Sortable="true" Filterable="true"/>
@@ -48,27 +48,27 @@
         <MudDataGridPager T="ContactResponse"/>
     </PagerContent>
 </MudDataGrid>
+
 @code {
     private string _searchString = string.Empty;
     private bool _isLoading;
-    private IEnumerable<ContactResponse> contact = new List<ContactResponse>();
+    private IEnumerable<ContactResponse> _contact = new List<ContactResponse>();
 
-    IEnumerable<ContactResponse> filteredContacts => string.IsNullOrWhiteSpace(_searchString)
-        ? contact
-        : contact.Where(x =>
+    IEnumerable<ContactResponse> FilteredContacts => string.IsNullOrWhiteSpace(_searchString)
+        ? _contact
+        : _contact.Where(x =>
             x.Nome.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
-           x.Email.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+            x.Email.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
         );
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized() 
     {
-    }
-    
-    private async Task UpdateData()
-    {
-        _isLoading = true;
-        contact = await Service.GetAllAsync();
-        _isLoading = false;
+        
     }
 
+    private async Task UpdateData() {
+        _isLoading = true;
+        _contact = await Service.GetAllAsync() ?? new List<ContactResponse>();
+        _isLoading = false;
+    }
 }

@@ -9,67 +9,55 @@
     <DialogContent>
         <MudGrid>
             <MudItem xs="12" sm="12">
-                <MudForm @ref="form" @bind-IsValid="isFormValid">
-                    <MudTextField Label="Nome" @bind-Value="Categoria.Nome" Required="true"/>
+                <MudForm @ref="form" @bind-IsValid="_isFormValid">
+                    <MudTextField Label="Nome" @bind-Value="_categoria.Nome" Required="true"/>
                 </MudForm>
             </MudItem>
         </MudGrid>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="CloseDialog" Color="Color.Secondary">Cancelar</MudButton>
-        <MudButton OnClick="SalvarCategorias" Color="Color.Primary" Disabled="!isFormValid">Salvar</MudButton>
+        <MudButton OnClick="SalvarCategorias" Color="Color.Primary" Disabled="!_isFormValid">Salvar</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    private Categoria Categoria = new();
+    private Categoria _categoria = new();
     private MudForm form;
-    private bool isFormValid;
-    [CascadingParameter] IMudDialogInstance MudDialog { get; set; }
+    private bool _isFormValid;
+    [CascadingParameter] public required IMudDialogInstance MudDialog { get; set; }
 
-    [Parameter] public Categoria _categoria { get; set; }
+    [Parameter] public Categoria? Categoria { get; set; }
 
-    protected override void OnInitialized()
-    {
-        if (_categoria is not null)
-        {
-            Categoria = _categoria;
+    protected override void OnInitialized() {
+        if (Categoria is not null) {
+            _categoria = Categoria;
         }
     }
 
-    private void CloseDialog()
-    {
+    private void CloseDialog() {
         MudDialog.Cancel();
     }
 
-    private async Task SalvarCategorias()
-    {
-        try
-        {
-            if (_categoria is not null)
-            {
-                var response = await Http.PutAsJsonAsync($"api/categoria/{Categoria.Id}", Categoria);
-                if (response.IsSuccessStatusCode)
-                {
+    private async Task SalvarCategorias() {
+        try {
+            if (Categoria is not null) {
+                var response = await Http.PutAsJsonAsync($"api/categoria/{_categoria.Id}", _categoria);
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Categoria cadastrada com Sucesso!", Severity.Success);
                 }
-            }
-            else
-            {
-                var response = await Http.PostAsJsonAsync("api/categoria", Categoria);
-                if (response.IsSuccessStatusCode)
-                {
+            } else {
+                var response = await Http.PostAsJsonAsync("api/categoria", _categoria);
+                if (response.IsSuccessStatusCode) {
                     Snackbar.Add("Categoria cadastrada com Sucesso!", Severity.Success);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Snackbar.Add($"Ocorreu um erro ao cadastrar a categoria: {e.Message}", Severity.Error);
             throw;
         }
 
-        MudDialog?.Close(DialogResult.Ok(Categoria));
+        MudDialog?.Close(DialogResult.Ok(_categoria));
     }
-
 }

@@ -1,9 +1,9 @@
-a, a:hover, a:focus, a:active{
+a, a:hover, a:focus, a:active {
     text-decoration: none;
     outline: none;
 }
 
-a, a:active, a:focus{
+a, a:active, a:focus {
     color: #6f6f6f;
     text-decoration: none;
     transition-timing-function: ease-in-out;
@@ -18,44 +18,44 @@ a, a:active, a:focus{
     -o-transition-duration: .2s;
 }
 
-ul{
+ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-img{
+img {
     max-width: 100%;
     height: auto;
 }
 
-section{
+section {
     padding: 60px 0;
     min-height: 70vh;
 }
 
-.success-case{
+.success-case {
     padding: 80px 0 80px;
 }
 
-.success-case .heading{
+.success-case .heading {
     margin-bottom: 60px;
 }
 
-.success-case .heading h2{
+.success-case .heading h2 {
     font-size: 40px;
     font-weight: 400;
     color: var(--primary-color);
     margin-bottom: 20px;
 }
 
-.success-case .heading h2 span{
+.success-case .heading h2 span {
     font-weight: 600;
     color: var(--secondary-color);
     margin: 0;
 }
 
-.success-case .heading p{
+.success-case .heading p {
     font-size: 16px;
     font-weight: 300;
     line-height: 26px;
@@ -63,33 +63,33 @@ section{
     color: #727f8c;
 }
 
-.success-case .box{
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+.success-case .box {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     padding: 40px;
     border-radius: 15px;
     margin-bottom: 40px;
     transition: all .4s ease-in-out;
 }
 
-.success-case .box h3{
+.success-case .box h3 {
     font-size: 18px;
     font-weight: 500;
     color: #313e4b;
 }
 
-.success-case .box:hover{
+.success-case .box:hover {
     transform: scale(1.03);
     cursor: pointer;
 }
 
-.success-case .box h3 span{
+.success-case .box h3 span {
     font-size: 13px;
     font-weight: 400;
     color: var(--secondary-color);
     margin-left: 10px;
 }
 
-.success-case .box p{
+.success-case .box p {
     font-size: 15px;
     font-weight: 300;
     line-height: 24px;
@@ -99,6 +99,7 @@ section{
     margin-top: 10px;
     padding-right: 20px;
 }
+
 .success-case .box .image img {
     width: 200px;
     border-radius: 50%;
@@ -106,6 +107,7 @@ section{
     padding: 0;
     display: inline-block;
 }
+
 .success-case .box .icon {
     width: 42px;
     height: 42px;
@@ -121,10 +123,12 @@ section{
     overflow: hidden;
     text-decoration: none;
 }
+
 .success-case .box .icon:hover {
     color: var(--primary-color);
     transform: translateY(-3px);
 }
+
 .success-case .box .icon::after {
     content: '';
     position: absolute;
@@ -140,6 +144,7 @@ section{
 .success-case .box .icon:hover::after {
     opacity: 1;
 }
+
 .success-case .box .icon i {
     position: relative;
     z-index: 1;

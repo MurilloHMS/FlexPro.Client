@@ -7,7 +7,7 @@ window.initializeStepsObserver = () => {
                 entry.target.style.transform = 'translateY(0)';
             }
         });
-    }, { threshold: 0.2 });
+    }, {threshold: 0.2});
 
     steps.forEach(step => observer.observe(step));
 }

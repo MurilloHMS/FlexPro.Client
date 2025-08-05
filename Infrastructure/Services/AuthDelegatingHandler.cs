@@ -2,7 +2,7 @@
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Components;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class AuthDelegatingHandler : DelegatingHandler
 {

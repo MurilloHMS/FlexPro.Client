@@ -1,7 +1,7 @@
 using System.Text.Json;
 using FlexPro.Client.Domain.Models.Response;
 
-namespace FlexPro.Client.Services;
+namespace FlexPro.Client.Infrastructure.Services;
 
 public class ClienteService
 {
@@ -17,6 +17,7 @@ public class ClienteService
     public async Task<List<ClienteResponse>> GetClientes()
     {
         var stream = await _http.GetStreamAsync("api/cliente");
-        return await JsonSerializer.DeserializeAsync<List<ClienteResponse>>(stream, _options) ?? new List<ClienteResponse>();
+        return await JsonSerializer.DeserializeAsync<List<ClienteResponse>>(stream, _options) ??
+               new List<ClienteResponse>();
     }
 }

@@ -40,7 +40,6 @@
 </MudDataGrid>
 
 @code {
-
     private IEnumerable<Categoria> Categorias = new List<Categoria>();
     private string _searchString = "";
 
@@ -51,28 +50,22 @@
                 c.Nome.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
             );
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
         await LoadData();
     }
 
-    private async Task LoadData()
-    {
-        try
-        {
+    private async Task LoadData() {
+        try {
             Categorias = await Http.GetFromJsonAsync<IList<Categoria>>("api/categoria");
         }
-        catch (HttpRequestException ex)
-        {
+        catch (HttpRequestException ex) {
             Snackbar.Add($"Ocorreu um erro ao coletar os dados {Environment.NewLine} Erro: {ex.Message} {Environment.NewLine} StackTrace: {ex.StackTrace}", Severity.Error);
             Categorias = default;
         }
     }
 
-    private async Task ApagarCategorias(Categoria categoria)
-    {
-        var parametros = new DialogParameters<DialogCategorias>
-        {
+    private async Task ApagarCategorias(Categoria categoria) {
+        var parametros = new DialogParameters<DialogCategorias> {
             { x => x.ContentText, "Tem certeza que você quer deletar este registro?, este processo não pode ser revertido!" },
             { x => x.ButtonText, "Deletar" },
             { x => x.Color, Color.Error },
@@ -84,39 +77,32 @@
         var dialog = await DialogService.ShowAsync<DialogCategorias>("Deletar", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
 
-    private async Task OpenDialogAsync()
-    {
+    private async Task OpenDialogAsync() {
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarCategorias>("Cadastro de Categorias", options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
 
-    private async Task OpenEditDialogAsync(Categoria categoria)
-    {
-        var parametros = new DialogParameters<CadastrarCategorias>
-        {
-            { x => x._categoria, categoria }
+    private async Task OpenEditDialogAsync(Categoria categoria) {
+        var parametros = new DialogParameters<CadastrarCategorias> {
+            { x => x.Categoria, categoria }
         };
 
         var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = await DialogService.ShowAsync<CadastrarCategorias>("Editar Veiculo", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled)
-        {
+        if (!result.Canceled) {
             await LoadData();
         }
     }
-
 }
