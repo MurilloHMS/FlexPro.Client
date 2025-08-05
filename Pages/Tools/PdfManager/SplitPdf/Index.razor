@@ -156,6 +156,6 @@
 
     private async Task DownloadFile(byte[] fileBytes, string fileName) {
         var base64File = Convert.ToBase64String(fileBytes);
-        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
+        await JSRuntime.InvokeVoidAsync("downloadZipFileFromStream", fileName, base64File);
     }
 }
