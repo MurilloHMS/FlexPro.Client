@@ -9,23 +9,23 @@ public class ApiService<TRequest, TResponse>
     where TRequest : class
     where TResponse : class
 {
-    protected readonly HttpClient _http;
-    protected readonly JsonSerializerOptions _options;
+    protected readonly HttpClient Http;
+    protected readonly JsonSerializerOptions JsonOptions;
 
-    public ApiService(HttpClient http, JsonSerializerOptions options)
+    public ApiService(HttpClient http, JsonSerializerOptions jsonOptions)
     {
-        _http = http;
-        _options = options;
+        this.Http = http;
+        this.JsonOptions = jsonOptions;
     }
 
     public async Task<ApiResponse<IEnumerable<TResponse>>> GetAllAsync(string url)
     {
         try
         {
-            var response = await _http.GetFromJsonAsync<IEnumerable<TResponse>>(url);
-            if (response != null && response.Any()) return ApiResponse<IEnumerable<TResponse>>.Success(response);
-
-            return ApiResponse<IEnumerable<TResponse>>.Fail("Nenhum dado encontrado.");
+            var response = await Http.GetFromJsonAsync<IEnumerable<TResponse>>(url);
+            return response != null
+                ? ApiResponse<IEnumerable<TResponse>>.Success(response)
+                : ApiResponse<IEnumerable<TResponse>>.Fail("Nenhum dado encontrado.");
         }
         catch (Exception e)
         {
@@ -37,10 +37,10 @@ public class ApiService<TRequest, TResponse>
     {
         try
         {
-            var response = await _http.GetFromJsonAsync<TResponse>($"{url}/{id}");
-            if (response != null) return ApiResponse<TResponse>.Success(response);
-
-            return ApiResponse<TResponse>.Fail("Nenhum dado encontrado.");
+            var response = await Http.GetFromJsonAsync<TResponse>($"{url}/{id}");
+            return response != null    
+                ? ApiResponse<TResponse>.Success(response)
+                : ApiResponse<TResponse>.Fail("Nenhum dado encontrado.");
         }
         catch (Exception e)
         {
@@ -55,7 +55,7 @@ public class ApiService<TRequest, TResponse>
             if (dataRequest is null)
                 return new ApiResponse<string>("Request data is null", HttpStatusCode.BadRequest);
 
-            var response = await _http.PostAsJsonAsync(url, dataRequest);
+            var response = await Http.PostAsJsonAsync(url, dataRequest);
             return ApiResponse<string>.Success(await response.Content.ReadAsStringAsync());
         }
         catch (HttpRequestException e)
@@ -71,8 +71,10 @@ public class ApiService<TRequest, TResponse>
             if (dataRequest is null)
                 return new ApiResponse<string>("Request data is null", HttpStatusCode.BadRequest);
 
-            var response = await _http.PutAsJsonAsync(url, dataRequest);
-            return new ApiResponse<string>(await response.Content.ReadAsStringAsync(), response.StatusCode);
+            var response = await Http.PutAsJsonAsync(url, dataRequest);
+            return response.IsSuccessStatusCode
+                ? ApiResponse<string>.Success(await response.Content.ReadAsStringAsync())
+                : ApiResponse<string>.Fail(await response.Content.ReadAsStringAsync());
         }
         catch (HttpRequestException e)
         {
@@ -84,11 +86,10 @@ public class ApiService<TRequest, TResponse>
     {
         try
         {
-            var response = await _http.DeleteAsync($"{url}/{id}");
-            if (response.IsSuccessStatusCode)
-                return ApiResponse<string>.Success(await response.Content.ReadAsStringAsync());
-
-            return ApiResponse<string>.Fail(await response.Content.ReadAsStringAsync());
+            var response = await Http.DeleteAsync($"{url}/{id}");
+            return response.IsSuccessStatusCode
+                ? ApiResponse<string>.Success(await response.Content.ReadAsStringAsync())
+                : ApiResponse<string>.Fail(await response.Content.ReadAsStringAsync());
         }
         catch (HttpRequestException e)
         {
