@@ -16,15 +16,15 @@
 	<nav class="menu @(_isOpen ? "active" : "")">
 		<ul>
 			<li><a href="">Início</a></li>
-			<li><a Href="Produtos/lista">Produtos</a></li>
+			@* <li><a Href="Produtos/lista">Produtos</a></li> *@
 			<li class="nav-item dropdown">
 				<a href="#" class="nav-link dropdown-toggle">
 					Empresa
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a href="about-us" class="dropdown-item">Sobre Nós</a>
-					<a href="our-services" class="dropdown-item">Nossos Serviços</a>
-					<a href="methodology" class="dropdown-item">Metodologia</a>
+					@* <a href="our-services" class="dropdown-item">Nossos Serviços</a> *@
+					@* <a href="methodology" class="dropdown-item">Metodologia</a> *@
 				</div>
 			</li>
 			<li class="nav-item dropdown">
@@ -33,7 +33,7 @@
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="partners/distributors">Distribuidores</a>
-					<a class="dropdown-item" href="partners/representatives">Representantes</a>
+					@* <a class="dropdown-item" href="partners/representatives">Representantes</a> *@
 				</div>
 			</li>
 			<li><a @onclick="OpenDialogAsync">Contato</a></li>
