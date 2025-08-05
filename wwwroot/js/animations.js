@@ -11,3 +11,10 @@ window.initializeStepsObserver = () => {
 
     steps.forEach(step => observer.observe(step));
 }
+
+function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+}
