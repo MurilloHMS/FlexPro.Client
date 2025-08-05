@@ -1,6 +1,6 @@
 namespace FlexPro.Client.Domain.Models.Request;
 
-public class ParceiroRequestDTO
+public class ParceiroRequestDto
 {
     public string Nome { get; set; } = string.Empty;
     public string? CodigoSistema { get; set; }
