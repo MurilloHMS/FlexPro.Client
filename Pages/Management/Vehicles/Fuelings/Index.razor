@@ -1,19 +1,21 @@
 @page "/management/vehicles/fuelings"
-@using System.Net.Http.Headers
-@using FlexPro.Client.Domain.Models
 
 @inject IDialogService DialogService
 @inject HttpClient Http
 @inject ISnackbar Snackbar
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 
 @attribute [Authorize]
 
 <PageTitle>Abastecimentos</PageTitle>
 
 <MudText Typo="Typo.h5">Abastecimentos</MudText>
-<br><br>
-<MudFileUpload T="IBrowserFile" Accept=".xlsx, .xls" MaximumFileCount="100" FilesChanged="uploadFile">
+
+<MudFileUpload T="IBrowserFile" 
+               Accept=".xlsx, .xls" 
+               MaximumFileCount="100" 
+               FilesChanged="UploadFile"
+               Class="mt-5">
     <ActivatorContent>
         <MudButton Variant="Variant.Filled"
                    Color="Color.Primary"
@@ -32,9 +34,12 @@
         }
     </MudList>
 }
-<br>
-<MudButton OnClick="@(() => ImportarDados())" Variant="Variant.Filled" Disabled="@_isValid">Importar Dados</MudButton>
-<br><br>
+<MudButton OnClick="@(() => ImportarDados())"
+           Variant="Variant.Filled"
+           Disabled="@_isValid"
+           Class="m-5">
+    Importar Dados
+</MudButton>
 
 <MudDataGrid Items="@AbastecimentosFiltrados" T="Abastecimento"
              Hover="true"
@@ -44,7 +49,7 @@
              SortMode="SortMode.Multiple"
              Filterable="true"
              Virtualize="true"
-             Loading="dataLoaded">
+             Loading="_dataLoaded">
     <ToolBarContent>
         <MudStack Row="true" Spacing="3">
             <MudFab OnClick="@(() => ExportarDados())" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Download"
@@ -95,45 +100,39 @@
     </PagerContent>
 </MudDataGrid>
 
-<script>
-    function downloadFileFromStream(fileName, fileBase64) {
-        const link = document.createElement('a');
-        link.href = 'data:application/octet-stream;base64,' + fileBase64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
-
 @code {
     private bool _isValid = true;
-    private bool dataLoaded;
-    private bool visible;
+    private bool _dataLoaded;
 
-    private IEnumerable<Abastecimento> _abastecimentos;
-    private readonly IList<IBrowserFile> _files = new List<IBrowserFile>();
+    private IEnumerable<Abastecimento>? _abastecimentos;
+    private readonly IList<IBrowserFile>? _files = new List<IBrowserFile>();
 
     private string _searchString = "";
 
-    private IEnumerable<Abastecimento> AbastecimentosFiltrados =>
-        string.IsNullOrWhiteSpace(_searchString)
-            ? _abastecimentos
-            : _abastecimentos.Where(a =>
-                a.Departamento.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
-                a.NomeDoMotorista.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
-                a.Combustivel.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
-            );
+    private IEnumerable<Abastecimento>? AbastecimentosFiltrados {
+        get {
+            if (_abastecimentos != null)
+                return string.IsNullOrWhiteSpace(_searchString)
+                    ? _abastecimentos
+                    : _abastecimentos.Where(a =>
+                        a.Departamento.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+                        a.NomeDoMotorista.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+                        a.Combustivel.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+                    );
+            return null;
+        }
+    }
 
-    private void uploadFile(IBrowserFile file) {
-        _files.Add(file);
-        _isValid = false;
+    private void UploadFile(IBrowserFile? file) {
+        if (file != null) {
+            _files?.Add(file);
+            _isValid = false;
+        } 
     }
 
     protected override async Task OnInitializedAsync() {
         try {
-            dataLoaded = true;
-            visible = true;
+            _dataLoaded = true;
             var listaDeAbastecimentos = await Http.GetFromJsonAsync<List<Abastecimento>>("api/abastecimento");
             _abastecimentos = listaDeAbastecimentos;
         }
@@ -141,25 +140,20 @@
             Snackbar.Add($"Ocorreu um erro ao coletar os dados de abastecimento {e.Message}");
         }
         finally {
-            dataLoaded = false;
-            visible = false;
+            _dataLoaded = false;
         }
     }
 
 
     private async Task ImportarDados() {
-        dataLoaded = true;
-        visible = true;
-        if (_files.Any()) {
+        _dataLoaded = true;
+        if (_files is not null && _files.Any()) {
             Snackbar.Add("Iniciando processamento dos dados...", Severity.Info);
             var content = new MultipartFormDataContent();
             var file = _files.First();
-            if (file != null) {
-                var fileContent = new StreamContent(file.OpenReadStream());
-                fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
-
-                content.Add(fileContent, "file", file.Name);
-            }
+            var fileContent = new StreamContent(file.OpenReadStream());
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
+            content.Add(fileContent, "file", file.Name);
 
             var response = await Http.PostAsync("api/abastecimento/upload", content);
             if (response.IsSuccessStatusCode) {
@@ -172,14 +166,13 @@
             Snackbar.Add("Erro: Nenuma informação encontrada", Severity.Error);
         }
 
-        dataLoaded = false;
-        visible = false;
+        _dataLoaded = false;
         _isValid = true;
     }
 
     private async Task ExportarDados() {
-        dataLoaded = true;
-        if (!AbastecimentosFiltrados.Any()) {
+        _dataLoaded = true;
+        if (AbastecimentosFiltrados is null) {
             Snackbar.Add("Dados Abastecimentos não encontrados", Severity.Error);
             return;
         }
@@ -191,38 +184,38 @@
 
         var fileName = Path.Combine(outputFolder, $"Abastecimentos-{DateTime.Now:dd-mm-yyyy}.xlsx");
         using (var workbook = new XLWorkbook()) {
-            var Worksheet = workbook.Worksheets.Add("Abastecimentos");
+            var worksheet = workbook.Worksheets.Add("Abastecimentos");
 
-            Worksheet.Cell(1, 1).Value = "ID";
-            Worksheet.Cell(1, 2).Value = "Data do Abastecimento";
-            Worksheet.Cell(1, 3).Value = "UF";
-            Worksheet.Cell(1, 4).Value = "Nome do Motorista";
-            Worksheet.Cell(1, 5).Value = "Departamento";
-            Worksheet.Cell(1, 6).Value = "Hodômetro Atual";
-            Worksheet.Cell(1, 7).Value = "Hodômetro Anterior";
-            Worksheet.Cell(1, 8).Value = "Diferença do Hodômetro";
-            Worksheet.Cell(1, 9).Value = "Média KM/L";
-            Worksheet.Cell(1, 10).Value = "Tipo do Combustível";
-            Worksheet.Cell(1, 11).Value = "Litros Abastecidos";
-            Worksheet.Cell(1, 12).Value = "Preço do Litro";
-            Worksheet.Cell(1, 13).Value = "Valor Total";
+            worksheet.Cell(1, 1).Value = "ID";
+            worksheet.Cell(1, 2).Value = "Data do Abastecimento";
+            worksheet.Cell(1, 3).Value = "UF";
+            worksheet.Cell(1, 4).Value = "Nome do Motorista";
+            worksheet.Cell(1, 5).Value = "Departamento";
+            worksheet.Cell(1, 6).Value = "Hodômetro Atual";
+            worksheet.Cell(1, 7).Value = "Hodômetro Anterior";
+            worksheet.Cell(1, 8).Value = "Diferença do Hodômetro";
+            worksheet.Cell(1, 9).Value = "Média KM/L";
+            worksheet.Cell(1, 10).Value = "Tipo do Combustível";
+            worksheet.Cell(1, 11).Value = "Litros Abastecidos";
+            worksheet.Cell(1, 12).Value = "Preço do Litro";
+            worksheet.Cell(1, 13).Value = "Valor Total";
 
             var novaLinha = 2;
 
             foreach (var linha in AbastecimentosFiltrados) {
-                Worksheet.Cell(novaLinha, 1).Value = linha.Id;
-                Worksheet.Cell(novaLinha, 2).Value = linha.DataDoAbastecimento;
-                Worksheet.Cell(novaLinha, 3).Value = linha.Uf;
-                Worksheet.Cell(novaLinha, 4).Value = linha.NomeDoMotorista;
-                Worksheet.Cell(novaLinha, 5).Value = linha.Departamento;
-                Worksheet.Cell(novaLinha, 6).Value = linha.HodometroAtual;
-                Worksheet.Cell(novaLinha, 7).Value = linha.HodometroAnterior;
-                Worksheet.Cell(novaLinha, 8).Value = linha.DiferencaHodometro;
-                Worksheet.Cell(novaLinha, 9).Value = linha.MediaKm;
-                Worksheet.Cell(novaLinha, 10).Value = linha.Combustivel;
-                Worksheet.Cell(novaLinha, 11).Value = linha.Litros;
-                Worksheet.Cell(novaLinha, 12).Value = linha.Preco;
-                Worksheet.Cell(novaLinha, 13).Value = linha.ValorTotalTransacao;
+                worksheet.Cell(novaLinha, 1).Value = linha.Id;
+                worksheet.Cell(novaLinha, 2).Value = linha.DataDoAbastecimento;
+                worksheet.Cell(novaLinha, 3).Value = linha.Uf;
+                worksheet.Cell(novaLinha, 4).Value = linha.NomeDoMotorista;
+                worksheet.Cell(novaLinha, 5).Value = linha.Departamento;
+                worksheet.Cell(novaLinha, 6).Value = linha.HodometroAtual;
+                worksheet.Cell(novaLinha, 7).Value = linha.HodometroAnterior;
+                worksheet.Cell(novaLinha, 8).Value = linha.DiferencaHodometro;
+                worksheet.Cell(novaLinha, 9).Value = linha.MediaKm;
+                worksheet.Cell(novaLinha, 10).Value = linha.Combustivel;
+                worksheet.Cell(novaLinha, 11).Value = linha.Litros;
+                worksheet.Cell(novaLinha, 12).Value = linha.Preco;
+                worksheet.Cell(novaLinha, 13).Value = linha.ValorTotalTransacao;
 
                 novaLinha++;
             }
@@ -232,14 +225,14 @@
 
         var fileBytes = File.ReadAllBytes(fileName);
         Snackbar.Add("Dados Exportados Com Sucesso!", Severity.Success);
-        dataLoaded = false;
+        _dataLoaded = false;
         await DownloadFile(fileBytes, Path.GetFileName(fileName));
     }
 
     private async Task DownloadFile(byte[] fileBytes, string fileName) {
         var fileStream = new BlazorDownloadFileStream(fileBytes);
-        var base64File = Convert.ToBase64String(fileBytes);
-        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
+        var base64File = Convert.ToBase64String(fileStream.FileBytes);
+        await JsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
 
     public class BlazorDownloadFileStream {
@@ -259,7 +252,7 @@
         var dialog = await DialogService.ShowAsync<RelatoriosAbastecimentos>($"Download do Relatório {tipo}", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled) {
+        if (result != null && !result.Canceled) {
             Snackbar.Add($"Iniciando Download Relatório {tipo}", Severity.Success);
         }
     }
@@ -273,7 +266,7 @@
         var dialog = await DialogService.ShowAsync<RelatoriosAbastecimentos>($"Envio do Relatório {tipo}", parametros, options);
         var result = await dialog.Result;
 
-        if (!result.Canceled) {
+        if (result != null && !result.Canceled) {
             Snackbar.Add($"Iniciando Envio dos relatórios {tipo}", Severity.Success);
         }
     }
