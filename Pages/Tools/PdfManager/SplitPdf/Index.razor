@@ -88,7 +88,7 @@
     private MudFileUpload<IBrowserFile>? _fileUpload;
     private string inputPdfPath;
 
-    private List<SepararPDF> paginasSeparadas = new();
+    private List<SepararPdf> paginasSeparadas = new();
 
 
     private async Task LimparAsync() {
@@ -124,7 +124,7 @@
 
         var response = await Http.PostAsync("api/SepararPdf/upload", content);
         if (response.IsSuccessStatusCode) {
-            paginasSeparadas = await response.Content.ReadFromJsonAsync<List<SepararPDF>>();
+            paginasSeparadas = await response.Content.ReadFromJsonAsync<List<SepararPdf>>();
         } else {
             Snackbar.Add("Erro ao processar os arquivos.", Severity.Error);
         }
@@ -156,6 +156,6 @@
 
     private async Task DownloadFile(byte[] fileBytes, string fileName) {
         var base64File = Convert.ToBase64String(fileBytes);
-        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
+        await JSRuntime.InvokeVoidAsync("downloadZipFileFromStream", fileName, base64File);
     }
 }

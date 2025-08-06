@@ -63,17 +63,6 @@
     </MudToolBar>
 </MudStack>
 
-<script>
-    function downloadFileFromStream(fileName, fileBase64) {
-        const link = document.createElement('a');
-        link.href = 'data:application/octet-stream;base64,' + fileBase64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
-
 @code {
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;

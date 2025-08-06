@@ -1,0 +1,59 @@
+@inject IAuthService Service
+@inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
+
+<MudDataGrid Items="@FilteredUsers"
+			T="UserResponse"
+			Hover="true"
+			Bordered="true"
+			Striped="true"
+			Dense="true"
+			SortMode="SortMode.Multiple"
+			Filterable="true"
+			Loading="_isLoading"
+			Virtualize>
+	<ToolBarContent>
+		<MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+			<MudIconButton OnClick="@(_ => UpdateData())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
+		</MudButtonGroup>
+		<MudSpacer/>
+		<MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start"
+					AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Immediate Class="mt-0"/>
+	</ToolBarContent>
+	<Columns>
+		<PropertyColumn Property="x => x.Username" Title="Usuário" Sortable="true" Filterable="true"/>
+		<PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" Filterable="true"/>
+	</Columns>
+	<PagerContent>
+		<MudDataGridPager T="UserResponse"/>
+	</PagerContent>
+</MudDataGrid>
+
+@code {
+	private string _searchString = string.Empty;
+	private bool _isLoading;
+	private IEnumerable<UserResponse> _users = new List<UserResponse>();
+
+	IEnumerable<UserResponse> FilteredUsers =>
+		string.IsNullOrWhiteSpace(_searchString)
+		? _users
+		: _users.Where(x =>
+			x.Username.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+			x.Email.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+		);
+
+	private async Task UpdateData() 
+	{
+		var result = await Service.GetAllUsersAsync();
+		if (result.IsSuccess) 
+		{
+			_isLoading = true;
+			_users = result.Data!;
+		}
+		else 
+		{
+			Snackbar.Add(result.Message, Severity.Error);
+		}
+		_isLoading = false;
+	}
+}

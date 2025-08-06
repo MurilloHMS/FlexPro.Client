@@ -17,7 +17,6 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        // Tenta obter o token JWT armazenado
         var token = await _authService.GetAuthToken();
 
         var identity = new ClaimsIdentity();
@@ -29,7 +28,6 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
             }
             catch
             {
-                // Caso falhe ao parsear o JWT ou o token tenha expirado
                 identity = new ClaimsIdentity();
             }
 
@@ -38,13 +36,39 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
         return state;
     }
 
-    // Método para parsear os claims do JWT
     private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
         var payload = jwt.Split('.')[1];
         var jsonBytes = WebEncoders.Base64UrlDecode(payload);
         var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-        return keyValuePairs?.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
+
+        var claims = new List<Claim>();
+
+        if (keyValuePairs is null)
+            return claims;
+
+        foreach (var kvp in keyValuePairs)
+        {
+            if (kvp.Key == "role")
+            {
+                if (kvp.Value is JsonElement { ValueKind: JsonValueKind.Array } roleArray)
+                {
+                    foreach (var role in roleArray.EnumerateArray())
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role.GetString()!));
+                    }
+                }
+                else
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, kvp.Value.ToString()!));
+                }
+            }
+            else
+            {
+                claims.Add(new Claim(ClaimTypes.Role, kvp.Value.ToString()!));
+            }
+        }
+        return claims;
     }
 
     public void MarkUserAsAuthenticated(string token)

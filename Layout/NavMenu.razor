@@ -6,7 +6,7 @@
     <MudNavMenu Color="Color.Secondary">
         <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Página Inicial</MudNavLink>
 
-        <AuthorizeView>
+        <AuthorizeView Context="mainAuthContext">
             <!-- MANAGEMENT -->
             <MudNavGroup Title="Gestão" Icon="@Icons.Material.Filled.Domain">
                 <MudNavGroup Title="Veiculos" Icon="@Icons.Material.Filled.DirectionsCar">
@@ -24,8 +24,9 @@
                 </MudNavGroup>
 
                 <MudNavGroup Title="Pessoas" Icon="@Icons.Material.Filled.People">
-                    <MudNavLink Href="management/people/employees" Icon="@Icons.Material.Filled.Group">Funcionários
-                    </MudNavLink>
+                    <AuthorizeView Roles="Development,Admin,RH">
+                        <MudNavLink Href="management/people/employees" Icon="@Icons.Material.Filled.Group">Funcionários</MudNavLink>
+                    </AuthorizeView>
                     <MudNavLink Href="management/people/partners" Icon="@Icons.Material.Filled.GroupAdd">Parceiros
                     </MudNavLink>
                     <MudNavLink Href="management/people/entities" Icon="@Icons.Material.Filled.Business">Prestadores e
@@ -88,20 +89,23 @@
             </MudNavGroup>
 
             <!-- AUTOMATIONS -->
-            <MudNavGroup Title="Automações" Icon="@Icons.Material.Filled.AutoMode">
-                <MudNavGroup Title="Disparos" Icon="@Icons.Material.Filled.Send">
-                    <MudNavLink Href="automations/triggers/newsletter" Icon="@Icons.Material.Filled.Email">Enviar
-                        Newsletter
-                    </MudNavLink>
+            <AuthorizeView Roles="Developer">
+                <MudNavGroup Title="Automações" Icon="@Icons.Material.Filled.AutoMode">
+                    <MudNavGroup Title="Disparos" Icon="@Icons.Material.Filled.Send">
+                        <MudNavLink Href="automations/triggers/newsletter" Icon="@Icons.Material.Filled.Email">Enviar
+                            Newsletter
+                        </MudNavLink>
+                    </MudNavGroup>
                 </MudNavGroup>
-            </MudNavGroup>
+            </AuthorizeView>
 
             <!-- ADMINISTRATION -->
-            <MudNavGroup Title="Administração" Icon="@Icons.Material.Filled.AdminPanelSettings">
-                <MudNavLink Href="administration/website" Icon="@Icons.Material.Filled.Web">Website</MudNavLink>
-                <MudNavLink Href="administration/general" Icon="@Icons.Material.Filled.AdminPanelSettings">Geral
-                </MudNavLink>
-            </MudNavGroup>
+            <AuthorizeView Roles="Developer,Admin">
+                <MudNavGroup Title="Administração" Icon="@Icons.Material.Filled.AdminPanelSettings">
+                    <MudNavLink Href="administration/website" Icon="@Icons.Material.Filled.Web">Website</MudNavLink>
+                    <MudNavLink Href="administration/general" Icon="@Icons.Material.Filled.AdminPanelSettings">Geral</MudNavLink>
+                </MudNavGroup>
+            </AuthorizeView>
 
             <!-- SUPPORT -->
             <MudNavGroup Title="Suporte" Icon="@Icons.Material.Filled.SupportAgent">

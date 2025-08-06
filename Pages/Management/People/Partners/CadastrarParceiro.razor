@@ -57,7 +57,7 @@
                     Snackbar.Add($"Ocorreu um erro: {response.Message}", Severity.Error);
                 }
             } else {
-                var newParceiro = new ParceiroRequestDTO {
+                var newParceiro = new ParceiroRequestDto {
                     CodigoSistema = _parceiro.CodigoSistema,
                     Ativo = _parceiro.Ativo,
                     Email = _parceiro.Email,

@@ -1,4 +1,4 @@
-@using FlexPro.Client.Domain.Models.Response
+
 @inject IContactService Service
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
@@ -12,8 +12,7 @@
              SortMode="SortMode.Multiple"
              Filterable="true"
              Loading="_isLoading"
-             Virtualize
-             ex>
+             Virtualize>
     <ToolBarContent>
         <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
             <MudIconButton OnClick="@(() => UpdateData())" Variant="Variant.Filled" Size="Size.Small"
