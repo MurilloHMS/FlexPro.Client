@@ -1,11 +1,13 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using FlexPro.Client.Domain.Models;
+using FlexPro.Client.Domain.Models.Response;
+using FlexPro.Client.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace FlexPro.Client.Infrastructure.Services;
 
-public class AuthService
+public class AuthService : IAuthService
 {
     private readonly IConfiguration _configuration;
     private readonly HttpClient _httpClient;
@@ -58,5 +60,18 @@ public class AuthService
     {
         await _localStorageService.RemoveItemAsync("authToken");
         _navigationManager.NavigateTo("/Account/Login");
+    }
+
+    public async Task<ApiResponse<List<UserResponse>>> GetAllUsersAsync()
+    {
+        var response = await _httpClient.GetAsync("api/auth/get-all-users");
+        var rawMessage = await response.Content.ReadAsStringAsync();
+
+        if (response.IsSuccessStatusCode)
+        {
+            var data = await response.Content.ReadFromJsonAsync<List<UserResponse>>();
+            return ApiResponse<List<UserResponse>>.Success(data!, "Usuários obtidos com sucesso");
+        }
+        return ApiResponse<List<UserResponse>>.Fail($"Erro {response.StatusCode}: {rawMessage}");
     }
 }

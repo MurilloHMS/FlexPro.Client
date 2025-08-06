@@ -23,7 +23,7 @@ builder.Services.AddHttpClient("FlexProAPI", client => { client.BaseAddress = ne
 // Services registry
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<LocalStorageService>();
-builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("FlexProAPI"));
 builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<ProdutoService>();
