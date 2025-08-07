@@ -15,6 +15,7 @@
 	<ToolBarContent>
 		<MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
 			<MudIconButton OnClick="@(_ => UpdateData())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
+			<MudIconButton OnClick="@(_ => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.Add"/>
 		</MudButtonGroup>
 		<MudSpacer/>
 		<MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start"
@@ -55,5 +56,15 @@
 			Snackbar.Add(result.Message, Severity.Error);
 		}
 		_isLoading = false;
+	}
+
+	private async Task OpenDialogAsync() {
+		var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+		var dialog = await DialogService.ShowAsync<CreateUserDialog>("Registrar Usuário");
+		var result = await dialog.Result;
+
+		if (result != null && !result.Canceled) {
+			await UpdateData();
+		}
 	}
 }
