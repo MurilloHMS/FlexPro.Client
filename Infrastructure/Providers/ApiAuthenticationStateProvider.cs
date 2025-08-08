@@ -65,11 +65,12 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
             }
             else
             {
-                claims.Add(new Claim(ClaimTypes.Role, kvp.Value.ToString()!));
+                claims.Add(new Claim(kvp.Key, kvp.Value.ToString()!));
             }
         }
         return claims;
     }
+
 
     public void MarkUserAsAuthenticated(string token)
     {
