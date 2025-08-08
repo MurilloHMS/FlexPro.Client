@@ -1,7 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using FlexPro.Client.Components.UserConfig
+@inherits LayoutComponentBase
 
-@inject AuthService AuthService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService;
 
 <MudThemeProvider IsDarkMode="@_isDarkMode" Theme="_theme"/>
 <MudPopoverProvider/>
@@ -26,20 +27,18 @@
                                      ToggledColor="@Color.Primary"/>
                 <MudMenu Size="Size.Medium">
                     <ActivatorContent>
-                        <MudAvatar Style="@($"background: {Colors.Gray.Lighten4}")" Variant="Variant.Filled">
-                            <MudImage Src="assets/images/logo.png"/>
-                        </MudAvatar>
+                        <MudAvatar Variant="Variant.Filled"
+                                   Color="Color.Secondary">@(string.IsNullOrWhiteSpace(userName) ? "U" : userName[0].ToString().ToUpper())</MudAvatar>
                     </ActivatorContent>
                     <ChildContent>
-                        <MudPaper Elevation="0" Style="padding: 10px;">
-                            <MudAvatar Variant="Variant.Filled"
-                                       Color="Color.Secondary">@(string.IsNullOrWhiteSpace(userName) ? "U" : userName[0].ToString().ToUpper())</MudAvatar>
+                        <MudPaper Elevation="0" class="pa-4">
+                            <MudText Typo="Typo.body1">Usuário:</MudText>
                             <br>
                             <MudText Typo="Typo.overline" Align="Align.Center" Color="Color.Primary">@userName</MudText>
                         </MudPaper>
-                        <MudMenuItem Label="Conta"/>
+                        <MudMenuItem Label="Alterar Senha" OnClick="OpenDialogAsync"/>
                         <MudMenuItem Label="Configurações"/>
-                        <MudPaper Elevation="0" Style="padding: 10px;">
+                        <MudPaper Elevation="0" class="pa-4">
                             <MudButton FullWidth="true" Color="Color.Error" StartIcon="@Icons.Material.Filled.Logout"
                                        Variant="Variant.Filled" Href="account/logout">Logout
                             </MudButton>
@@ -108,5 +107,15 @@
                        ?? user.FindFirst("unique_name")?.Value
                        ?? "Sem nome";
         }
+    }
+    
+    private async Task OpenDialogAsync() {
+        var parameters = new DialogParameters<UpdatePasswordDialog> 
+        {
+            { x => x.Username, userName }
+        };    
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<UpdatePasswordDialog>("Registrar Usuário", parameters, options);
+        var result = await dialog.Result;
     }
 }
