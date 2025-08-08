@@ -2,6 +2,8 @@
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
 
+@attribute [Authorize(Roles = "Developer,Admin")]
+
 <MudDataGrid Items="@FilteredUsers"
 			T="UserResponse"
 			Hover="true"
@@ -15,6 +17,7 @@
 	<ToolBarContent>
 		<MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
 			<MudIconButton OnClick="@(_ => UpdateData())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.Update"/>
+			<MudIconButton OnClick="@(_ => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Icon="@Icons.Material.Filled.Add"/>
 		</MudButtonGroup>
 		<MudSpacer/>
 		<MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start"
@@ -23,7 +26,13 @@
 	<Columns>
 		<PropertyColumn Property="x => x.Username" Title="Usuário" Sortable="true" Filterable="true"/>
 		<PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" Filterable="true"/>
-	</Columns>
+		<TemplateColumn Hidden="false" CellClass="d-flex justify-center">
+			<CellTemplate>
+				<MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit"
+								OnClick="@(() => OpenEditDialogAsync(context.Item))"/>
+			</CellTemplate>
+		</TemplateColumn>
+	|</Columns>
 	<PagerContent>
 		<MudDataGridPager T="UserResponse"/>
 	</PagerContent>
@@ -55,5 +64,30 @@
 			Snackbar.Add(result.Message, Severity.Error);
 		}
 		_isLoading = false;
+	}
+
+	private async Task OpenDialogAsync() {
+		var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+		var dialog = await DialogService.ShowAsync<CreateUserDialog>("Registrar Usuário");
+		var result = await dialog.Result;
+
+		if (result != null && !result.Canceled) {
+			await UpdateData();
+		}
+	}
+	
+	private async Task OpenEditDialogAsync(UserResponse user) {
+		var parametros = new DialogParameters<UpdateUserDialog> {
+			{ x => x.UserToEdit, user }
+		};
+
+		var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+		var dialog = await DialogService.ShowAsync<UpdateUserDialog>("Editar Usuário", parametros, options);
+		var result = await dialog.Result;
+
+		if (result != null && !result.Canceled) {
+			Snackbar.Add($"{result.Data}", Severity.Success);
+			await UpdateData();
+		}
 	}
 }

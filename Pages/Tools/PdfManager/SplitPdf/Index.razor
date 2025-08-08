@@ -1,9 +1,7 @@
 @page "/tools/pdfmanager/splitpdf"
-@using System.Net.Http.Headers
-@using FlexPro.Client.Domain.Models
 
 @inject ISnackbar Snackbar
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 @inject HttpClient Http
 
 @attribute [Authorize]
@@ -61,34 +59,22 @@
     </MudToolBar>
 </MudStack>
 
-@if (paginasSeparadas is not null && paginasSeparadas.Any()) {
+@if (_paginasSeparadas is not null && _paginasSeparadas.Any()) {
     <MudStack>
-        @foreach (var pagina in paginasSeparadas) {
+        @foreach (var pagina in _paginasSeparadas) {
             <MudTextField Label="Nome do arquivo" @bind-Value="pagina.Nome"/>
         }
     </MudStack>
     <MudButton OnClick="@(() => SalvarDados())" Color="Color.Primary" Variant="Variant.Filled">Salvar</MudButton>
 }
 
-<script>
-    function downloadFileFromStream(fileName, fileBase64) {
-        const link = document.createElement('a');
-        link.href = 'data:application/zip;base64,' + fileBase64;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-</script>
-
 @code {
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
     private readonly List<IBrowserFile> _fileNames = new();
     private MudFileUpload<IBrowserFile>? _fileUpload;
-    private string inputPdfPath;
 
-    private List<SepararPdf> paginasSeparadas = new();
+    private List<SepararPdf>? _paginasSeparadas = new();
 
 
     private async Task LimparAsync() {
@@ -124,7 +110,7 @@
 
         var response = await Http.PostAsync("api/SepararPdf/upload", content);
         if (response.IsSuccessStatusCode) {
-            paginasSeparadas = await response.Content.ReadFromJsonAsync<List<SepararPdf>>();
+            _paginasSeparadas = await response.Content.ReadFromJsonAsync<List<SepararPdf>>();
         } else {
             Snackbar.Add("Erro ao processar os arquivos.", Severity.Error);
         }
@@ -141,8 +127,8 @@
 
 
     private async Task SalvarDados() {
-        if (paginasSeparadas is not null && paginasSeparadas.Any()) {
-            var response = await Http.PostAsJsonAsync("api/SepararPdf/save", paginasSeparadas);
+        if (_paginasSeparadas is not null && _paginasSeparadas.Any()) {
+            var response = await Http.PostAsJsonAsync("api/SepararPdf/save", _paginasSeparadas);
             if (response.IsSuccessStatusCode) {
                 var fileBytes = await response.Content.ReadAsByteArrayAsync();
                 var fileName = "Pdf_Separados.zip";
@@ -156,6 +142,6 @@
 
     private async Task DownloadFile(byte[] fileBytes, string fileName) {
         var base64File = Convert.ToBase64String(fileBytes);
-        await JSRuntime.InvokeVoidAsync("downloadZipFileFromStream", fileName, base64File);
+        await JsRuntime.InvokeVoidAsync("downloadZipFileFromStream", fileName, base64File);
     }
 }

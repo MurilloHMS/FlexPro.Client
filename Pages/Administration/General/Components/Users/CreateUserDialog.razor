@@ -1,0 +1,76 @@
+@inject IAuthService Service
+@inject ISnackbar Snackbar
+
+@attribute [Authorize(Roles = "Developer,Admin")]
+
+<MudDialog>
+	<DialogContent>
+		<MudGrid>
+			<MudItem xs="12">
+				<MudPaper Class="pa-4">
+					<MudForm @ref="_form" @bind-IsValid="_isFormValid">
+						<MudTextField Label="Usuário" @bind-Value="_registerUser.Username" Required/>
+						<MudTextField Label="Email" @bind-Value="_registerUser.Email" Required/>
+						<MudTextField Label="Senha" @bind-Value="_registerUser.Password" Required/>
+						<MudTextField Label="Confirmar Senha" @bind-Value="_confirmPassword" Required Immediate="true" For="@(() => _confirmPassword)" Validation="ValidateConfirmPassword"/>
+						<MudSelect T="string" Label="Roles" @bind-SelectedValues="_registerUser.Roles" MultiSelection="true">
+							@foreach (var role in _roles) 
+							{
+								<MudSelectItem Value="role">@role</MudSelectItem>
+							}
+						</MudSelect>
+					</MudForm>
+				</MudPaper>
+			</MudItem>
+		</MudGrid>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="CloseDialog" Color="Color.Secondary">Cancelar</MudButton>
+		<MudButton OnClick="Save" Color="Color.Primary" Disabled="!_isFormValid">Salvar</MudButton>
+	</DialogActions>
+</MudDialog>
+@code {
+	private RegisterModel _registerUser = new();
+	private MudForm _form = null!;
+	private bool _isFormValid;
+	private string _confirmPassword = string.Empty;
+	
+	[CascadingParameter]
+	public required IMudDialogInstance MudDialog { get; set; }
+
+	private readonly string[] _roles =
+	[
+		"RH", "Admin",
+		"Developer", "Vendedor",
+		"Administrativo", "Financeiro",
+		"Design", "Marketing",
+		"Contratos", "Cliente",
+		"Parceiro", "Tecnico",
+		"Comprador", "Manutencao",
+		"Producao", "Almoxarifado"
+		
+	];
+
+	private void CloseDialog() => MudDialog.Cancel();
+
+	private async Task Save() {
+		await _form.Validate();
+
+		if (!_form.IsValid)
+			return;
+		
+		await Service.Register(_registerUser);
+		Snackbar.Add("Usuário Cadastrado com Sucesso!", Severity.Success);
+		MudDialog?.Close();
+	}
+
+	private string? ValidateConfirmPassword(string value) {
+		if (string.IsNullOrWhiteSpace(value))
+			return "Confirme a senha";
+
+		if (value != _registerUser.Password)
+			return "As senhas não correspondem";
+
+		return null;
+	}
+}
