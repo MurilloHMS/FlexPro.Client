@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using FlexPro.Client.Application.DTOs;
 using FlexPro.Client.Domain.Models;
 using FlexPro.Client.Domain.Models.Response;
 using FlexPro.Client.Infrastructure.Interfaces;
@@ -73,5 +74,17 @@ public class AuthService : IAuthService
             return ApiResponse<List<UserResponse>>.Success(data!, "Usuários obtidos com sucesso");
         }
         return ApiResponse<List<UserResponse>>.Fail($"Erro {response.StatusCode}: {rawMessage}");
+    }
+
+    public async Task<bool> UpdateUserAsync(RegisterModel registerModel)
+    {
+        var response = await _httpClient.PutAsJsonAsync("api/auth/update", registerModel);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<string?> UpdatePassword(UpdatePasswordDto dto)
+    {
+        var response = await _httpClient.PutAsJsonAsync("api/auth/update-password", dto);
+        return await response.Content.ReadAsStringAsync();
     }
 }
