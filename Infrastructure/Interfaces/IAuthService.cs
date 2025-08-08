@@ -12,6 +12,6 @@ public interface IAuthService
     Task<string> GetAuthToken();
     Task Logout();
     Task<ApiResponse<List<UserResponse>>> GetAllUsersAsync();
-    Task<bool> UpdateUserAsync(RegisterModel registerModel);
+    Task<bool> UpdateUserAsync(UpdateUserModel registerModel);
     Task<string?> UpdatePassword(UpdatePasswordDto dto);
 }

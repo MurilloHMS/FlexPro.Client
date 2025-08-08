@@ -1,0 +1,73 @@
+@using FlexPro.Client.Application.DTOs
+@inject IAuthService Service
+@inject ISnackbar Snackbar
+
+@attribute [Authorize(Roles = "Developer,Admin")]
+
+<MudDialog>
+	<DialogContent>
+		<MudGrid>
+			<MudItem xs="12">
+				<MudPaper Class="pa-4">
+					<MudForm @ref="_form" @bind-IsValid="_isFormValid">
+						<MudTextField Label="Usuário" @bind-Value="_user.Username" Required />
+						<MudTextField Label="Email" @bind-Value="_user.Email" Required />
+						<MudSelect T="string" Label="Roles" @bind-SelectedValues="_user.Roles" MultiSelection="true">
+							@foreach (var role in _roles)
+							{
+								<MudSelectItem Value="role">@role</MudSelectItem>
+							}
+						</MudSelect>
+					</MudForm>
+				</MudPaper>
+			</MudItem>
+		</MudGrid>
+	</DialogContent>
+	<DialogActions>
+		<MudButton OnClick="CloseDialog" Color="Color.Secondary">Cancelar</MudButton>
+		<MudButton OnClick="UpdateUser" Color="Color.Primary" Disabled="!_isFormValid">Salvar</MudButton>
+	</DialogActions>
+</MudDialog>
+
+@code {
+	private UpdateUserModel _user { get; set; }
+	private MudForm _form = null!;
+	private bool _isFormValid;
+
+	[CascadingParameter]
+	public required IMudDialogInstance MudDialog { get; set; }
+
+	[Parameter]
+	public required UserResponse UserToEdit { get; set; }
+
+	private readonly string[] _roles =
+	[
+		"RH", "Admin", "Developer", "Vendedor",
+		"Administrativo", "Financeiro", "Design", "Marketing",
+		"Contratos", "Cliente", "Parceiro", "Tecnico",
+		"Comprador", "Manutencao", "Producao", "Almoxarifado"
+	];
+
+	protected override void OnInitialized()
+	{
+		_user = new UpdateUserModel()
+		{
+			Id = UserToEdit.Id,
+			Username = UserToEdit.Username,
+			Email = UserToEdit.Email,
+			Roles = new List<string>(UserToEdit.Roles)
+		};
+	}
+
+	private void CloseDialog() => MudDialog.Cancel();
+
+	private async Task UpdateUser()
+	{
+		await _form.Validate();
+		if (!_form.IsValid)
+			return;
+
+		bool response = await Service.UpdateUserAsync(_user);
+		MudDialog?.Close(response == true ? DialogResult.Ok("Usuário atualizado com sucesso!") : DialogResult.Cancel() );
+	}
+}

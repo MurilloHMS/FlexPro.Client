@@ -2,6 +2,8 @@
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
 
+@attribute [Authorize(Roles = "Developer,Admin")]
+
 <MudDataGrid Items="@FilteredUsers"
 			T="UserResponse"
 			Hover="true"
@@ -24,7 +26,13 @@
 	<Columns>
 		<PropertyColumn Property="x => x.Username" Title="Usuário" Sortable="true" Filterable="true"/>
 		<PropertyColumn Property="x => x.Email" Title="Email" Sortable="true" Filterable="true"/>
-	</Columns>
+		<TemplateColumn Hidden="false" CellClass="d-flex justify-center">
+			<CellTemplate>
+				<MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Edit"
+								OnClick="@(() => OpenEditDialogAsync(context.Item))"/>
+			</CellTemplate>
+		</TemplateColumn>
+	|</Columns>
 	<PagerContent>
 		<MudDataGridPager T="UserResponse"/>
 	</PagerContent>
@@ -64,6 +72,21 @@
 		var result = await dialog.Result;
 
 		if (result != null && !result.Canceled) {
+			await UpdateData();
+		}
+	}
+	
+	private async Task OpenEditDialogAsync(UserResponse user) {
+		var parametros = new DialogParameters<UpdateUserDialog> {
+			{ x => x.UserToEdit, user }
+		};
+
+		var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+		var dialog = await DialogService.ShowAsync<UpdateUserDialog>("Editar Usuário", parametros, options);
+		var result = await dialog.Result;
+
+		if (result != null && !result.Canceled) {
+			Snackbar.Add($"{result.Data}", Severity.Success);
 			await UpdateData();
 		}
 	}

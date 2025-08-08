@@ -76,7 +76,7 @@ public class AuthService : IAuthService
         return ApiResponse<List<UserResponse>>.Fail($"Erro {response.StatusCode}: {rawMessage}");
     }
 
-    public async Task<bool> UpdateUserAsync(RegisterModel registerModel)
+    public async Task<bool> UpdateUserAsync(UpdateUserModel registerModel)
     {
         var response = await _httpClient.PutAsJsonAsync("api/auth/update", registerModel);
         return response.IsSuccessStatusCode;
