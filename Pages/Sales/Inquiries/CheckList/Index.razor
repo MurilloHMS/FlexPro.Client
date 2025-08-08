@@ -1,5 +1,7 @@
 @page "/sales/inquiries/checklist"
 
+@attribute [Authorize(Roles = "Developer,Admin,RH,Vendedor")]
+
 <PageTitle>CheckList</PageTitle>
 
 @code {

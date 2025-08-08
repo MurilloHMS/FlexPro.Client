@@ -1,13 +1,11 @@
 @page "/BoaSolucao"
-@using FlexPro.Client.Domain.Models
-@using Anchor = MudBlazor.Anchor
-@using Color = MudBlazor.Color
+
 
 @inject IDialogService DialogService
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 <MudText Typo="Typo.h4" Align="Align.Center">Pedidos Boa Solução</MudText>
 

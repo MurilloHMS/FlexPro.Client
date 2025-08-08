@@ -2,7 +2,9 @@
 @using System.IO.Compression
 
 @inject ISnackbar Snackbar
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
+
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 <MudText Typo="Typo.h4" Align="Align.Center">Renomear Notas Via Planilha</MudText>
 
@@ -150,7 +152,7 @@
         var bytes = await File.ReadAllBytesAsync(tempZipPath);
         var base64File = Convert.ToBase64String(bytes);
 
-        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", "PDF_Renomeados.zip", base64File);
+        await JsRuntime.InvokeVoidAsync("downloadFileFromStream", "PDF_Renomeados.zip", base64File);
 
         Directory.Delete(outputFolder, true);
         File.Delete(tempZipPath);
