@@ -1,9 +1,9 @@
 @page "/management/people/partners"
-@using System.Net.Http.Headers
-@using FlexPro.Client.Domain.Models.Response
+
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 @inject IDialogService DialogService;
-@inject ParceiroService service;
+@inject ParceiroService Service;
 @inject ISnackbar Snackbar;
 
 @attribute [Authorize]
@@ -85,7 +85,7 @@
     private async Task LoadData() {
         try {
             _isLoading = true;
-            var request = await service.GetAllAsync("api/parceiro");
+            var request = await Service.GetAllAsync("api/parceiro");
             _parceiros = request.Data;
         }
         catch (HttpRequestException ex) {
@@ -154,7 +154,7 @@
 
 
                 content.Add(fileContent, "file", fileSelected.Name);
-                var response = await service.UploadAsync("api/parceiro/upload", content);
+                var response = await Service.UploadAsync("api/parceiro/upload", content);
                 if (response.StatusCode == HttpStatusCode.OK) {
                     Snackbar.Add($"Parceiros cadastrados com sucesso: {response.Message}", Severity.Success);
                     await LoadData();

@@ -1,11 +1,10 @@
 @page "/CalculoTransportadoras"
-@using System.Net.Http.Headers
 
 @inject ISnackbar Snackbar
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 @inject HttpClient Http
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin,Financeiro")]
 
 <MudText Typo="Typo.h4" Align="Align.Center">Calcular Transportadoras</MudText>
 
@@ -99,7 +98,7 @@
 
     private async Task Imprimir() {
         if (!string.IsNullOrEmpty(resultadoDosCalculos)) {
-            await JSRuntime.InvokeVoidAsync("printContent", resultadoDosCalculos);
+            await JsRuntime.InvokeVoidAsync("printContent", resultadoDosCalculos);
         }
     }
 

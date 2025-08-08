@@ -1,10 +1,10 @@
 @page "/management/categories"
-@using FlexPro.Client.Domain.Models
+
 @inject IDialogService DialogService
 @inject HttpClient Http
 @inject ISnackbar Snackbar
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 <PageTitle>Categorias</PageTitle>
 

@@ -1,10 +1,10 @@
 @page "/management/people/employees"
-@using FlexPro.Client.Domain.Models
+
 @inject HttpClient Http
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin,RH")]
 
 <PageTitle>Funcionários</PageTitle>
 

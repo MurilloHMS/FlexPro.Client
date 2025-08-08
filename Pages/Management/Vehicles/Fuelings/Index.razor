@@ -5,7 +5,7 @@
 @inject ISnackbar Snackbar
 @inject IJSRuntime JsRuntime
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 <PageTitle>Abastecimentos</PageTitle>
 

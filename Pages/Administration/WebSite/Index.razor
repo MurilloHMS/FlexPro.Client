@@ -1,6 +1,6 @@
 @page "/administration/website"
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 <MudText Typo="Typo.h2" Align="Align.Center">Administração Site</MudText>
 <br><br>
