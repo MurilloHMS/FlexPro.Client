@@ -2,9 +2,9 @@
 @using System.IO.Compression
 
 @inject ISnackbar Snackbar
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin,Financeiro")]
 
 <MudText Typo="Typo.h3" Align="Align.Center">Separar Dados Dos Cartões</MudText>
 
@@ -124,7 +124,7 @@
         memoryStream.Seek(0, SeekOrigin.Begin);
 
         var base64File = Convert.ToBase64String(memoryStream.ToArray());
-        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", "DadosCartoesFuncionarios.zip", base64File);
+        await JsRuntime.InvokeVoidAsync("downloadFileFromStream", "DadosCartoesFuncionarios.zip", base64File);
 
         Directory.Delete(outputFolder, true);
     }

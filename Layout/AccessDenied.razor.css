@@ -1,0 +1,110 @@
+.page-wrap {
+    font-family: "Nunito", sans-serif;
+    transition: all 0.5s ease;
+    padding: 30px 15px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    height: 80vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Montserrat", sans-serif;
+}
+
+.page-not-found {
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.page-not-found .img-key {
+    margin-bottom: 0px;
+}
+
+.page-not-found h1.text-xl {
+    color: #000;
+    text-transform: uppercase;
+    line-height: 50px;
+    font-size: 160px;
+    font-weight: 800;
+    letter-spacing: -28px;
+    text-shadow: -6px 4px 0 #fff;
+    margin-left: -20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.page-not-found h1.text-xl span {
+    transition: all 1s ease;
+    display: inline-block;
+    animation: pulse 5s infinite;
+}
+
+.page-not-found h4.text-md,
+.page-not-found h4.text-sm {
+    letter-spacing: 0.38px;
+    font-weight: 300 !important;
+    line-height: 20px;
+    font-size: 14px;
+    text-transform: none;
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.page-not-found h4.text-md a,
+.page-not-found h4.text-sm a {
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+.page-not-found h4.text-md a:hover,
+.page-not-found h4.text-md a:focus,
+.page-not-found h4.text-sm a:hover,
+.page-not-found h4.text-sm a:focus {
+    text-decoration: none;
+}
+
+.page-not-found h4.text-md {
+    font-size: 50px;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-transform: none;
+}
+
+.page-not-found h4.text-sm-btm {
+    top: auto;
+    bottom: 40px;
+}
+
+@keyframes pulse {
+    0% {
+        color: var(--primary-color);
+    }
+    50% {
+        color: var(--secondary-color);
+    }
+    100% {
+        color: var(--primary-color);
+    }
+}
+
+@media (max-width: 768px) {
+    .page-not-found h1.text-xl {
+        font-size: 120px;
+        letter-spacing: -20px;
+        margin-bottom: 30px;
+    }
+    .page-not-found h4.text-sm {
+        top: 10px;
+    }
+    .page-not-found h4.text-sm-btm {
+        bottom: -60px;
+    }
+    .page-not-found h4.text-md {
+        font-size: 30px;
+    }
+}

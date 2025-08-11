@@ -1,12 +1,11 @@
 @page "/tools/filemanager/invoicedata"
-@using System.Net.Http.Headers
-@using FlexPro.Client.Domain.Models
+
 
 @inject HttpClient Http
 @inject ISnackbar Snackbar
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 <MudText Typo="Typo.h4" Align="Align.Center">Coletar Dados Notas Fiscais</MudText>
 
@@ -140,7 +139,7 @@
         var fileStream = new BlazorDownloadFileStream(fileBytes);
         var base64File = Convert.ToBase64String(fileBytes);
 
-        await JSRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
+        await JsRuntime.InvokeVoidAsync("downloadFileFromStream", fileName, base64File);
     }
 }
 

@@ -1,5 +1,6 @@
 @page "/management/people/entities"
-@using FlexPro.Client.Domain.Models
+
+@attribute [Authorize(Roles = "Developer,Admin")]
 
 @inject IDialogService DialogService
 @inject HttpClient Http
