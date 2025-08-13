@@ -1,6 +1,7 @@
 @page "/management/products/inventory"
 @using FlexPro.Client.Application.DTOs
 
+@attribute [Authorize(Roles = "Developer, Admin, Rh")]
 
 <PageTitle>Cadastro de Movimentações</PageTitle>
 
