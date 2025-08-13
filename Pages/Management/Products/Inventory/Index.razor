@@ -1,0 +1,217 @@
+@page "/management/products/inventory"
+@using FlexPro.Client.Application.DTOs
+
+
+<PageTitle>Cadastro de Movimentações</PageTitle>
+
+<MudPaper Class="pa-2 Pictured">
+    <MudToolBar>
+        <MudFab StartIcon="@Icons.Material.Outlined.Download" Color="Color.Primary" Label="Baixar Dados" Size="Size.Small" Class="mr-2" />
+        <MudFab StartIcon="@Icons.Material.Outlined.Update" Color="Color.Primary" Label="Atualizar" Size="Size.Small" OnClick="@(() => LoadAsync())" />
+    </MudToolBar>
+</MudPaper>
+
+<MudGrid>
+    <MudItem xs="12" sm="3">
+        <MudPaper Class="pa-4 mt-5">
+            <MudCheckBox T="bool" Value="_isLowStock" TriState="false" Label="Mostrar Produtos com estoque abaixo do mínimo" Color="Color.Secondary" ValueChanged="async value => await OnLowStockChanged(value)"/>
+            <MudTextField T="string"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          Label="Buscar Produto"
+                          @bind-Value="_searchString"
+                          Immediate="true"
+                          DebounceInterval="300"/>
+        </MudPaper>
+        <MudPaper Class="pa-4 mt-5">
+            <MudTable Items="ProdutosFiltrados"
+                      Hover="true"
+                      Dense="true"
+                      RowClassFunc="@RowClass"
+                      OnRowClick="@((TableRowClickEventArgs<InventoryProductDto> e) => OnProdutoSelecionado(e.Item))"
+                      FixedHeader="true"
+                      Height="600px">
+                <HeaderContent>
+                    <MudTh>Código</MudTh>
+                    <MudTh>Nome</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.Id</MudTd>
+                    <MudTd>@context.Name</MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" sm="9">
+        @if (_selectedProduct is not null)
+        {
+            <MudPaper Class="pa-4 mt-5">
+                <MudText Typo="Typo.subtitle1">Dados do produto</MudText>
+                <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" Size="Size.Small" Label="Nova Movimentação"/>
+                <MudGrid GutterSize="3" Class="mt-3">
+                    <MudItem xs="12" md="2">
+                        <MudTextField @bind-Value="_selectedProduct.Id" Label="Código Sankhya" ReadOnly="true" />
+                    </MudItem>
+
+                    <MudItem xs="12" md="4">
+                        <MudTextField @bind-Value="_selectedProduct.Name" Label="Nome do Produto" ReadOnly="true" />
+                    </MudItem>
+
+                    <MudItem xs="12" md="1">
+                        <MudTextField T="int" 
+                                      @bind-Value="_movimentacao.Quantity" 
+                                      Label="Estoque Atual" 
+                                      ReadOnly="true" />
+                    </MudItem>
+
+                    <MudItem xs="12" md="2">
+                        <MudDatePicker @bind-Date="_movimentacao.Data" 
+                                       Label="Data Última Alteração" 
+                                       DateFormat="dd/MM/yyyy" 
+                                       ReadOnly="true" />
+                    </MudItem>
+
+                    <MudItem xs="12" md="2">
+                        <MudNumericField T="int?"
+                                         Label="Estoque Mínimo"
+                                         @bind-Value="_selectedProduct.MinimumStock"
+                                         ReadOnly="@(!_isEditable)"
+                                         Adornment="Adornment.End"
+                                         AdornmentIcon="@(_isEditable ? Icons.Material.Filled.Check : Icons.Material.Filled.Edit)"
+                                         OnAdornmentClick="@ToggleEditarEstoque"
+                                         Immediate="true"
+                                         Class="w-100" />
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+
+            <MudPaper Class="pa-4 mt-2">
+                <MudText Typo="Typo.subtitle1">Movimentações</MudText>
+                @if (MovimentacoesFiltradas.Any())
+                {
+                    <MudDataGrid Items="MovimentacoesFiltradas"
+                                 T="InventoryMovementDto"
+                                 Hover="true"
+                                 Dense="true"
+                                 Bordered="true"
+                                 Striped="true"
+                                 SortMode="SortMode.Multiple"
+                                 Filterable="true">
+                        <Columns>
+                            <PropertyColumn Property="x => x.Data" Title="Data Movimentação" Filterable="true" Format="dd/MM/yyyy"/>
+                            <PropertyColumn Property="x => x.Quantity" Title="Estoque Do Dia" Filterable="true" />
+                        </Columns>
+                        <PagerContent>
+                            <MudDataGridPager T="InventoryMovementDto"/>
+                        </PagerContent>
+                    </MudDataGrid>
+                    
+                }
+            </MudPaper>
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Inject] private ISnackbar Snackbar { get; set; } = default!;
+    [Inject] private IDialogService DialogService { get; set; } = default!;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
+    [Inject] private HttpClient Http { get; set; } = default!;
+    
+    private List<InventoryProductDto> _produtos = new();
+    private InventoryProductDto? _selectedProduct = null;
+    private List<InventoryMovementDto> _movimentacoes = new();
+    private InventoryMovementDto? _movimentacao = null;
+    private string _searchString = "";
+    private bool _isEditable = false;
+    private bool _isLowStock = false;
+    
+    private IEnumerable<InventoryProductDto> ProdutosFiltrados =>
+        string.IsNullOrWhiteSpace(_searchString)
+            ? _produtos
+            : _produtos.Where(p =>
+                p.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase));
+
+    private List<InventoryMovementDto> MovimentacoesFiltradas =>
+        _selectedProduct?.Movements.OrderBy(m => m.Data).ToList() ?? new List<InventoryMovementDto>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) 
+    {
+        if (firstRender) {
+             await LoadAsync();
+             await VerifyIfHasLowStockProducts();
+        }
+    }
+
+    private async Task LoadAsync() 
+    {
+        _produtos = await Http.GetFromJsonAsync<List<InventoryProductDto>>("api/inventory") ?? new List<InventoryProductDto>();
+        _selectedProduct = _produtos.FirstOrDefault();
+    }
+    
+    private async Task OnLowStockChanged(bool value)
+    {
+        _isLowStock = value;
+        await GetLowStockProducts();
+    }
+    
+    private void ToggleEditarEstoque()
+    {
+        _isEditable = !_isEditable;
+
+        if (!_isEditable)
+        {
+            Snackbar.Add("Estoque mínimo atualizado (simulado).", Severity.Success);
+        }
+    }
+    
+    private void OnProdutoSelecionado(InventoryProductDto? produto)
+    {
+        AtualizarProdutoSelecionado(produto);
+        StateHasChanged();
+    }
+    
+    private string RowClass(InventoryProductDto produto, int index)
+    {
+        return produto == _selectedProduct ? "selected-row" : string.Empty;
+    }
+    
+    private async Task GetLowStockProducts() 
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void AtualizarProdutoSelecionado(InventoryProductDto product) {
+        _selectedProduct = product;
+        _movimentacao = _selectedProduct.Movements
+            .OrderByDescending(m => m.Data)
+            .FirstOrDefault() ??
+                        new InventoryMovementDto() 
+                            { SystemId = product.Id, Quantity = 0, Data = null };
+    }
+    
+    private async Task VerifyIfHasLowStockProducts()
+    {
+        /*var products = await ProductService.GetAllProductsWithLowStockAsync();
+        if (products.Any())
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Atenção os itens abaixo estão com o estoque abaixo do mínimo:");
+            sb.AppendLine();
+            foreach (var product in products)
+            {
+                sb.AppendLine($"ID: {product.Id} - Nome: {product.Nome}");
+            }
+
+            var message = sb.ToString().Replace("\n", "<br />").Replace("\r", "");
+            bool? result = await DialogService.ShowMessageBox("Itens Com estoque baixo", (MarkupString)message, yesText: "Ver movimentações", cancelText: "Cancelar");
+            if (result == true)
+            {
+                _isLowStock = true;
+                await GetLowStockProducts();
+                StateHasChanged();
+            }
+        }*/
+    }
+}
