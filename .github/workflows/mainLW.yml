@@ -35,4 +35,5 @@ jobs:
         host: ${{ secrets.HOST }} 
         user: ${{ secrets.USER }}
         password: ${{ secrets.PASS }}
-        localDir: "docs/wwwroot"
+        localDir: 'dist/proauto-kimium' 
+        remoteDir: 'public_html/client'
