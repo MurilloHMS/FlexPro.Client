@@ -48,13 +48,13 @@
     
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // if (firstRender && !_initialized)
-        // {
-        //     _initialized = true;
-        //     var isMobile = await DeviceDetector.IsMobileAsync();
-        //     if(!isMobile)
-        //         NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
-        // }
+         if (firstRender && !_initialized)
+         {
+             _initialized = true;
+             var isMobile = await DeviceDetector.IsMobileAsync();
+             if(!isMobile)
+                NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
+         }
     }
 
     private void GetQuery()
