@@ -1,16 +1,11 @@
 ﻿@page "/"
 
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
+
 <PageTitle>Home</PageTitle>
 <div class="container">
     <AuthorizeView>
-        <NotAuthorized>
-            <Hero/>
-            <ProcessoConsultoria/>
-            <ServicosOfertados/>
-            <MotivosContratar/>
-            @* <CasesDeSucesso/> *@
-            <Duvidas/>
-        </NotAuthorized>
         <Authorized>
             @* TODO: Separate this to new component *@
             <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6">
@@ -100,6 +95,15 @@
             _mediaKmPorLitro = fuelSupply.Average(a => a.MediaKm);
             _totalGasto = fuelSupply.Sum(a => a.ValorTotalTransacao);
             _totalKmPercorrido = fuelSupply.Sum(a => a.DiferencaHodometro);
+        }
+    }
+
+    protected override async Task OnInitializedAsync() {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (!user.Identity?.IsAuthenticated ?? true) {
+            Navigation.NavigateTo("account/login");
         }
     }
 }
