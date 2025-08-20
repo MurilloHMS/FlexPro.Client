@@ -22,5 +22,25 @@
     <ItemGroup>
         <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Site\Certificates\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Site\Company\Components\NossaHistoria.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Site\Company\Components\SobreNos.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Site\Company\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Site\Institucional\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Site\ProductDetail\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Site\Products\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Site\Support\Faq\Index.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\CasesDeSucesso.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\Consultoria.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\Departamentos.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\Duvidas.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\Hero.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\MotivosContratar.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\ProcessoConsultoria.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\Servicos.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Home\Components\ServicosOfertados.razor" />
+    </ItemGroup>
     
 </Project>
