@@ -5,7 +5,7 @@ using FlexPro.Client.Infrastructure.Interfaces;
 
 namespace FlexPro.Client.Infrastructure.Services;
 
-public class VehicleService(HttpClient http) : IVehicleService
+public class VehicleService(HttpClient http, ILogger<VehicleService> logger) : IVehicleService
 {
 
     private static readonly string[] VehicleBrands =
@@ -27,7 +27,7 @@ public class VehicleService(HttpClient http) : IVehicleService
     {
         try
         {
-            var response = await http.GetAsync("api/veiculo");
+            var response = await http.GetAsync("api/vehicle");
 
             var statusCode = response.StatusCode;
             var rawMessage = await response.Content.ReadAsStringAsync();
@@ -35,7 +35,7 @@ public class VehicleService(HttpClient http) : IVehicleService
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadFromJsonAsync<List<Veiculo>>();
-                return ApiResponse<List<Veiculo>>.Success(data!, "Veículos obtidos com sucesso.");
+                return ApiResponse<List<Veiculo>>.Success(data, "Veículos obtidos com sucesso.");
             }
 
             return ApiResponse<List<Veiculo>>.Fail($"Erro {statusCode}: {rawMessage}", statusCode);
@@ -48,6 +48,72 @@ public class VehicleService(HttpClient http) : IVehicleService
         {
             return ApiResponse<List<Veiculo>>.Fail($"Erro inesperado: {ex.Message}",
                 HttpStatusCode.InternalServerError);
+        }
+    }
+
+    public async Task<HttpStatusCode> DeleteVehicle(int id)
+    {
+        try
+        {
+           var response = await http.DeleteAsync($"api/vehicle/{id}");
+           if (response.IsSuccessStatusCode)
+               return HttpStatusCode.OK;
+           
+           return HttpStatusCode.InternalServerError;
+        }
+        catch (HttpRequestException e)
+        {
+            logger.LogError($"Ocorreu um erro ao deletar o veiculo: {e.Message}");
+            throw;
+        }
+        catch (Exception e)
+        {
+            logger.LogError($"Ocorreu um erro desconhecido ao deletar o veiculo: {e.Message}");
+            throw;
+        }
+    }
+
+    public async Task<HttpStatusCode> UpdateAsync(Veiculo veiculo)
+    {
+        try
+        {
+            var response = await http.PutAsJsonAsync($"api/vehicle/{veiculo.Id}", veiculo);
+            if (response.IsSuccessStatusCode)
+                return HttpStatusCode.OK;
+           
+            return HttpStatusCode.InternalServerError;
+        }
+        catch (HttpRequestException e)
+        {
+            logger.LogError($"Ocorreu um erro ao atualizar o veiculo: {e.Message}");
+            throw;
+        }
+        catch (Exception e)
+        {
+            logger.LogError($"Ocorreu um erro desconhecido ao atualizar o veiculo: {e.Message}");
+            throw;
+        }
+    }
+    
+    public async Task<HttpStatusCode> CreateAsync(Veiculo veiculo)
+    {
+        try
+        {
+            var response = await http.PostAsJsonAsync($"api/vehicle", veiculo);
+            if (response.IsSuccessStatusCode)
+                return HttpStatusCode.OK;
+           
+            return HttpStatusCode.InternalServerError;
+        }
+        catch (HttpRequestException e)
+        {
+            logger.LogError($"Ocorreu um erro ao salvar o veiculo: {e.Message}");
+            throw;
+        }
+        catch (Exception e)
+        {
+            logger.LogError($"Ocorreu um erro desconhecido ao salvar o veiculo: {e.Message}");
+            throw;
         }
     }
 }

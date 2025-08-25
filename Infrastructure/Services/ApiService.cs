@@ -14,8 +14,8 @@ public class ApiService<TRequest, TResponse>
 
     public ApiService(HttpClient http, JsonSerializerOptions jsonOptions)
     {
-        this.Http = http;
-        this.JsonOptions = jsonOptions;
+        Http = http;
+        JsonOptions = jsonOptions;
     }
 
     public async Task<ApiResponse<IEnumerable<TResponse>>> GetAllAsync(string url)
