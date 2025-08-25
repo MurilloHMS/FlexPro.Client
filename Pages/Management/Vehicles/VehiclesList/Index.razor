@@ -11,12 +11,29 @@
 <MudText Typo="Typo.h2" Align="Align.Center">Veículos</MudText>
 <br><br><br>
 
-<MudDataGrid Items="@VeiculosFiltrados" T="Veiculo" Hover="true" Bordered="true" Striped="true" Dense="true"
-             SortMode="SortMode.Multiple" Filterable="true" Loading="_isLoading" Virtualize>
+<MudDataGrid Items="@VeiculosFiltrados" 
+             T="Veiculo" 
+             Hover="true" 
+             Bordered="true" 
+             Striped="true" 
+             Dense="true"
+             SortMode="SortMode.Multiple" 
+             Filterable="true" 
+             Loading="_isLoading" 
+             Virtualize>
     <ToolBarContent>
-        <MudButton @onclick="@(() => OpenDialogAsync())" Variant="Variant.Filled" Size="Size.Small"
-                   Color="Color.Primary">Cadastrar
-        </MudButton>
+        <MudButtonGroup OverrideStyles="false">
+            <MudButton @onclick="@(() => OpenDialogAsync())"
+                       Variant="Variant.Filled"
+                       Size="Size.Small"
+                       Color="Color.Primary"
+                       Class="mr-2">
+                Cadastrar
+            </MudButton>
+            <MudButton @onclick="@(() => LoadData())" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">
+                Atualizar
+            </MudButton>
+        </MudButtonGroup>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString" Placeholder="Buscar" Adornment="Adornment.Start" Immediate="true"
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
@@ -41,7 +58,7 @@
 </MudDataGrid>
 
 @code {
-    private IEnumerable<Veiculo> veiculos = new List<Veiculo>();
+    private IEnumerable<Veiculo>? veiculos = new List<Veiculo>{};
     private string _searchString = "";
     private bool _isLoading;
 
@@ -53,10 +70,6 @@
                 v.Placa.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
                 v.Marca.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
             );
-
-    protected override async Task OnInitializedAsync() {
-        await LoadData();
-    }
 
     private async Task LoadData() {
         _isLoading = true;

@@ -5,7 +5,7 @@ using FlexPro.Client.Infrastructure.Interfaces;
 
 namespace FlexPro.Client.Infrastructure.Services;
 
-public class VehicleService(HttpClient http, ILogger logger) : IVehicleService
+public class VehicleService(HttpClient http, ILogger<VehicleService> logger) : IVehicleService
 {
 
     private static readonly string[] VehicleBrands =
@@ -35,7 +35,7 @@ public class VehicleService(HttpClient http, ILogger logger) : IVehicleService
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadFromJsonAsync<List<Veiculo>>();
-                return ApiResponse<List<Veiculo>>.Success(data!, "Veículos obtidos com sucesso.");
+                return ApiResponse<List<Veiculo>>.Success(data, "Veículos obtidos com sucesso.");
             }
 
             return ApiResponse<List<Veiculo>>.Fail($"Erro {statusCode}: {rawMessage}", statusCode);

@@ -60,7 +60,7 @@
 
     protected override async Task OnInitializedAsync() {
         try {
-            var vehicles = await Http.GetFromJsonAsync<List<Veiculo>>("api/Veiculo");
+            var vehicles = await Http.GetFromJsonAsync<List<Veiculo>>("api/vehicle");
             _veiculos = vehicles;
         }
         catch (Exception e) {
