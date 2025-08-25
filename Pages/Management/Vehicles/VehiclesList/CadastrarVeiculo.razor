@@ -1,4 +1,3 @@
-@inject HttpClient Http
 @inject ISnackbar Snackbar
 @inject IVehicleService VehicleService
 
@@ -26,7 +25,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="CloseDialog" Color="Color.Secondary">Cancelar</MudButton>
-        <MudButton OnClick="SalvarVeiculo" Color="Color.Primary" Disabled="!_isFormValid">Salvar</MudButton>
+        <MudButton OnClick="SaveAsync" Color="Color.Primary" Disabled="!_isFormValid">Salvar</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -50,23 +49,17 @@
         MudDialog.Cancel();
     }
 
-    private async Task SalvarVeiculo() {
-        try {
-            if (Veiculo is not null) {
-                var response = await Http.PutAsJsonAsync($"api/veiculo/{_veiculo.Id}", _veiculo);
-                if (response.IsSuccessStatusCode) {
-                    Snackbar.Add("Veiculo Atualizado com Sucesso!", Severity.Success);
-                }
-            } else {
-                var response = await Http.PostAsJsonAsync("api/veiculo", _veiculo);
-                if (response.IsSuccessStatusCode) {
-                    Snackbar.Add("Veiculo Cadastrado com Sucesso!", Severity.Success);
-                }
+    private async Task SaveAsync() {
+        if (Veiculo is not null) {
+            var response = await VehicleService.UpdateAsync(_veiculo);
+            if (response == HttpStatusCode.OK) {
+                Snackbar.Add("Veiculo Atualizado com Sucesso!", Severity.Success);
             }
-        }
-        catch (Exception e) {
-            Snackbar.Add($"Ocorreu um erro ao cadastrar o veiculo: {e.Message}", Severity.Error);
-            throw;
+        } else {
+            var response = await VehicleService.CreateAsync(_veiculo);
+            if (response == HttpStatusCode.OK) {
+                Snackbar.Add("Veiculo Cadastrado com Sucesso!", Severity.Success);
+            }
         }
 
         MudDialog?.Close(DialogResult.Ok(_veiculo));
