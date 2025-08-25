@@ -126,7 +126,7 @@
                        ?? user.FindFirst("unique_name")?.Value
                        ?? "Sem nome";
         }
-        
+        StateHasChanged();
         //Get Routes
         allRoutes = await RouteHelperService.GetRoutesAsync();
     }
